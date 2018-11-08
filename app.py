@@ -1,20 +1,36 @@
 from flask import Flask, request, render_template
-from database import db_session, init_db, engine
+from database import db_session, init_db
 import sqlite3
-from models.search import Hospital
+from models.search import Hospital ##import search.py裡面的class Hoapital()
 app = Flask(__name__)
 
-@app.before_first_request  #在接收到第一個request執行
+#在接收到第一個request執行
+@app.before_first_request
 def init():
     init_db()  #初始化db
 
-@app.teardown_appcontext  #正確關閉資料庫
+#正確關閉資料庫
+@app.teardown_appcontext
 def shutdown_session(exception=None):
     db_session.remove()
 
 @app.route('/')
 def index():
     return '<h1>Hello World</h1>'
+
+##在地區搜尋介面取得使用者輸入的值/search_area
+@app.route('/search_area', methods=['GET'])
+def render():
+    return render_template('searchArea.html')
+
+##顯示搜尋結果/search_area
+@app.route('/search_area', methods=['POST'])
+def searchArea():
+    ##從前端searchArea.html的unputbox的name抓使用者輸入的值
+    county = request.form.get("county")
+    township = request.form.get("township")
+    ##使用class Hospital()裡面的search_area方法
+    return Hospital().search_area(county, township)
 
 @app.route('/say_hello', methods=['GET'])
 def getdata():
@@ -25,19 +41,6 @@ def submit():
  # return '{}, {}, {}'.format(input1, input2, input3)
  input1 = request.form.get("txt1")
  return Hospital().hospital_id(input1)
-
-@app.route('/hospital/type')
-def get_hospital_type():
-    return Hospital().get_type()
-
-@app.route('/search', methods=['GET'])
-def get_name():
-    return render_template('search.html')
-
-@app.route('/search', methods=['POST'])
-def submitt():
-    name1 = request.form.get('inputCategory3')
-    return name1
 
 @app.route('/tuna')
 def tuna():
@@ -51,6 +54,7 @@ def profile(username):
 def hos():
     return '<h1>hospitals</h1>'
 
+##啟動
 if __name__ == '__main__':
     app.jinja_env.auto_reloaded = True  ##jinja2 重新讀取template
     app.run(debug=True)
