@@ -1,7 +1,7 @@
 from flask import Flask, request, render_template
 from database import db_session, init_db
-import sqlite3
-from models.search import Hospital ##import search.py裡面的class Hoapital()
+from models.search import Search ##import search.py裡面的class Search()
+
 app = Flask(__name__)
 
 #在接收到第一個request執行
@@ -30,29 +30,7 @@ def searchArea():
     county = request.form.get("county")
     township = request.form.get("township")
     ##使用class Hospital()裡面的search_area方法
-    return Hospital().search_area(county, township)
-
-@app.route('/say_hello', methods=['GET'])
-def getdata():
-    return render_template('index.html')
-
-@app.route('/say_hello', methods=['POST'])
-def submit():
- # return '{}, {}, {}'.format(input1, input2, input3)
- input1 = request.form.get("txt1")
- return Hospital().hospital_id(input1)
-
-@app.route('/tuna')
-def tuna():
-    return '<h2>Tuna</h2>'
-
-@app.route('/profile/<username>')
-def profile(username):
-    return "Hey there %s" % username
-
-@app.route('/tuna/hospitals')
-def hos():
-    return '<h1>hospitals</h1>'
+    return Search().search_area(county, township)
 
 ##啟動
 if __name__ == '__main__':

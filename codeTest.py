@@ -1,5 +1,6 @@
 import sqlite3
 from pandas import DataFrame
+import numpy as np
 
 
 class Hosid():
@@ -24,6 +25,22 @@ class Hosid():
 
         print(res)
 
-abc = Hosid()
-abc.search_area('桃園', '桃園')
+    def table(self):
+        sqlstr = "SELECT id,name,type,address FROM hospitals WHERE id <3"
+        results = self.cursor.execute(sqlstr).fetchall()
+        x = np.array(results, dtype=str)
+        # context = [
+        #     {
+        #         'id':str(results[0,1]),
+        #         'name':str(results[0,2]),
+        #     }
+        # ]
+        a = sqlstr.index("FROM")-1
+        column = (sqlstr[7:a]).split(',')
+        print(sqlstr[7:a])
+        print(column[1])
+        print(len(column))
 
+abc = Hosid()
+# abc.search_area('桃園', '桃園')
+abc.table()
