@@ -1,0 +1,50 @@
+<!doctype html>
+<title>Hello, World!</title>
+<h1>地區搜尋</h1>
+<p></p>
+<form action="/search" method="post">
+    <label>縣市:</label>
+    <input type="textbox" name="county">
+    <label>鄉鎮市區:</label>
+    <input type="textbox" name="township">
+    <!--按鈕要加上name，方便後端判斷-->
+    <input type="submit" name="searchArea" value="Search">
+
+    <h1>特殊疾病搜尋</h1>
+    <p></p>
+    <label>特殊疾病:</label>
+    <input type="textbox" name="disease">
+    <input type="submit" name="searchDisease" value="Search">
+
+    <h1>醫院層級搜尋</h1>
+    <p></p>
+    <label>醫院層級:</label>
+    <select name="type">
+        <option selected>請選擇層級</option>
+        <option value="1">醫學中心</option>
+        <option value="2">區域醫院</option>
+        <option value="3">地區醫院</option>
+        <option value="4">診所</option>
+    </select>
+    <input type="submit" name="searchType" value="Search">
+
+    <p></p>
+    <table width="70%" border="1">
+        <tr>
+            <th>id</th>
+            <th>name</th>
+            <th>type</th>
+            <th>address</th>
+        </tr>
+
+        {% for a in context %}
+        <tr>
+            <td>{{ a.id }}</td>
+            <td>{{ a.name }}</td>
+            <td>{{ a.type }}</td>
+            <td>{{ a.address }}</td>
+        </tr>
+        {% endfor %}
+
+    </table>
+</form>
