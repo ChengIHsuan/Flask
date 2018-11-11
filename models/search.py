@@ -20,16 +20,41 @@ class Search():
         sqlstr = "SELECT id,name,type,address FROM hospitals WHERE address LIKE '" + area + "%'"
         results = self.cursor.execute(sqlstr).fetchall()  ##執行sqlstr，並列出所有結果到results[]
 
-        if results == []:
-            return "none"
-        else:
-            ##將二維陣列results[]轉成numpy array，並計算總資料數
-            n = np.array(results, dtype=str)
-            amount = len(results)
-            ##取得sqlstr中select的欄位，並以","做分割
-            s = sqlstr.index("FROM") - 1
-            column = (sqlstr[7:s]).split(',')
-            return Search().table(n, amount, column)
+        ##將二維陣列results[]轉成numpy array，並計算總資料數
+        n = np.array(results, dtype=str)
+        amount = len(results)
+        ##取得sqlstr中select的欄位，並以","做分割
+        s = sqlstr.index("FROM") - 1
+        column = (sqlstr[7:s]).split(',')
+        return Search().table(n, amount, column)
+
+    def search_disease(self, disease):
+        sqlstr1 = ("SELECT id FROM diseases WHERE (name LIKE '%" + disease + "%')")
+        print(sqlstr1)
+        getId = self.cursor.execute(sqlstr1)
+        diseaseId = (getId.fetchone()[0])
+        str = {
+            1: "f.h_1,f.h_2,f.h_3,f.h_4,f.h_5",
+            2: "f.h_6,f.h_7,f.h_8, f.h_9,f.h_10,f.h_11",
+            3: "f.h_12,f.h_13,f.h_14,f.h_15",
+            4: "f.h_16,f.h_17,f.h_18",
+            5: "f.h_19,f.h_20,f.h_21,f.h_22",
+            6: "f.h_23,f.h_24,f.h_25,f.h_26,f.h_27",
+            7: "f.h_28,f.h_29,f.h_30,f.h_31",
+            8: "f.h_32,f.h_33"  ##substr
+        }
+        print(str.get(diseaseId))
+        sqlstr = "SELECT h.name," + str.get(diseaseId) + " FROM hospitals h JOIN final_data f ON h.id = f.hospital_id"
+        results = self.cursor.execute(sqlstr).fetchall()  ##執行sqlstr，並列出所有結果到results[]
+        print(results)
+        ##將二維陣列results[]轉成numpy array，並計算總資料數
+        n = np.array(results, dtype=tuple)
+        amount = len(results)
+        ##取得sqlstr中select的欄位，並以","做分割
+        s = sqlstr.index("FROM") - 1
+        column = (sqlstr[7:s]).split(',')
+        print(column)
+        return Search().table(n, amount, column)
 
     def search_type(self, type):
         t = {
@@ -59,4 +84,5 @@ class Search():
             for j in range(len(column)):
                 d[column[j]] = n[i,j]
             context.append(d)
-        return render_template('searchArea.html', context = context)
+        long = len(column)
+        return render_template('searchArea.html', context = context, column = column, long = long)

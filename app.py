@@ -43,7 +43,7 @@ def panduan():
             return Search().search_area(county, township)
         elif 'searchDisease' in request.form:
             disease = request.form.get('disease')
-            return 'searchDisease'
+            return Search().search_disease(disease)
         elif 'searchType' in request.form:
             type = request.form.get('type')
             return Search().search_type(type)

@@ -1,8 +1,9 @@
-<!doctype html>
+<!DOCTYPE html>
 <title>Hello, World!</title>
 <h1>地區搜尋</h1>
 <p></p>
 <form action="/search" method="post">
+
     <label>縣市:</label>
     <input type="textbox" name="county">
     <label>鄉鎮市區:</label>
@@ -29,22 +30,19 @@
     <input type="submit" name="searchType" value="Search">
 
     <p></p>
-    <table width="70%" border="1">
+    <table width="100%" border="1">
         <tr>
-            <th>id</th>
-            <th>name</th>
-            <th>type</th>
-            <th>address</th>
+            {% for c in column %}
+                <th>{{ c }}</th>
+            {% endfor %}
         </tr>
 
         {% for a in context %}
         <tr>
-            <td>{{ a.id }}</td>
-            <td>{{ a.name }}</td>
-            <td>{{ a.type }}</td>
-            <td>{{ a.address }}</td>
+            {% for i in range(0,long)%}
+            <td>{{ a[column[i]] }}</td>
+            {% endfor %}
         </tr>
         {% endfor %}
-
     </table>
 </form>
