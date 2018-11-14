@@ -1,8 +1,9 @@
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, flash
 from database import db_session, init_db
 from models.search import Search ##import search.py裡面的class Search()
 
 app = Flask(__name__)
+app.secret_key = 'anldomokmoj'
 
 #在接收到第一個request執行
 @app.before_first_request
@@ -20,17 +21,8 @@ def index():
 
 ##在地區搜尋介面取得使用者輸入的值/search_area
 @app.route('/search', methods=['GET'])
-def render():
+def renderSearch():
     return render_template('searchArea.html')
-
-##顯示搜尋結果/search_area
-# @app.route('/search_area', methods=['POST'])
-# def searchArea():
-#     ##從前端searchArea.html的unputbox的name抓使用者輸入的值
-#     county = request.form.get("county")
-#     township = request.form.get("township")
-#     ##使用class Hospital()裡面的search_area方法
-#     return Search().search_area(county, township)
 
 @app.route('/search', methods=['POST'])
 def panduan():
@@ -48,6 +40,21 @@ def panduan():
             type = request.form.get('type')
             return Search().search_type(type)
 
+@app.route('/Sort', methods=['GET'])
+def renderSort():
+    return render_template('Sort.html')
+
+@app.route('/Collection', methods=['GET'])
+def renderCollection():
+    return render_template('Collection.html')
+
+@app.route('/Login', methods=['GET'])
+def renderLogin():
+    return render_template('Login.html')
+
+@app.route('/Signup', methods=['GET'])
+def renderSignup():
+    return render_template('Signup.html')
 
 ##啟動
 if __name__ == '__main__':

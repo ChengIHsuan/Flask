@@ -19,42 +19,49 @@ class Search():
             area = str(county + '%' + township)
         sqlstr = "SELECT id,name,type,address FROM hospitals WHERE address LIKE '" + area + "%'"
         results = self.cursor.execute(sqlstr).fetchall()  ##執行sqlstr，並列出所有結果到results[]
-
-        ##將二維陣列results[]轉成numpy array，並計算總資料數
-        n = np.array(results, dtype=str)
-        amount = len(results)
-        ##取得sqlstr中select的欄位，並以","做分割
-        s = sqlstr.index("FROM") - 1
-        column = (sqlstr[7:s]).split(',')
-        return Search().table(n, amount, column)
+        print(results)
+        if results == []:
+            flash('找不到相關資訊。')
+            return render_template("searchArea.html")
+        else:
+            print("else")
+            ##將二維陣列results[]轉成numpy array，並計算總資料數
+            n = np.array(results, dtype=str)
+            amount = len(results)
+            ##取得sqlstr中select的欄位，並以","做分割
+            s = sqlstr.index("FROM") - 1
+            column = (sqlstr[7:s]).split(',')
+            return Search().table(n, amount, column)
 
     def search_disease(self, disease):
-        sqlstr1 = ("SELECT id FROM diseases WHERE (name LIKE '%" + disease + "%')")
-        print(sqlstr1)
-        getId = self.cursor.execute(sqlstr1)
-        diseaseId = (getId.fetchone()[0])
-        str = {
-            1: "f.h_1,f.h_2,f.h_3,f.h_4,f.h_5",
-            2: "f.h_6,f.h_7,f.h_8, f.h_9,f.h_10,f.h_11",
-            3: "f.h_12,f.h_13,f.h_14,f.h_15",
-            4: "f.h_16,f.h_17,f.h_18",
-            5: "f.h_19,f.h_20,f.h_21,f.h_22",
-            6: "f.h_23,f.h_24,f.h_25,f.h_26,f.h_27",
-            7: "f.h_28,f.h_29,f.h_30,f.h_31",
-            8: "f.h_32,f.h_33"  ##substr
-        }
-        print(str.get(diseaseId))
-        sqlstr = "SELECT h.name," + str.get(diseaseId) + " FROM hospitals h JOIN final_data f ON h.id = f.hospital_id"
-        results = self.cursor.execute(sqlstr).fetchall()  ##執行sqlstr，並列出所有結果到results[]
-        print(results)
-        ##將二維陣列results[]轉成numpy array，並計算總資料數
-        n = np.array(results, dtype=tuple)
-        amount = len(results)
-        ##取得sqlstr中select的欄位，並以","做分割
-        s = sqlstr.index("FROM") - 1
-        column = (sqlstr[7:s]).split(',')
-        print(column)
-        return Search().table(n, amount, column)
+        try:
+            getId = self.cursor.execute("SELECT id FROM diseases WHERE (name LIKE '%" + disease + "%' OR eng_name LIKE '%" + disease + "%')")
+            diseaseId = (getId.fetchone()[0])
+            str = {
+                1: "f.h_1,f.h_2,f.h_3,f.h_4,f.h_5",
+                2: "f.h_6,f.h_7,f.h_8, f.h_9,f.h_10,f.h_11",
+                3: "f.h_12,f.h_13,f.h_14,f.h_15",
+                4: "f.h_16,f.h_17,f.h_18",
+                5: "f.h_19,f.h_20,f.h_21,f.h_22",
+                6: "f.h_23,f.h_24,f.h_25,f.h_26,f.h_27",
+                7: "f.h_28,f.h_29,f.h_30,f.h_31",
+                8: "f.h_32,f.h_33"  ##substr
+            }
+            print(str.get(diseaseId))
+            sqlstr = "SELECT h.name," + str.get(diseaseId) + " FROM hospitals h JOIN final_data f ON h.id = f.hospital_id"
+            results = self.cursor.execute(sqlstr).fetchall()  ##執行sqlstr，並列出所有結果到results[]
+            print(results)
+            ##將二維陣列results[]轉成numpy array，並計算總資料數
+            n = np.array(results, dtype=tuple)
+            amount = len(results)
+            ##取得sqlstr中select的欄位，並以","做分割
+            s = sqlstr.index("FROM") - 1
+            column = (sqlstr[7:s]).split(',')
+            print(column)
+            return Search().table(n, amount, column)
+        except:
+            flash('目前只有8個疾病相關的資訊，包括：氣喘疾病(Asthma)、急性心肌梗塞疾病(AMI)、糖尿病(DM，Diabetes)、人工膝關節手術(TKR，Total Knee Replace)、腦中風(Stroke)、鼻竇炎(Sinusitis)、子宮肌瘤手術(Myoma)、消化性潰瘍疾病(Ulcer)。')
+            return render_template("searchArea.html")
 
     def search_type(self, type):
         t = {
