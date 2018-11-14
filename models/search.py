@@ -21,7 +21,7 @@ class Search():
         results = self.cursor.execute(sqlstr).fetchall()  ##執行sqlstr，並列出所有結果到results[]
         print(results)
         if results == []:
-            flash('找不到相關資訊。')
+            flash('抱歉，找不到您要的資料訊息。')
             return render_template("searchArea.html")
         else:
             print("else")
@@ -60,7 +60,7 @@ class Search():
             print(column)
             return Search().table(n, amount, column)
         except:
-            flash('目前只有8個疾病相關的資訊，包括：氣喘疾病(Asthma)、急性心肌梗塞疾病(AMI)、糖尿病(DM，Diabetes)、人工膝關節手術(TKR，Total Knee Replace)、腦中風(Stroke)、鼻竇炎(Sinusitis)、子宮肌瘤手術(Myoma)、消化性潰瘍疾病(Ulcer)。')
+            flash('抱歉，找不到您要的「{}」相關資訊。目前只有8個疾病相關的資訊，包括：氣喘疾病(Asthma)、急性心肌梗塞疾病(AMI)、糖尿病(DM，Diabetes)、人工膝關節手術(TKR，Total Knee Replace)、腦中風(Stroke)、鼻竇炎(Sinusitis)、子宮肌瘤手術(Myoma)、消化性潰瘍疾病(Ulcer)。'.format(disease))
             return render_template("searchArea.html")
 
     def search_type(self, type):
