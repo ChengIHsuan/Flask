@@ -333,7 +333,7 @@ border-radius:25px;
 <body>
 <!-- 導覽列 -->
 <nav class="navbar navbar-expand-lg navbar-light navbar-default " id="Search">
-<!--導覽列圖片-->
+  <!--導覽列圖片-->
   <img src="https://pbs.twimg.com/media/DrvK7_5UcAARp62.png" href="hospital.html" class="navbar-brand span" style="width:70px;">
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav"
           aria-expanded="false" aria-label="Toggle navigation">
@@ -342,16 +342,16 @@ border-radius:25px;
   <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav span" style="text-align:center;">
       <li class="nav-item active">
-        <a class="nav-link span" href="Search">Search <span class="sr-only">(current)</span></a>
+        <a class="nav-link span" href="search">Search <span class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item">
-        <a class="nav-link span" href="Sort">Sort</a>
+        <a class="nav-link span" href="sort">Sort</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link span" href="Collection">Collection</a>
+        <a class="nav-link span" href="collection">Collection</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link span" href="Login">Log in</a>
+        <a class="nav-link span" href="login">Log in</a>
       </li>
       <li class="nav-item">
         <a class="nav-link span" href="hospitalPhone.html">手機版</a>
@@ -529,22 +529,28 @@ border-radius:25px;
     <div class="center20 span" style="margin:50px" name="result">
 
 
-        <h3>醫院搜尋結果</h3>
+      <h3>醫院搜尋結果</h3>
 
     </div>
+
     <div style="background-color:#F5E2E2;height: 500px;margin:50px 20px;overflow:scroll">
+      {% for message in get_flashed_messages(with_categories=True) %}
+      <div class="alert alert-secondary" role="alert">
+        {{ message[1] }}
+      </div>
+      {% endfor %}
       <table class="table table-bordered table-striped span">
         <tr>
           {% for c in column %}
-                <th>{{ c }}</th>
-            {% endfor %}
+          <th>{{ c }}</th>
+          {% endfor %}
         </tr>
 
-{% for a in context %}
+        {% for a in context %}
         <tr>
-           {% for i in range(0,long)%}
-            <td>{{ a[column[i]] }}</td>
-            {% endfor %}
+          {% for i in range(0,long)%}
+          <td>{{ a[column[i]] }}</td>
+          {% endfor %}
         </tr>
         {% endfor %}
       </table>

@@ -39,20 +39,29 @@ def panduan():
         elif 'searchType' in request.form:
             type = request.form.get('type')
             return Search().search_type(type)
+        elif 'searchCategory' in request.form:
+            keyword1 = request.form.get('keyword1')
+            keyword2 = request.form.get('keyword2')
+            keyword3 = request.form.get('keyword3')
+            keywords = []
+            keywords.append(keyword1)
+            keywords.append(keyword2)
+            keywords.append(keyword3)
+            return Search().search_category(keywords)
 
-@app.route('/Sort', methods=['GET'])
+@app.route('/sort', methods=['GET'])
 def renderSort():
     return render_template('Sort.html')
 
-@app.route('/Collection', methods=['GET'])
+@app.route('/collection', methods=['GET'])
 def renderCollection():
     return render_template('Collection.html')
 
-@app.route('/Login', methods=['GET'])
+@app.route('/login', methods=['GET'])
 def renderLogin():
     return render_template('Login.html')
 
-@app.route('/Signup', methods=['GET'])
+@app.route('/signup', methods=['GET'])
 def renderSignup():
     return render_template('Signup.html')
 
