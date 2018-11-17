@@ -2,45 +2,26 @@ import sqlite3
 from pandas import DataFrame
 import numpy as np
 
+db = sqlite3.connect('voyager.db')
+c = db.cursor()
 
-class Hosid():
+getId = c.execute("SELECT id FROM diseases WHERE name = '氣喘疾病'")
+diseaseId = (getId.fetchone()[0])
+r = {
+    1: range(1,6),
+    2: range(6,12),
+    3: range(12,16),
+    4: range(16,19),
+    5: range(19,23),
+    6: range(23,28),
+    7: range(28,32),
+    8: range(32,34)  ##substr
+}
+select= ''
+for i in r.get(diseaseId):
+    select += (", (select value from data where index_id = " + str(i) + ") as index"+ str(i))
 
-    def __init__(self):
-        db = sqlite3.connect("voyager.db")
-        self.cursor = db.cursor()
 
-    def search_area(self, county, township):
-        # self.county = county
-        # self.township = township
-        area = str(county + '%' + township + '%')
-        sqlstr = "SELECT * FROM hospitals WHERE address LIKE '" + area + "'"
-        results = self.cursor.execute(sqlstr).fetchall()
-        # d1 = {
-        #     "": results
-        # }
-        # print(DataFrame(d1))
-        res = ''
-        for i in range(len(results)):
-            res += (str(results[i]) + '\n')
-
-        print(res)
-
-    def table(self):
-        sqlstr = "SELECT id,name,type,address FROM hospitals WHERE id <3"
-        results = self.cursor.execute(sqlstr).fetchall()
-        x = np.array(results, dtype=str)
-        # context = [
-        #     {
-        #         'id':str(results[0,1]),
-        #         'name':str(results[0,2]),
-        #     }
-        # ]
-        a = sqlstr.index("FROM")-1
-        column = (sqlstr[7:a]).split(',')
-        print(sqlstr[7:a])
-        print(column[1])
-        print(len(column))
-
-abc = Hosid()
-# abc.search_area('桃園', '桃園')
-abc.table()
+sqlstr = "SELECT h.name" + select + " FROM hospitals h JOIN final_data f ON h.id = f.hospital_id where hospital_id =1"
+res = c.execute(sqlstr).fetchone()
+print(res)

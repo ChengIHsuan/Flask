@@ -54,15 +54,15 @@
     <h2></h2>
     <table width="100%" border="1">
         <tr>
-            {% for c in column %}
-            <th>{{ c }}</th>
+            {% for column in columns %}
+            <th>{{ column }}</th>
             {% endfor %}
         </tr>
 
         {% for a in context %}
         <tr>
             {% for i in range(0,long)%}
-            <td>{{ a[column[i]] }}</td>
+            <td>{{ a[columns[i]] }}</td>
             {% endfor %}
         </tr>
         {% endfor %}
