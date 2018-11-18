@@ -1,27 +1,38 @@
 import sqlite3
-from pandas import DataFrame
+import tkinter as tk
 import numpy as np
 
 db = sqlite3.connect('voyager.db')
 c = db.cursor()
 
-getId = c.execute("SELECT id FROM diseases WHERE name = '氣喘疾病'")
-diseaseId = (getId.fetchone()[0])
-r = {
-    1: range(1,6),
-    2: range(6,12),
-    3: range(12,16),
-    4: range(16,19),
-    5: range(19,23),
-    6: range(23,28),
-    7: range(28,32),
-    8: range(32,34)  ##substr
-}
-select= ''
-for i in r.get(diseaseId):
-    select += (", (select value from data where index_id = " + str(i) + ") as index"+ str(i))
+window = tk.Tk()
+window.title('Test')
+window.geometry('500x300')
+
+# 第4步，在图形界面上创建一个标签label用以显示并放置
+l = tk.Label(window, bg='yellow', width=20, text='empty')
+l.pack()
+
+# 第6步，定义触发函数功能
+def print_selection():
+    if (var1.get() == 1) & (var2.get() == 0):  # 如果选中第一个选项，未选中第二个选项
+        l.config(text='I love only Python ')
+    elif (var1.get() == 0) & (var2.get() == 1):  # 如果选中第二个选项，未选中第一个选项
+        l.config(text='I love only C++')
+    elif (var1.get() == 0) & (var2.get() == 0):  # 如果两个选项都未选中
+        l.config(text='I do not love either')
+    else:
+        l.config(text='I love both')  # 如果两个选项都选中
 
 
-sqlstr = "SELECT h.name" + select + " FROM hospitals h JOIN final_data f ON h.id = f.hospital_id where hospital_id =1"
-res = c.execute(sqlstr).fetchone()
-print(res)
+# 第5步，定义两个Checkbutton选项并放置
+var1 = tk.IntVar()  # 定义var1和var2整型变量用来存放选择行为返回值
+var2 = tk.IntVar()
+c1 = tk.Checkbutton(window, text='Python',variable=var1, onvalue=1, offvalue=0, command=print_selection)    # 传值原理类似于radiobutton部件
+c1.pack()
+c2 = tk.Checkbutton(window, text='C++',variable=var2, onvalue=1, offvalue=0, command=print_selection)
+c2.pack()
+
+
+# 第7步，主窗口循环显示
+window.mainloop()

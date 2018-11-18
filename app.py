@@ -48,6 +48,15 @@ def panduan():
             keywords.append(keyword2)
             keywords.append(keyword3)
             return Search().search_category(keywords)
+        elif 'searchName' in request.form:
+            name1 = request.form.get('name1')
+            name2 = request.form.get('name2')
+            name3 = request.form.get('name3')
+            names = []
+            names.append(name1)
+            names.append(name2)
+            names.append(name3)
+            return Search().search_name(names)
 
 @app.route('/sort', methods=['GET'])
 def renderSort():

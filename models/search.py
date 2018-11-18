@@ -34,7 +34,7 @@ class Result():
                 d[columns[j]] = n[i, j]
             context.append(d)
         long = len(columns)
-        return render_template('searchArea.html', context=context, columns=columns, long=long)
+        return render_template('searchArea.html', scroll= 'results' ,context=context, columns=columns, long=long)
 
 
 class Search():
@@ -114,9 +114,7 @@ class Search():
             }
             for keyword in keywords:
                 if keyword != "":
-                    print(keyword)
                     getId = self.cursor.execute("SELECT id FROM category WHERE name = '" + keyword + "'")
-                    print(getId)
                     keyId = getId.fetchone()[0]
                     substr += str.get(keyId)
             sqlstr = "SELECT h.name" + substr + " FROM hospitals h JOIN final_data f ON h.id = f.hospital_id"
@@ -125,3 +123,11 @@ class Search():
         except:
             flash('抱歉，找不到您要的「{}」相關資訊。'.format(keyword))
             return render_template("searchArea.html")
+
+    def search_name(self, names):
+        results = []
+        for name in names:
+            if name != "":
+                sqlstr = "SELECT h.id, h.name, h.type, h.address FROM hospitals h WHERE h.name LIKE '%" + name + "%'"
+                results += self.cursor.execute(sqlstr).fetchall()  ##執行sqlstr，並列出所有結果到results[]
+        return Result().get_column_name(results, sqlstr)
