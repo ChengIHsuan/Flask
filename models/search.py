@@ -34,7 +34,7 @@ class Result():
                 d[columns[j]] = n[i, j]
             context.append(d)
         long = len(columns)
-        return render_template('searchArea.html', scroll= 'results' ,context=context, columns=columns, long=long)
+        return render_template('hospital.html', scroll= 'results' ,context=context, columns=columns, long=long)
 
 
 class Search():
@@ -57,7 +57,7 @@ class Search():
         ##若未找到任何資料，出現錯誤訊息，若有則進入else
         if results == []:
             flash('抱歉，找不到您要的資料訊息。')
-            return render_template("searchArea.html")
+            return render_template("hospital.html")
         else:
             return Result().get_column_name(results, sqlstr)
 
@@ -81,7 +81,7 @@ class Search():
             return Result().get_column_name(results, sqlstr)
         except:
             flash('抱歉，找不到您要的「{}」相關資訊。目前只有8個疾病相關的資訊，包括：氣喘疾病(Asthma)、急性心肌梗塞疾病(AMI)、糖尿病(DM，Diabetes)、人工膝關節手術(TKR，Total Knee Replace)、腦中風(Stroke)、鼻竇炎(Sinusitis)、子宮肌瘤手術(Myoma)、消化性潰瘍疾病(Ulcer)。'.format(disease))
-            return render_template("searchArea.html")
+            return render_template("hospital.html")
 
     ##醫院層級搜尋
     def search_type(self, type):
@@ -122,7 +122,7 @@ class Search():
             return Result().get_column_name(results, sqlstr)
         except:
             flash('抱歉，找不到您要的「{}」相關資訊。'.format(keyword))
-            return render_template("searchArea.html")
+            return render_template("hospital.html")
 
     def search_name(self, names):
         results = []

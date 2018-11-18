@@ -15,10 +15,102 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.2/chosen.jquery.min.js"></script>
   <script type="text/javascript" src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
 
+  <script>
 
+    $(function () {
+      var $table = $('table');
+      var $tableB = $('h2');
+      var currentPage = 0;//當前頁默認值為0
+      var pageSize = 20;//每一頁顯示的數目
+      $table.bind('paging', function () {
+        $table.find('tbody tr').hide().slice(currentPage * pageSize, (currentPage + 1) * pageSize).show();
+      });
+      var sumRows = $table.find('tbody tr').length;
+      var sumPages = Math.ceil(sumRows / pageSize);//總頁數
+      var large = sumPages * 36;
+      var $pager = $('<div class="page" style="width:' + large + 'px" ></div>');  //新建div，放入a標籤,顯示底部分頁碼
+      for (var pageIndex = 0; pageIndex < sumPages; pageIndex++) {
+        $('<a href="#" id="pageStyle" onclick="changCss(this)"><span>' + (pageIndex + 1) + '</span></a>').bind("click", { "newPage": pageIndex }, function (event) {
+          currentPage = event.data["newPage"];
+          $table.trigger("paging");
+          //觸發分頁函數
+        }).appendTo($pager);
+        $pager.append(" ");
+      }
+      $pager.insertAfter($tableB);
+      $table.trigger("paging");
+
+      //默認第一頁的a標籤效果
+      var $pagess = $('#pageStyle');
+      $pagess[0].style.backgroundColor = "#FEC396";
+      $pagess[0].style.color = "#ffffff";
+    });
+
+    //a鏈接點擊變色，再點其他回覆原色
+    function changCss(obj) {
+      var arr = document.getElementsByTagName("a");
+      for (var i = 0; i < arr.length; i++) {
+        if (obj == arr[i]) {       //當前頁樣式
+          obj.style.backgroundColor = "#FEC396";
+          obj.style.color = "#ffffff";
+        }
+        else {
+          arr[i].style.color = "";
+          arr[i].style.backgroundColor = "";
+        }
+      }
+
+    }
+  </script>
   <style>
+   .page{
+      text-align: left;
+
+    }
+    #pageStyle {
+            display: inline-block;
+            width: 32px;
+            height: 32px;
+            border: 1px solid #CCC;
+            line-height: 32px;
+            text-align: center;
+            color: #999;
+            margin-top: 1px;
+            text-decoration: none;
+
+        }
+
+        #pageStyle:hover {
+            background-color: #CCC;
+        }
+
+        #pageStyle .active {
+            /* background-color: #006B00; */
+            color: #ffffff;
+        }
+      /* width */
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: rgb(228, 228, 228);
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: rgb(175, 175, 175);
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: rgb(126, 126, 126);
+}
+
     /* 修改導覽列顏色 */
-    
+
     .navbar {
   background-color: #fe9696;
 }
@@ -37,7 +129,7 @@
 }
 .navbar .navbar-text a:hover,
 .navbar .navbar-text a:focus {
-  color: #fcfbfb; 
+  color: #fcfbfb;
 }
 .navbar .navbar-nav .nav-link {
   color: #000000;
@@ -216,11 +308,11 @@
   margin:0px auto;
   width:1290px;
   height:100px;
-  border:0px; 
+  border:0px;
   /* 背景跟著移動 */
   background-attachment:fixed;
   overflow: hidden;
-  /* background-image:url('.gif'); */ 
+  /* background-image:url('.gif'); */
 }
 .menubt{
 width: 118px;
@@ -250,10 +342,10 @@ border: 3px solid white;
   margin:0px auto;
   width:1636px;
   height:300px;
-  border:0px; 
+  border:0px;
 /* 文字超過自動產生捲軸 */
   overflow: scroll;
-} 
+}
 .searchbox{
 width: 400px;
 height: 60px;
@@ -286,7 +378,7 @@ font-weight:bold;
 }
 .left{
   margin-top: 0px;
- 
+
   text-align:left;
 }
 .right{
@@ -307,11 +399,11 @@ font-weight:bold;
   /* width: 150px; */
   height: 350px;
   background: #FE9696;
-  
+
 }
 .bordercontact {
   border: 1px solid gray;
-  
+
   width: 250px;
   height: 30px;
 }
@@ -331,6 +423,11 @@ border-radius:25px;
 </head>
 
 <body>
+{% for message in get_flashed_messages(with_categories=True) %}
+<div class="alert alert-secondary" role="alert">
+  {{ message[1] }}
+</div>
+{% endfor %}
 <!-- 導覽列 -->
 <nav class="navbar navbar-expand-lg navbar-light navbar-default " id="Search">
   <!--導覽列圖片-->
@@ -342,16 +439,16 @@ border-radius:25px;
   <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav span" style="text-align:center;">
       <li class="nav-item active">
-        <a class="nav-link span" href="search">Search <span class="sr-only">(current)</span></a>
+        <a class="nav-link span" href="hospital.html">Search <span class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item">
-        <a class="nav-link span" href="sort">Sort</a>
+        <a class="nav-link span" href="Sort.html">Sort</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link span" href="collection">Collection</a>
+        <a class="nav-link span" href="Collection.html">Collection</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link span" href="login">Log in</a>
+        <a class="nav-link span" href="Login.html">Log in</a>
       </li>
       <li class="nav-item">
         <a class="nav-link span" href="hospitalPhone.html">手機版</a>
@@ -380,7 +477,7 @@ border-radius:25px;
 <!-- body -->
 <form action="/search" method="post">
   <div class="container-fiuld">
-    <div style=" height:1350px;background-color: white" id="startsearch">
+    <div style=" height:1550px;background-color: white" id="startsearch">
       <!-- 醫院名稱搜尋 -->
       <div class="card border3">
         <div class="card-body">
@@ -440,6 +537,32 @@ border-radius:25px;
           </div>
         </div>
       </div>
+      <!-- 醫院科別搜尋 -->
+      <div class="card border1 span">
+        <div class="card-body">
+          <h5 class="card-title left">醫院科別搜尋</h5>
+          <!-- 層級搜尋 -->
+          <div class="center20">
+            <form>
+              <div class="col-sm-7 my-1" style="margin:5px auto;">
+                <select class="custom-select mr-sm-2" id="inlineForCustomSelect">
+                  <option selected>請選擇科別</option>
+                  <option value="1">心臟科</option>
+                  <option value="2">小兒科</option>
+                  <option value="3">家醫科</option>
+                  <option value="4">內科</option>
+                  <option value="5">外科</option>
+                </select>
+              </div>
+            </form>
+            <div class="right" style="padding-top:20px">
+              <a href="#result">
+                <button type="submit" class="btn span" style="background-color:#FEC396;color:white">搜尋</button>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
 
       <!-- 特殊疾病搜尋 -->
       <div class="card border1">
@@ -479,9 +602,9 @@ border-radius:25px;
               </select>
             </div>
             <div class="right" style="padding-top:20px">
-              <a href="#result">
-                <input type="submit" name="searchType" class="btn span" style="background-color:#FEC396;color:white" value="搜尋">
-              </a>
+
+              <input type="submit" name="searchType" class="btn span" style="background-color:#FEC396;color:white" value="搜尋">
+
             </div>
 
           </div>
@@ -495,22 +618,22 @@ border-radius:25px;
 
             <div class="form-group row span">
               <div class="col-sm-7 " style="margin:5px auto;">
-                <input type="text" class="form-control" name="t1" id="inputt1" placeholder="請輸入主題1">
+                <input type="text" class="form-control" name="keyword1" id="inputt1" placeholder="請輸入主題1">
               </div>
             </div>
             <div class="form-group row span">
               <div class="col-sm-7" style="margin:5px auto;">
-                <input type="text" class="form-control" name="t2" id="inputt2" placeholder="請輸入主題2">
+                <input type="text" class="form-control" name="keyword2" id="inputt2" placeholder="請輸入主題2">
               </div>
             </div>
             <div class="form-group row span">
               <div class="col-sm-7" style="margin:5px auto;">
-                <input type="text " class="form-control" id="inputt3" placeholder="請輸入主題3">
+                <input type="text" class="form-control" name="keyword3" id="inputt3" placeholder="請輸入主題3">
               </div>
             </div>
             <div class=" right">
               <a href="#result">
-                <button type="submit" name="searchTopic" class="btn span" style="background-color:#FEC396;color:white">搜尋</button>
+                <button type="submit" name="searchCategory" class="btn span" style="background-color:#FEC396;color:white">搜尋</button>
               </a>
             </div>
 
@@ -520,72 +643,55 @@ border-radius:25px;
     </div>
     <!-- 確定 -->
     <div class="center5" style="padding-top: 30px">
-      <a href="#result">
         <button type="submit" name="searchAll" class="btn span" style="background-color:#FEC396;color:white">綜合搜尋</button>
-      </a>
     </div>
 
     <!-- 搜尋結果 -->
-    <div class="center20 span" style="margin:50px" name="result">
+    <div id="results">
+      {% if scroll %}
+      <script>
+            document.location.hash = '#' + '{{ scroll }}';
+      </script>
+      {% endif %}
 
+      <div class="center20 span" style="margin:50px" >
 
-      <h3>醫院搜尋結果</h3>
+        <h3>醫院搜尋結果</h3>
 
-    </div>
-
-    <div style="background-color:#F5E2E2;height: 500px;margin:50px 20px;overflow:scroll">
-      {% for message in get_flashed_messages(with_categories=True) %}
-      <div class="alert alert-secondary" role="alert">
-        {{ message[1] }}
       </div>
-      {% endfor %}
-      <table class="table table-bordered table-striped span">
-        <tr>
-          {% for c in column %}
-          <th>{{ c }}</th>
-          {% endfor %}
-        </tr>
+      <div style="background-color:#F5E2E2;height: 500px;margin:50px 20px; overflow:scroll;word-break:break-all;">
 
-        {% for a in context %}
-        <tr>
-          {% for i in range(0,long)%}
-          <td>{{ a[column[i]] }}</td>
+
+        <table class="table table-bordered table-striped span" >
+          <tr>
+            {% for column in columns %}
+            <th>{{ column }}</th>
+            {% endfor %}
+          </tr>
+
+          {% for a in context %}
+          <tr>
+            {% for i in range(0,long)%}
+            <td>{{ a[columns[i]] }}</td>
+            {% endfor %}
+          </tr>
           {% endfor %}
-        </tr>
-        {% endfor %}
-      </table>
+        </table>
+      </div>
     </div>
+      <!-- 結果分頁 -->
+      <div class="center5 span">
+        <div style=" width: 150px;height: 60px;overflow: auto; overflow-y:hidden;margin: 0px auto">
+         <h2></h2>
+        </div>
+      </div>
 </form>
 
 
 
 
-<!-- 結果分頁 -->
-<div class="center5 span">
-  <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
-    <button type="button" class="btn btn-secondary bgfec">1</button>
-    <button type="button" class="btn btn-secondary bgfec">2</button>
-    <button type="button" class="btn btn-secondary bgfec">3</button>
-    <button type="button" class="btn btn-secondary bgfec">4</button>
 
-    <div class="btn-group" role="group">
-      <button id="btnGroupDrop1" type="button" class="btn btn-secondary dropdown-toggle bgfec" data-toggle="dropdown"
-              aria-haspopup="true" aria-expanded="false">
-        More
-      </button>
-      <div class="dropdown-menu span" aria-labelledby="btnGroupDrop1">
-        <a class="dropdown-item" href="#">5</a>
-        <a class="dropdown-item" href="#">6</a>
-        <a class="dropdown-item" href="#">最後</a>
-      </div>
-    </div>
-  </div>
-</div>
 
-</div>
-</div>
-
-</div>
 <!-- contact -->
 <!-- <div style=" height:300px;background-color: #fe9696;"> -->
 <div style="margin: 20px;">
@@ -612,11 +718,11 @@ border-radius:25px;
             </div>
             <div class="form-group form-control-sm col-7" style="margin:15px auto;">
               <label for="exampleFormControlInput1"></label>
-              <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
+              <input type="email" class="form-control" id="exampleolInput1" placeholder="name@example.com">
             </div>
             <div class="form-group form-control-sm col-7" style="margin:15px auto;">
               <label for="exampleFormControlInput1"></label>
-              <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Subject">
+              <input type="text" class="form-control" id="ControlInput1" placeholder="Subject">
             </div>
 
             <div class="form-group form-control-sm col-7" style="margin:15px auto;">

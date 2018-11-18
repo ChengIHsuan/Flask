@@ -3,7 +3,6 @@ from database import db_session, init_db
 from models.search import Search ##import search.py裡面的class Search()
 
 app = Flask(__name__)
-app.secret_key = 'anldomokmoj'
 
 #在接收到第一個request執行
 @app.before_first_request
@@ -22,7 +21,7 @@ def index():
 ##在地區搜尋介面取得使用者輸入的值/search_area
 @app.route('/search', methods=['GET'])
 def renderSearch():
-    return render_template('searchArea.html')
+    return render_template('hospital.html')
 
 @app.route('/search', methods=['POST'])
 def panduan():
