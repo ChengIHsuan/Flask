@@ -51,21 +51,39 @@
     </select>
     <input type="submit" name="searchCategory" value="Search">
 
-    <h2></h2>
-    <table width="100%" border="1">
-        <tr>
-            {% for column in columns %}
-            <th>{{ column }}</th>
-            {% endfor %}
-        </tr>
+    <h2>醫院名稱搜尋</h2>
+    <p></p>
+    <label>醫院名稱:</label>
+    <input type="textbox" name="name1">
+    <input type="textbox" name="name2">
+    <input type="textbox" name="name3">
+    </select>
+    <input type="submit" name="searchName" value="Search">
 
-        {% for a in context %}
-        <tr>
-            {% for i in range(0,long)%}
-            <td>{{ a[columns[i]] }}</td>
+
+    <h2></h2>
+    <div id="results">
+        {% if scroll %}
+        <script>
+        document.location.hash = '#' + '{{ scroll }}';
+</script>
+        {% endif %}
+        <table width="100%" border="1">
+            <tr>
+                {% for column in columns %}
+                <th>{{ column }}</th>
+                {% endfor %}
+            </tr>
+
+            {% for a in context %}
+            <tr>
+                {% for i in range(0,long)%}
+                <td>{{ a[columns[i]] }}</td>
+                {% endfor %}
+            </tr>
             {% endfor %}
-        </tr>
-        {% endfor %}
-    </table>
+        </table>
+
+    </div>
 </form>
 </body>
