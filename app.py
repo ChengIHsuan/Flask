@@ -1,8 +1,10 @@
 from flask import Flask, request, render_template, flash
 from database import db_session, init_db
 from models.search import Search ##import search.py裡面的class Search()
+from models.sort import Sort, Result
 
 app = Flask(__name__)
+app.secret_key = "mlkmslmpw"
 
 #在接收到第一個request執行
 @app.before_first_request
@@ -21,7 +23,7 @@ def index():
 ##在地區搜尋介面取得使用者輸入的值/search_area
 @app.route('/search', methods=['GET'])
 def renderSearch():
-    return render_template('hospital.html')
+    return render_template('searchArea.html')
 
 @app.route('/search', methods=['POST'])
 def panduan():
@@ -59,7 +61,23 @@ def panduan():
 
 @app.route('/sort', methods=['GET'])
 def renderSort():
-    return render_template('sort.html')
+    return render_template('sortTest.html')
+
+@app.route('/sort', methods=['POST'])
+def sort_judge():
+    if request.method == 'POST':
+        if 'sortValue' in request.form:
+            index1 = request.form.get('index1')
+            index2 = request.form.get('index2')
+            index3 = request.form.get('index3')
+            indexes = []
+            indexes.append(index1)
+            indexes.append(index2)
+            indexes.append(index3)
+            return Sort().sort_value(indexes)
+        elif 'reSort' in request.form:
+            index = request.form.get('index')
+            return Sort().reSort(index)
 
 @app.route('/collection', methods=['GET'])
 def renderCollection():
