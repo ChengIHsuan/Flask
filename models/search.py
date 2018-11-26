@@ -106,14 +106,15 @@ class Search():
                 6: ", m.m_5, m.m_9",
                 7: ", m.m_16, m.m_17",
                 8: ", m.m_19",
-                9: ", m.m_28, m.m_29"
+                9: ", m.m_28, m.m_29",
+                10: ", mr.better, mr.normal, mr.worse"
             }
             for keyword in keywords:
                 if keyword != "":
                     getId = self.cursor.execute("SELECT id FROM category WHERE name = '" + keyword + "'")
                     keyId = getId.fetchone()[0]
                     substr += getStr.get(keyId)
-            sqlstr = "SELECT h.id, h.name" + substr + " FROM hospitals h JOIN merge_data m ON h.id = m.hospital_id"
+            sqlstr = "SELECT h.id, h.name" + substr + " FROM hospitals h JOIN merge_data m ON h.id = m.hospital_id JOIN merge_reviews mr ON h.id = mr.hospital_id"
             results = self.cursor.execute(sqlstr).fetchall()  ##執行sqlstr，並列出所有結果到results[]
             return Result().get_column_name(results, sqlstr)
         except:

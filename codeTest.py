@@ -3,25 +3,11 @@ import sqlite3
 db = sqlite3.connect('voyager.db')
 c = db.cursor()
 
-#
-# def get_column_name(self, results, sqlstr, indexs):
-#     ##將二維陣列results[]轉成numpy array，並計算總資料數
-#     print('1')
-#     print(indexs)
-#     length = len(indexs)
-#     amount = len(results)
-#     print(length)
-#     ##取得sqlstr中select的欄位，並以","做分割
-#     s = sqlstr.index("FROM") - 1
-#
-#     getColumns = (sqlstr[7:s]).split(', ')
-#     print(getColumns)
-#     ##取得欄位名稱
-getColumns = []
-getColumns.append('h.name')
-columns = []
-for co in getColumns:
-    col = c.execute("SELECT chi_name FROM column_name WHERE name = '" + co + "'").fetchone()[0]
-    columns.append(col)
-    print(columns)
-        # return Result().table(results, amount, columns, length)
+sqlstr  = "select h.id, h.name, mr.better, mr.normal, mr.worse from hospitals h join merge_reviews mr on h.id = mr.hospital_id"
+results = c.execute(sqlstr).fetchall()
+for i in range(len(results)):
+    test = ("情緒分數為1的評論數：" + str(results[i][2]) + "<p>情緒分數為0的評論數：" + str(results[i][3]) + "<p>情緒分數為-1的評論數："+str(results[i][4]))
+    results[i] = results[i][:2]
+    results[i] += (test,)
+print(results[0])
+print(results)

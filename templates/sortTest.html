@@ -29,12 +29,12 @@
         {% if scroll %}
         <script>document.location.hash = '#' + '{{ scroll }}';</script>
         {% endif %}
-        <table width="100%" border="1" >
+        <table width="100%" border="1">
 
             <select name="index">
                 <option selected>請選擇排序</option>
                 {% for index in indexes %}
-                <option>{{ index }}</option>
+                <option value={{index}}&{{sqlstr}}>{{ index }}</option>
                 {% endfor %}
             </select>
             <input type="submit" name="reSort" value="Sort">

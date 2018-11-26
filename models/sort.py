@@ -19,21 +19,22 @@ class Sort():
             results = self.cursor.execute(sqlstr).fetchall()  ##執行sqlstr，並列出所有結果到results[]
             print(sqlstr)
             print('return囉')
-            return Sort().tmp(results, sqlstr)
+            return Result().get_column_name(results, sqlstr)
         except:
             flash('抱歉，找不到您要的「{}」相關資訊。'.format(index))
             return render_template("sortTest.html")
 
-    def tmp(self, results, sqlstr):
-        self.sqlstr = sqlstr
-        print('tmp' + self.sqlstr)
-        return Result().get_column_name(results, sqlstr)
-
     def reSort(self, index):
-        sss = Sort()
-        sss.tmp()
-        print(s)
-        return  "return"
+        li = index.split("&")
+        print(li)
+        pre_sqlstr = li[1].replace("//", " ")
+        print(pre_sqlstr)
+        name = self.cursor.execute("select name from column_name where abbreviation = '" + li[0] + "'").fetchone()[0]
+        sqlstr = pre_sqlstr + " order by " + name + " DESC"
+        print(sqlstr)
+        results = self.cursor.execute(sqlstr).fetchall()  ##執行sqlstr，並列出所有結果到results[]
+        print('return囉')
+        return Result().get_column_name(results, sqlstr)
 
 
 class Result():
@@ -56,11 +57,11 @@ class Result():
             columns.append(col)
         indexes = columns[1:]
         print(indexes)
-        return Result().table(results, amount, columns, indexes)
+        return Result().table(results, amount, columns, indexes, sqlstr)
 
     ##將搜尋結果寫進表格，需傳入(numpy array,總資料數,欄位名稱)
 
-    def table(self, results, amount, columns, indexes):
+    def table(self, results, amount, columns, indexes, sqlstr):
         ##建立一個陣列，儲存整理好的資料結果
         context = []
         for i in range(len(results)):
@@ -70,4 +71,7 @@ class Result():
                 d[columns[j]] = results[i][j]
             context.append(d)
         long = len(columns)
-        return render_template('sortTest.html', scroll = 'results' , context=context, columns=columns, long=long, indexes=indexes)
+        sqlstr = sqlstr.replace(" ", "//")
+        print("===")
+        print(sqlstr)
+        return render_template('sortTest.html', scroll = 'results' , context=context, columns=columns, long=long, indexes=indexes, sqlstr=sqlstr)
