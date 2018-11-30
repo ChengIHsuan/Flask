@@ -2,6 +2,7 @@ from flask import Flask, request, render_template, flash
 from database import db_session, init_db
 from models.search import Search ##import search.py裡面的class Search()
 from models.sort import Sort, Result
+from models.test import Test
 
 app = Flask(__name__)
 app.secret_key = "mlkmslmpw"
@@ -16,12 +17,20 @@ def init():
 def shutdown_session(exception=None):
     db_session.remove()
 
-@app.route('/')
-def index():
-    return '<h1>Hello World</h1>'
+@app.route('/onlyfortest', methods=['GET'])
+def renderTest():
+    return render_template('test.html')
+
+@app.route('/onlyfortest', methods=['POST'])
+def tetete():
+        if 'area' in request.form:
+            county = request.form.get("county")
+            township = request.form.get("township")
+            items = request.values.getlist('items')
+            return Test().area_test(county, township, items)
 
 ##在地區搜尋介面取得使用者輸入的值/search_area
-@app.route('/search', methods=['GET'])
+@app.route('/', methods=['GET'])
 def renderSearch():
     return render_template('searchArea.html')
 
@@ -32,8 +41,9 @@ def panduan():
             #從前端searchArea.html的unputbox的name抓使用者輸入的值
             county = request.form.get("county")
             township = request.form.get("township")
+            items = request.values.getlist('items')
             ##使用class Hospital()裡面的search_area方法
-            return Search().search_area(county, township)
+            return Search().search_area(county, township, items)
         elif 'searchDisease' in request.form:
             disease = request.form.get('disease')
             return Search().search_disease(disease)
@@ -58,6 +68,11 @@ def panduan():
             names.append(name2)
             names.append(name3)
             return Search().search_name(names)
+        elif 'area' in request.form:
+            county = request.form.get("county")
+            township = request.form.get("township")
+            items = request.values.getlist('item')
+            return Test().area_test(county, township, items)
 
 @app.route('/sort', methods=['GET'])
 def renderSort():
