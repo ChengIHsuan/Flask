@@ -17,18 +17,6 @@ def init():
 def shutdown_session(exception=None):
     db_session.remove()
 
-@app.route('/onlyfortest', methods=['GET'])
-def renderTest():
-    return render_template('test.html')
-
-@app.route('/onlyfortest', methods=['POST'])
-def tetete():
-        if 'area' in request.form:
-            county = request.form.get("county")
-            township = request.form.get("township")
-            items = request.values.getlist('items')
-            return Test().area_test(county, township, items)
-
 ##在地區搜尋介面取得使用者輸入的值/search_area
 @app.route('/', methods=['GET'])
 def renderSearch():
