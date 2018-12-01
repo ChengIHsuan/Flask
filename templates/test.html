@@ -75,27 +75,22 @@
     <input type="textbox" name="township">
     <!--按鈕要加上name，方便後端判斷-->
     <input type="submit" name="t_searchArea" value="Test">
-    <a href="#checkBox">
-        <input type="button" value="TT">
-    </a>
 
     <h1>aaa</h1><h1>bbb</h1><h1>ccc</h1><h1>ddd</h1><h1>eee</h1><h1>fff</h1>
+
+    <p></p>
     <div style=" display: inline-block;vertical-align: top;" id="checkBox">
+        <input type="hidden" name="title" value="{{sql}}">
         {% if scroll %}
         <script>
         document.location.hash = '#' + '{{ scroll }}';
         </script>
         {% endif %}
-        <input type="checkbox" value="m.m_1" name="item" onclick="onCheckBox(this)">Blue
-        <input type="checkbox" value="m.m_2" name="item" onclick="onCheckBox(this)">Yellow
-        <input type="checkbox" value="m.m_3" name="item" onclick="onCheckBox(this)">Red
-        <input type="checkbox" value="m.m_4" name="item" onclick="onCheckBox(this)">Green
-        <input type="checkbox" value="m.m_5" name="item" onclick="onCheckBox(this)">Pink
-        <input type="checkbox" value="m.m_6" name="item" onclick="onCheckBox(this)">Pink
-        <input type="checkbox" value="m.m_7" name="item" onclick="onCheckBox(this)">Pink
-        <input type="checkbox" value="m.m_8" name="item" onclick="onCheckBox(this)">Pink
+        {% for n, l in z_ckbox %}
+        <input type="checkbox" value="m.m_{{n}}" name="item" onclick="onCheckBox(this)">{{ l }}
+        {% endfor %}
     </div>
-    <input type="submit" name="area" value="提交"  onclick="onSubmitVote()">
+    <input type="submit" name="choose" value="提交"  onclick="onSubmitVote()">
 
 
     <h2></h2>

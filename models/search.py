@@ -17,7 +17,7 @@ class Search():
         else:
             area = str(county + '%' + township)
         ## 依照使用者在前端輸入的條件寫成SQL字串中的condition
-        sql_where = " WHERE h.address LIKE '" + area + "%'"
+        sql_where = " WHERE h.area LIKE '" + area + "%'"
         return CheckBox().print_ckbox(sql_where)
 
     ## 特殊疾病搜尋
@@ -138,7 +138,8 @@ class Select():
         ## 將condition改回
         sql_where = sql_where.replace("//", " ")
         ## select醫院的基本資料：名字、分數＆星等、正向評論數、中立評論數、負向評論數、電話與地址並存入normal[]
-        sqlstr = "SELECT id, name, type, address FROM hospitals h" + sql_where
+        sqlstr = "SELECT h.name, 'GOOGLE分數', '正面評論數：'||mr.better,  '負面評論數：'||mr.worse, '中立評論數：'||mr.normal, '地址電話' FROM hospitals h JOIN merge_reviews mr ON h.id=mr.hospital_id" + sql_where
+        print(sqlstr)
         normal = self.cursor.execute(sqlstr).fetchall()
         ## 若未找到任何資料，出現錯誤訊息，若有則進入else
         if normal == []:
@@ -153,6 +154,7 @@ class Select():
         for r in range(len(items)):
             s += (', ' + items[r])
         sqlstr = "SELECT "+s+" FROM merge_data m JOIN hospitals h ON m.hospital_id = h.id" + sql_where
+        print(sqlstr)
         ckbox = self.cursor.execute(sqlstr).fetchall()
         return Result().get_column_name(normal, ckbox, items)
 
