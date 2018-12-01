@@ -32,8 +32,7 @@ def panduan():
             #從前端searchArea.html的unputbox的name抓使用者輸入的值
             county = request.form.get("county")
             township = request.form.get("township")
-            ##使用class Hospital()裡面的search_area方法
-            return Search().search_area(county, township,)
+            return Search().search_area(county, township)
         elif 'searchDisease' in request.form:
             disease = request.form.get('disease')
             return Search().search_disease(disease)
@@ -57,8 +56,7 @@ def panduan():
             names.append(name1)
             names.append(name2)
             names.append(name3)
-            items = request.values.getlist("item")
-            return Search().search_name(names, items)
+            return Search().search_name(names)
 
 @app.route('/sort', methods=['GET'])
 def renderSort():
