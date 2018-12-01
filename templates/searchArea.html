@@ -83,14 +83,13 @@
     <h2>醫院層級搜尋</h2>
     <p></p>
     <label>醫院層級:</label>
-    <select name="type">
-        <option selected>請選擇層級</option>
-        <option value="1">醫學中心</option>
-        <option value="2">區域醫院</option>
-        <option value="3">地區醫院</option>
-        <option value="4">診所</option>
-    </select>
-    <input type="submit" name="searchType" value="Search">
+    <input type="checkbox" value="1" name="type" >醫學中心
+    <input type="checkbox" value="2" name="type" >區域醫院
+    <input type="checkbox" value="3" name="type" >地區醫院
+    <input type="checkbox" value="4" name="type" >診所
+    <a href="#checkBox">
+        <input type="button" value="確定">
+    </a>
 
     <h2>分類主題搜尋</h2>
     <p></p>
@@ -106,7 +105,9 @@
     <input type="textbox" name="name1">
     <input type="textbox" name="name2">
     <input type="textbox" name="name3">
-    <input type="submit" name="searchName" value="Search">
+    <a href="#checkBox">
+        <input type="button" value="確定">
+    </a>
 <p></p>
 <h1>aaa</h1><h1>bbb</h1><h1>ccc</h1><h1>ddd</h1><h1>eee</h1><h1>fff</h1>
     <div style=" display: inline-block;vertical-align: top;" id="checkBox">
@@ -124,7 +125,9 @@
         <input type="checkbox" value="m.m_7" name="item" onclick="onCheckBox(this)">Pink
         <input type="checkbox" value="m.m_8" name="item" onclick="onCheckBox(this)">Pink
     </div>
-    <input type="submit" name="area" value="提交"  onclick="onSubmitVote()">
+    <input type="submit" name="searchArea" value="A提交"  onclick="onSubmitVote()">
+    <input type="submit" name="searchType" value="T提交"  onclick="onSubmitVote()">
+    <input type="submit" name="searchName" value="N提交"  onclick="onSubmitVote()">
 
     <h2></h2>
     <div id="results">

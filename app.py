@@ -29,15 +29,16 @@ def panduan():
             #從前端searchArea.html的unputbox的name抓使用者輸入的值
             county = request.form.get("county")
             township = request.form.get("township")
-            items = request.values.getlist('items')
+            items = request.values.getlist('item')
             ##使用class Hospital()裡面的search_area方法
             return Search().search_area(county, township, items)
         elif 'searchDisease' in request.form:
             disease = request.form.get('disease')
             return Search().search_disease(disease)
         elif 'searchType' in request.form:
-            type = request.form.get('type')
-            return Search().search_type(type)
+            types = request.values.getlist('type')
+            items = request.values.getlist("item")
+            return Search().search_type(types, items)
         elif 'searchCategory' in request.form:
             keyword1 = request.form.get('keyword1')
             keyword2 = request.form.get('keyword2')
@@ -55,7 +56,8 @@ def panduan():
             names.append(name1)
             names.append(name2)
             names.append(name3)
-            return Search().search_name(names)
+            items = request.values.getlist("item")
+            return Search().search_name(names, items)
         elif 'area' in request.form:
             county = request.form.get("county")
             township = request.form.get("township")
