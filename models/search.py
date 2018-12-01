@@ -47,13 +47,14 @@ class Select():
 
     ##取得醫院的基本資訊
     def get_normal(self, sql_where, items):
+        sql_where = sql_where.replace("//", " ")
         ##select醫院的基本資料：名字、分數＆星等、正向評論數、中立評論數、負向評論數、電話與地址並存入normal[]
         sqlstr = "SELECT id, name, type, address FROM hospitals h" + sql_where
         normal = self.cursor.execute(sqlstr).fetchall()
         ##若未找到任何資料，出現錯誤訊息，若有則進入else
         if normal == []:
             flash('抱歉，找不到您要的資料訊息。')
-            return render_template("test.html")
+            return render_template("searchArea.html")
         else:
             return Select().get_checkbox(normal, items, sql_where)
 

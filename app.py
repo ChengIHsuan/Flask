@@ -1,8 +1,7 @@
 from flask import Flask, request, render_template, flash
 from database import db_session, init_db
-from models.search import Search ##import search.py裡面的class Search()
+from models.search import Search, Select ##import search.py裡面的class Search()
 from models.sort import Sort, Result
-from models.test import tTest, tSelect
 
 app = Flask(__name__)
 app.secret_key = "mlkmslmpw"
@@ -17,22 +16,6 @@ def init():
 def shutdown_session(exception=None):
     db_session.remove()
 
-@app.route('/onlyfortest', methods=['GET'])
-def renderTest():
-    return render_template('test.html')
-
-@app.route('/onlyfortest', methods=['POST'])
-def testla():
-    if request.method == 'POST':
-        if 't_searchArea' in request.form:
-            county = request.form.get("county")
-            township = request.form.get("township")
-            return tTest().search_area(county, township)
-        elif 'choose' in request.form:
-            items = request.values.getlist('item')
-            sql_where = request.form.get('title')
-            return tSelect().get_normal(sql_where, items)
-
 ##在地區搜尋介面取得使用者輸入的值/search_area
 @app.route('/', methods=['GET'])
 def renderSearch():
@@ -44,7 +27,7 @@ def panduan():
         if 'choose' in request.form:
             items = request.values.getlist('item')
             sql_where = request.form.get('sqlstr')
-            return tSelect().get_normal(sql_where, items)
+            return Select().get_normal(sql_where, items)
         elif 'searchArea' in request.form:
             #從前端searchArea.html的unputbox的name抓使用者輸入的值
             county = request.form.get("county")
@@ -76,11 +59,6 @@ def panduan():
             names.append(name3)
             items = request.values.getlist("item")
             return Search().search_name(names, items)
-        elif 'area' in request.form:
-            county = request.form.get("county")
-            township = request.form.get("township")
-            items = request.values.getlist('item')
-            return tTest().area_test(county, township, items)
 
 @app.route('/sort', methods=['GET'])
 def renderSort():
