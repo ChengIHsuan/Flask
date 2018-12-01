@@ -1,40 +1,6 @@
 import sqlite3
 from flask import Flask, request, render_template, flash
 
-##原Result
-# class Result():
-#
-#     def __init__(self):
-#         db = sqlite3.connect('voyager.db')
-#         self.cursor = db.cursor()
-#
-#     ##欄位名稱
-#     def get_column_name(self, results, sqlstr):
-#         amount = len(results)
-#         ##取得sqlstr中select的欄位，並以","做分割
-#         s = sqlstr.index("FROM") - 1
-#         getColumns = (sqlstr[7:s]).split(', ')
-#         ##取得欄位名稱
-#         columns = []
-#         for c in getColumns:
-#             col = self.cursor.execute("SELECT abbreviation FROM column_name WHERE name = '" + c + "'").fetchone()[0]
-#             print('fetch')
-#             columns.append(col)
-#         return Result().table(results, amount, columns)
-#
-#     ##將搜尋結果寫進表格，需傳入(numpy array,總資料數,欄位名稱)
-#     def table(self, results, amount, columns):
-#         ##建立一個陣列，儲存整理好的資料結果
-#         context = []
-#         for i in range(len(results)):
-#             ##建立一個dict，獎每一筆結果轉存成dict的型態
-#             d = {}
-#             for j in range(len(columns)):
-#                 d[columns[j]] = results[i][j]
-#             context.append(d)
-#         long = len(columns)
-#         return render_template('searchArea.html', scroll= 'results' ,context=context, columns=columns, long=long)
-
 class Result():
 
     def __init__(self):
@@ -42,13 +8,15 @@ class Result():
         self.cursor = db.cursor()
 
     ##欄位名稱
-    def get_column_name(self, normal, ckbox, index):
+    def get_column_name(self, normal, ckbox, items):
+        print(items)
         ##總資料數
         amount = len(ckbox)
         ##取得sqlstr中select的欄位，並以","做分割
         getColumns=['醫院資訊']
-        for rr in range(len(index)):
-            getColumns.append(index[rr])
+        for rr in range(len(items)):
+            getColumns.append(items[rr])
+        print(getColumns)
         ##取得欄位名稱
         columns = []
         for c in getColumns:
@@ -117,6 +85,7 @@ class Search():
 
     ##特殊疾病搜尋
     def search_disease(self, disease):
+
         try:
             getId = self.cursor.execute("SELECT id FROM diseases WHERE (name LIKE '%" + disease + "%' OR eng_name LIKE '%" + disease + "%')")
             diseaseId = (getId.fetchone()[0])
@@ -138,19 +107,21 @@ class Search():
             return render_template("searchArea.html")
 
     ##醫院層級搜尋
-    def search_type(self, type):
+    def search_type(self, types, items):
         t = {
             '1': "醫學中心",
             '2': "區域醫院",
             '3': "地區醫院",
             '4': "診所"
         }
-        sqlstr = "SELECT h.id, h.name, h.type, h.address FROM hospitals h WHERE type = '" + t.get(type) + "'"
-        results = self.cursor.execute(sqlstr).fetchall()
-        return Result().get_column_name(results, sqlstr)
-
+        t_str = ' WHERE'
+        for type in types:
+            t_str += " h.type = '" + t.get(type) + "' OR"
+        sql_where = t_str[:-3]
+        return Select().get_normal(sql_where, items)
     ##分類主題搜尋
     def search_category(self, keywords):
+
         try:
             substr = ''
             getStr = {
@@ -177,10 +148,11 @@ class Search():
             flash('抱歉，找不到您要的「{}」相關資訊。'.format(keyword))
             return render_template("searchArea.html")
 
-    def search_name(self, names):
-        results = []
+    def search_name(self, names, items):
+        n_str = ' WHERE'
         for name in names:
             if name != "":
-                sqlstr = "SELECT h.id, h.name, h.type, h.address FROM hospitals h WHERE h.name LIKE '%" + name + "%'"
-                results += self.cursor.execute(sqlstr).fetchall()  ##執行sqlstr，並列出所有結果到results[]
-        return Result().get_column_name(results, sqlstr)
+                n_str += (" h.name LIKE '%" + name + "%' OR h.abbreviation LIKE '%" + name + "%' OR")
+        print(n_str)
+        sql_where = n_str[:-3]
+        return Select().get_normal(sql_where, items)
