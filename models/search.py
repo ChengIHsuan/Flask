@@ -65,6 +65,21 @@ class Select():
         ckbox = self.cursor.execute(sqlstr).fetchall()
         return Result().get_column_name(normal, ckbox, items)
 
+class CheckBox():
+    def __init__(self):
+        db = sqlite3.connect('voyager.db')
+        self.cursor = db.cursor()
+
+    def print_ckbox(self, sql_where):
+        fetch = self.cursor.execute("SELECT name FROM indexes").fetchall()
+        ckboxList = []
+        ckboxNum = []
+        for j in range(33):
+            ckboxList.append(fetch[j][0])
+            ckboxNum.append(j + 1)
+        z_ckbox = zip(ckboxNum, ckboxList)
+        return render_template('searchArea.html', scroll='checkBox', sql_where=sql_where, ckboxList=ckboxList, z_ckbox=z_ckbox)
+
 class Search():
 
     def __init__(self):
@@ -72,7 +87,7 @@ class Search():
         self.cursor = db.cursor()
 
     ##地點搜尋
-    def search_area(self, county, township, items):
+    def search_area(self, county, township):
         ##若使用者輸入臺北，將會出現臺北及新北資料
         i = county.find('臺北')
         ##判斷使用者是否在縣市欄位輸入"臺北"，等於-1時為未找到"臺北"
@@ -81,7 +96,8 @@ class Search():
         else:
             area = str(county + '%' + township)
         sql_where = " WHERE h.address LIKE '" + area + "%'"
-        return Select().get_normal(sql_where, items)
+        sql_where = sql_where.replace(" ", "//")
+        return CheckBox().print_ckbox(sql_where)
 
     ##特殊疾病搜尋
     def search_disease(self, disease):
@@ -107,7 +123,7 @@ class Search():
             return render_template("searchArea.html")
 
     ##醫院層級搜尋
-    def search_type(self, types, items):
+    def search_type(self, types):
         t = {
             '1': "醫學中心",
             '2': "區域醫院",

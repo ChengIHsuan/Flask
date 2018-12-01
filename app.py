@@ -2,7 +2,7 @@ from flask import Flask, request, render_template, flash
 from database import db_session, init_db
 from models.search import Search ##import search.py裡面的class Search()
 from models.sort import Sort, Result
-from models.test import Test
+from models.test import tTest, tSelect
 
 app = Flask(__name__)
 app.secret_key = "mlkmslmpw"
@@ -17,6 +17,22 @@ def init():
 def shutdown_session(exception=None):
     db_session.remove()
 
+@app.route('/onlyfortest', methods=['GET'])
+def renderTest():
+    return render_template('test.html')
+
+@app.route('/onlyfortest', methods=['POST'])
+def testla():
+    if request.method == 'POST':
+        if 't_searchArea' in request.form:
+            county = request.form.get("county")
+            township = request.form.get("township")
+            return tTest().search_area(county, township)
+        elif 'choose' in request.form:
+            items = request.values.getlist('item')
+            sql_where = request.form.get('title')
+            return tSelect().get_normal(sql_where, items)
+
 ##在地區搜尋介面取得使用者輸入的值/search_area
 @app.route('/', methods=['GET'])
 def renderSearch():
@@ -25,20 +41,22 @@ def renderSearch():
 @app.route('/search', methods=['POST'])
 def panduan():
     if request.method == 'POST':
-        if 'searchArea' in request.form:
+        if 'choose' in request.form:
+            items = request.values.getlist('item')
+            sql_where = request.form.get('sqlstr')
+            return tSelect().get_normal(sql_where, items)
+        elif 'searchArea' in request.form:
             #從前端searchArea.html的unputbox的name抓使用者輸入的值
             county = request.form.get("county")
             township = request.form.get("township")
-            items = request.values.getlist('item')
             ##使用class Hospital()裡面的search_area方法
-            return Search().search_area(county, township, items)
+            return Search().search_area(county, township,)
         elif 'searchDisease' in request.form:
             disease = request.form.get('disease')
             return Search().search_disease(disease)
         elif 'searchType' in request.form:
             types = request.values.getlist('type')
-            items = request.values.getlist("item")
-            return Search().search_type(types, items)
+            return Search().search_type(types)
         elif 'searchCategory' in request.form:
             keyword1 = request.form.get('keyword1')
             keyword2 = request.form.get('keyword2')
@@ -62,7 +80,7 @@ def panduan():
             county = request.form.get("county")
             township = request.form.get("township")
             items = request.values.getlist('item')
-            return Test().area_test(county, township, items)
+            return tTest().area_test(county, township, items)
 
 @app.route('/sort', methods=['GET'])
 def renderSort():
