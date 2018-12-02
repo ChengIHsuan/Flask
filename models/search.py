@@ -9,17 +9,16 @@ class Search():
 
     ## 地點搜尋
     def search_area(self, county, township):
-        ## 若使用者輸入臺北，將會出現臺北及新北資料
-        i = county.find('臺北')
-        ## 判斷使用者是否在縣市欄位輸入"臺北"，等於-1時為未找到"臺北"
-        if i != -1:
-            area = str("_北%" + township)
-        else:
-            area = str(county + '%' + township)
-        ## 依照使用者在前端輸入的條件寫成SQL字串中的condition
-        sql_where = " WHERE h.area LIKE '" + area + "%'"
-        return CheckBox().print_ckbox(sql_where)
-
+            ## 若使用者輸入臺北，將會出現臺北及新北資料
+            i = county.find('臺北')
+            ## 判斷使用者是否在縣市欄位輸入"臺北"，等於-1時為未找到"臺北"
+            if i != -1:
+                area = str("_北%" + township)
+            else:
+                area = str(county + '%' + township)
+            ## 依照使用者在前端輸入的條件寫成SQL字串中的condition
+            sql_where = " WHERE h.area LIKE '" + area + "%'"
+            return CheckBox().print_ckbox(sql_where)
     ## 特殊疾病搜尋
     def search_disease(self, disease):
 
@@ -36,9 +35,12 @@ class Search():
                 7: "m.m_28, m.m_29, m.m_30, m.m_31",
                 8: "m.m_32, m.m_33"
             }
-            sqlstr = "SELECT h.id, h.name, " + getStr.get(diseaseId) + " FROM hospitals h JOIN merge_data m ON h.id = m.hospital_id"
-            results = self.cursor.execute(sqlstr).fetchall()  ##執行sqlstr，並列出所有結果到results[]
-            return Result().get_column_name(results, sqlstr)
+            sqlstr = "SELECT h.name, 'GOOGLE分數', '正面評論數：'||mr.better,  '負面評論數：'||mr.worse, '中立評論數：'||mr.normal, '地址電話' FROM hospitals h JOIN merge_reviews mr ON h.id=mr.hospital_id"
+            normal = self.cursor.execute(sqlstr).fetchall()
+            sqlstr = "SELECT h.id, " + getStr.get(diseaseId) + " FROM hospitals h JOIN merge_data m ON h.id = m.hospital_id"
+            ckbox = self.cursor.execute(sqlstr).fetchall()  ##執行sqlstr，並列出所有結果到results[]
+            items=getStr.get(diseaseId).split(", ")
+            return Result().get_column_name(normal, ckbox, items)
         except:
             flash('抱歉，找不到您要的「{}」相關資訊。目前只有8個疾病相關的資訊，包括：氣喘疾病(Asthma)、急性心肌梗塞疾病(AMI)、糖尿病(DM，Diabetes)、人工膝關節手術(TKR，Total Knee Replace)、腦中風(Stroke)、鼻竇炎(Sinusitis)、子宮肌瘤手術(Myoma)、消化性潰瘍疾病(Ulcer)。'.format(disease))
             return render_template("searchArea.html")
@@ -139,7 +141,6 @@ class Select():
         sql_where = sql_where.replace("//", " ")
         ## select醫院的基本資料：名字、分數＆星等、正向評論數、中立評論數、負向評論數、電話與地址並存入normal[]
         sqlstr = "SELECT h.name, 'GOOGLE分數', '正面評論數：'||mr.better,  '負面評論數：'||mr.worse, '中立評論數：'||mr.normal, '地址電話' FROM hospitals h JOIN merge_reviews mr ON h.id=mr.hospital_id" + sql_where
-        print(sqlstr)
         normal = self.cursor.execute(sqlstr).fetchall()
         ## 若未找到任何資料，出現錯誤訊息，若有則進入else
         if normal == []:
