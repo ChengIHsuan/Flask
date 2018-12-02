@@ -9,16 +9,19 @@ class Search():
 
     ## 地點搜尋
     def search_area(self, county, township):
-            ## 若使用者輸入臺北，將會出現臺北及新北資料
-            i = county.find('臺北')
-            ## 判斷使用者是否在縣市欄位輸入"臺北"，等於-1時為未找到"臺北"
-            if i != -1:
-                area = str("_北%" + township)
-            else:
-                area = str(county + '%' + township)
-            ## 依照使用者在前端輸入的條件寫成SQL字串中的condition
-            sql_where = " WHERE h.area LIKE '" + area + "%'"
-            return CheckBox().print_ckbox(sql_where)
+        ## 若使用者輸入臺北，將會出現臺北及新北資料
+        i = county.find('臺北')
+        ## 判斷使用者是否在縣市欄位輸入"臺北"，等於-1時為未找到"臺北"
+        if i != -1:
+            area = str("_北%" + township)
+        else:
+            area = str(county + '%' + township)
+        ## 依照使用者在前端輸入的條件寫成SQL字串中的condition
+        sql_where = " WHERE h.area LIKE '" + area + "%'"
+        test = self.cursor.execute("SELECT * FROM hospitals h " + sql_where).fetchall()
+        print(test)
+        return CheckBox().print_ckbox(sql_where)
+
     ## 特殊疾病搜尋
     def search_disease(self, disease):
 
@@ -39,7 +42,7 @@ class Search():
             normal = self.cursor.execute(sqlstr).fetchall()
             sqlstr = "SELECT h.id, " + getStr.get(diseaseId) + " FROM hospitals h JOIN merge_data m ON h.id = m.hospital_id"
             ckbox = self.cursor.execute(sqlstr).fetchall()  ##執行sqlstr，並列出所有結果到results[]
-            items=getStr.get(diseaseId).split(", ")
+            items = getStr.get(diseaseId).split(", ")
             return Result().get_column_name(normal, ckbox, items)
         except:
             flash('抱歉，找不到您要的「{}」相關資訊。目前只有8個疾病相關的資訊，包括：氣喘疾病(Asthma)、急性心肌梗塞疾病(AMI)、糖尿病(DM，Diabetes)、人工膝關節手術(TKR，Total Knee Replace)、腦中風(Stroke)、鼻竇炎(Sinusitis)、子宮肌瘤手術(Myoma)、消化性潰瘍疾病(Ulcer)。'.format(disease))
@@ -67,7 +70,6 @@ class Search():
     def search_category(self, keywords):
 
         try:
-            substr = ''
             getStr = {
                 1: ", m.m_3, m.m_6, m.m_7, m.m_10, m.m_11, m.m_20, m.m_21, m.m_22, m.m_23, m.m_24, m.m_26, m.m_27, m.m_32, m.m_33",
                 2: ", m.m_12, m.m_13, m.m_14, m.m_15, m.m_25",
@@ -77,18 +79,19 @@ class Search():
                 6: ", m.m_5, m.m_9",
                 7: ", m.m_16, m.m_17",
                 8: ", m.m_19",
-                9: ", m.m_28, m.m_29",
-                10: ", mr.better, mr.normal, mr.worse"
+                9: ", m.m_28, m.m_29"
             }
+            substr = ''
             for keyword in keywords:
                 if keyword != "":
                     getId = self.cursor.execute("SELECT id FROM category WHERE name = '" + keyword + "'")
                     keyId = getId.fetchone()[0]
                     substr += getStr.get(keyId)
-            sqlstr = "SELECT h.id, h.name" + substr + " FROM hospitals h JOIN merge_data m ON h.id = m.hospital_id JOIN merge_reviews mr ON h.id = mr.hospital_id"
+            sqlstr = "SELECT h.id" + substr + " FROM hospitals h JOIN merge_data m ON h.id = m.hospital_id"
             results = self.cursor.execute(sqlstr).fetchall()  ##執行sqlstr，並列出所有結果到results[]
-            return Result().get_column_name(results, sqlstr)
+            return CheckBox().category_ckbox(substr)
         except:
+            print('except_cat')
             flash('抱歉，找不到您要的「{}」相關資訊。'.format(keyword))
             return render_template("searchArea.html")
 
@@ -117,15 +120,27 @@ class CheckBox():
         ## 建立兩個List，一個存放傳至前端checkbox時的value，一個存放checkbox會顯示的名稱
         ckboxNum = []
         ckboxList = []
-        for j in range(len(indexes)):
-            ckboxNum.append(indexes[j][0])
-            ckboxList.append(indexes[j][1])
+        for i in range(len(indexes)):
+            ckboxNum.append('m.m_' + str(indexes[i][0]))  ##加上'm.m_'方便之後在資料庫搜尋
+            ckboxList.append(indexes[i][1])
         ## 用zip()將兩個List打包
         z_ckbox = zip(ckboxNum, ckboxList)
         ## 因為要將condition暫存至前端的隱藏欄位value，因為value不接受空格所以先轉成//
         sql_where = sql_where.replace(" ", "//")
         ##r ender至前端HTML，將condition傳至前端暫存，z_ckbox為checkbox的值和名稱zip
         return render_template('searchArea.html', scroll='checkBox', sql_where=sql_where, z_ckbox=z_ckbox)
+
+    def category_ckbox(self, substr):
+        indexes = substr.split(", ")
+        del indexes[0]
+        ckboxNum = []
+        ckboxList = []
+        for i in range(len(indexes)):
+            ckboxNum.append(indexes[i])
+            ckboxList.append(self.cursor.execute("SELECT name FROM indexes WHERE id = " + indexes[i][4:]).fetchone()[0])
+            ## 用zip()將兩個List打包
+            z_ckbox = zip(ckboxNum, ckboxList)
+        return render_template('searchArea.html', scroll='checkBox', sql_where='', z_ckbox=z_ckbox)
 
 class Select():
 
@@ -154,7 +169,7 @@ class Select():
         s = 'm.hospital_id'
         for r in range(len(items)):
             s += (', ' + items[r])
-        sqlstr = "SELECT "+s+" FROM merge_data m JOIN hospitals h ON m.hospital_id = h.id" + sql_where
+        sqlstr = "SELECT " + s + " FROM merge_data m JOIN hospitals h ON m.hospital_id = h.id" + sql_where
         print(sqlstr)
         ckbox = self.cursor.execute(sqlstr).fetchall()
         return Result().get_column_name(normal, ckbox, items)
@@ -193,4 +208,4 @@ class Result():
         ## 用zip()，讓兩個List同時進行迭代
         z = zip(normal, context)
         ## render至前端HTML，ck_len為指標的長度，columns為欄位名稱，z為醫院資訊和指標值的zip
-        return render_template('searchArea.html', ck_len=ck_len, columns=columns, z=z)
+        return render_template('searchArea.html', scroll = 'results', ck_len=ck_len, columns=columns, z=z)

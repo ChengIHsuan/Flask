@@ -113,7 +113,7 @@
         {% endif %}
 
         {% for n, l in z_ckbox %}
-        <input type="checkbox" value="m.m_{{n}}" name="item" onclick="onCheckBox(this)">{{ l }}
+        <input type="checkbox" value="{{n}}" name="item" onclick="onCheckBox(this)">{{ l }}
         {% endfor %}
     </div>
     <input type="submit" name="choose" value="提交"  onclick="onSubmitVote()">
