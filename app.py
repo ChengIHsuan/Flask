@@ -43,20 +43,33 @@ def panduan():
             keyword1 = request.form.get('keyword1')
             keyword2 = request.form.get('keyword2')
             keyword3 = request.form.get('keyword3')
-            keywords = []
-            keywords.append(keyword1)
-            keywords.append(keyword2)
-            keywords.append(keyword3)
+            keywords = [keyword1, keyword2, keyword3]
             return Search().search_category(keywords)
         elif 'searchName' in request.form:
             name1 = request.form.get('name1')
             name2 = request.form.get('name2')
             name3 = request.form.get('name3')
-            names = []
-            names.append(name1)
-            names.append(name2)
-            names.append(name3)
+            names = [name1, name2, name3]
             return Search().search_name(names)
+        elif 'searchAll' in request.form:
+            ## 地區
+            county = request.form.get("county")
+            township = request.form.get("township")
+            ## 特殊疾病
+            disease = request.form.get('disease')
+            ## 醫院層級
+            types = request.values.getlist('type')
+            ## 分類主題
+            keyword1 = request.form.get('keyword1')
+            keyword2 = request.form.get('keyword2')
+            keyword3 = request.form.get('keyword3')
+            keywords = [keyword1, keyword2, keyword3]
+            ## 醫院名稱
+            name1 = request.form.get('name1')
+            name2 = request.form.get('name2')
+            name3 = request.form.get('name3')
+            names = [name1, name2, name3]
+            return Search().search_all(county, township, disease, types, keywords, names)
 
 @app.route('/sort', methods=['GET'])
 def renderSort():
