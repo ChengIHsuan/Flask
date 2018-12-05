@@ -51,6 +51,8 @@
                 alert("提交成功");
             }
         }
+
+
     </script>
     {%endblock%}
 
@@ -145,7 +147,27 @@
                 {% endfor %}
             </tr>
             <tr>
-                <td>{{ n[1] }}</td>
+                <td>
+                    {{ n[1] }}
+                    {% if n[1] == 0 %}
+                        <img src="{{ url_for('static', filename='0.png')}}" height="20px">
+                    {% endif %}
+                    {% if n[1] == 1.0 %}
+                        <img src="{{ url_for('static', filename='1.png')}}" height="20px">
+                    {% endif %}
+                    {% if n[1] == 2.0 %}
+                        <img src="{{ url_for('static', filename='2.png')}}" height="20px">
+                    {% endif %}
+                    {% if n[1] == 3.0 %}
+                        <img src="{{ url_for('static', filename='3.png')}}" height="20px">
+                    {% endif %}
+                    {% if n[1] == 4.0 %}
+                        <img src="{{ url_for('static', filename='4.png')}}" height="20px">
+                    {% endif %}
+                    {% if n[1] == 5.0 %}
+                        <img src="{{ url_for('static', filename='5.png')}}" height="20px">
+                    {% endif %}
+                </td>
             </tr>
             <tr>
                 <td>{{ n[2] }}</td>
@@ -157,7 +179,7 @@
                 <td>{{ n[4] }}</td>
             </tr>
             <tr>
-                <td>{{ n[5] }}</td>
+                <td>電話：{{ n[5] }}　　地址：<img src="{{ url_for('static', filename='地址.png')}}" height="20px" alt="圖片替代文字" title={{ n[6] }}></td>
             </tr>
             {% endfor %}
         </table>

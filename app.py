@@ -1,6 +1,6 @@
 from flask import Flask, request, render_template, flash
 from database import db_session, init_db
-from models.search import Search, Select ##import search.py裡面的class Search()
+from models.search import Search, Select, CheckBox ##import search.py裡面的class Search()
 from models.sort import Sort, Result
 
 app = Flask(__name__)
@@ -27,36 +27,43 @@ def panduan():
         if 'choose' in request.form:
             items = request.values.getlist('item')
             sql_where = request.form.get('sqlstr')
-            return Select().get_normal(sql_where, items)
+            return Select().select_normal(sql_where, items)
         elif 'searchArea' in request.form:
             #從前端searchArea.html的unputbox的name抓使用者輸入的值
             county = request.form.get("county")
             township = request.form.get("township")
-            return Search().search_area(county, township)
+            # return Search().search_area(county, township)
+            if county == '' and township == '':
+                return
+            return CheckBox().print_ckbox(Search().search_area(county, township))
         elif 'searchDisease' in request.form:
             disease = request.form.get('disease')
-            return Search().search_disease(disease)
+            # return Search().search_disease(disease)
+            return Select().select_disease(Search().search_disease(disease))
         elif 'searchType' in request.form:
             types = request.values.getlist('type')
-            return Search().search_type(types)
+            # return Search().search_type(types)
+            return CheckBox().print_ckbox(Search().search_type(types))
         elif 'searchCategory' in request.form:
             keyword1 = request.form.get('keyword1')
             keyword2 = request.form.get('keyword2')
             keyword3 = request.form.get('keyword3')
             keywords = [keyword1, keyword2, keyword3]
-            return Search().search_category(keywords)
+            return CheckBox().category_ckbox(Search().search_category(keywords))
         elif 'searchName' in request.form:
             name1 = request.form.get('name1')
             name2 = request.form.get('name2')
             name3 = request.form.get('name3')
-            names = [name1, name2, name3]
-            return Search().search_name(names)
+            enter_names = [name1, name2, name3]
+            return CheckBox().print_ckbox(Search().search_name(enter_names))
         elif 'searchAll' in request.form:
             ## 地區
             county = request.form.get("county")
             township = request.form.get("township")
             ## 特殊疾病
             disease = request.form.get('disease')
+            if disease == '':
+                disease == 0
             ## 醫院層級
             types = request.values.getlist('type')
             ## 分類主題
