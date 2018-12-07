@@ -1,24 +1,27 @@
 <!DOCTYPE html>
-<html lang="zn-Hant-TW">
+<html lang="zn-Hant-TW" xmlns="http://www.w3.org/1999/html">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>療望台</title>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
-        crossorigin="anonymous">
-  <!-- jQuery v1.9.1 -->
-  <script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
-  <!-- Chosen v1.8.2 -->
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.2/chosen.min.css" rel="stylesheet" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.2/chosen.jquery.min.js"></script>
-  <script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>療望台</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+          crossorigin="anonymous">
+    <!-- jQuery v1.9.1 -->
+    <script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <!-- Chosen v1.8.2 -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.2/chosen.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.2/chosen.jquery.min.js"></script>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+
+    <script>
+
     $(function () {
       var $table = $('table');
       var $tableB = $('h2');
       var currentPage = 0;//當前頁默認值為0
-      var pageSize = 20;//每一頁顯示的數目
+      var pageSize = 20*6;//每一頁顯示的數目
       $table.bind('paging', function () {
         $table.find('tbody tr').hide().slice(currentPage * pageSize, (currentPage + 1) * pageSize).show();
       });
@@ -56,10 +59,84 @@
           arr[i].style.backgroundColor = "";
         }
       }
+
     }
   </script>
-  <style>
-    <!--分頁樣式-->
+    {% block scripts %}
+    <script language="javascript" type="text/javascript">
+    // 判斷5個以上不能選
+    var maxChoices = 5;
+    var flag = 0;
+    function onCheckBox(checkbox) {
+            var items = document.getElementsByName("item"); // 如果要id，改ById("")
+            if (checkbox.checked) {
+                flag++;
+            }
+            else {
+                flag--;
+            }
+
+            if (flag < maxChoices) {
+                for (var i = 0; i < items.length; i++) {
+                    if (!items[i].checked) {
+                        items[i].disabled = false;
+                    }
+                }
+            }
+            else {
+                for (var i = 0; i < items.length; i++) {
+                    if (!items[i].checked) {
+                        items[i].disabled = true;
+                    }
+                }
+            }
+        }
+         // 判斷3個以上不能選(組合多選)
+     var maxChoices2 = 3;
+    var flag2 = 0;
+    function onCheckBox2(checkbox) {
+      var dis = document.getElementsByName("dis"); // 如果要id，改ById("")
+      if (checkbox.checked) {
+        flag2++;
+      }
+      else {
+        flag2--;
+      }
+
+      if (flag2 < maxChoices2) {
+        for (var i = 0; i < dis.length; i++) {
+          if (!dis[i].checked) {
+            dis[i].disabled = false;
+          }
+        }
+      }
+      else {
+        for (var i = 0; i < dis.length; i++) {
+          if (!dis[i].checked) {
+            dis[i].disabled = true;
+          }
+        }
+      }
+    }
+    // 按提交出現的訊息
+        <!--function onSubmitVote() {-->
+            <!--var items = document.getElementsByName("item");-->
+            <!--var choices = 0;-->
+            <!--for (var j = 0; j < items.length; j++) {-->
+                <!--if (items[j].checked) {-->
+                    <!--choices++;-->
+                <!--}-->
+            <!--}-->
+            <!--if (choices == 0) {-->
+                <!--alert("請選擇選項再提交");-->
+            <!--}-->
+            <!--else {-->
+                <!--alert("提交成功");-->
+            <!--}-->
+        <!--}-->
+    </script>
+    {%endblock%}
+    <style>
    .page{
       text-align: left;
 
@@ -85,7 +162,7 @@
             /* background-color: #006B00; */
             color: #ffffff;
         }
-/* 卷軸樣式width */
+      /* width */
 ::-webkit-scrollbar {
     width: 10px;
     height: 10px;
@@ -104,12 +181,6 @@
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
     background: rgb(126, 126, 126);
-}
-
-    /* 修改導覽列顏色 */
-
-    .navbar {
-  background-color: #fe9696;
 }
 
     /* 修改導覽列顏色 */
@@ -286,69 +357,38 @@
 /* 三個搜尋框 */
 .border3 {
     border: 3px solid #FEC396;
-    margin: 15px auto;
-    width: 600px;
-    height: 280px;
+    margin: 10px 7.5px;
+    width: 500px;
+    height: 320px;
+    display: inline-block;
+    vertical-align: top;
 }
 /* 二個搜尋框 */
 .border2 {
     border: 3px solid #FEC396;
-    margin: 15px auto;
-    width: 600px;
-    height: 215px;
+    margin: 10px 7.5px;
+    width: 500px;
+    height: 320px;
+    display: inline-block;
+    vertical-align: top;
 }
 /* 一個搜尋框 */
 .border1 {
-    border: 3px solid #FEC396;
-    margin: 15px auto;
-    width: 600px;
-    height: 150px;
+     border: 3px solid #FEC396;
+    margin: 10px 7.5px;
+    width: 500px;
+    height: 220px;
+    display: inline-block;
+    vertical-align: top;
 }
-.menu{
-  background-repeat:no-repeat;
-  background-color: lightcoral;
-  padding:auto;
-  margin:0px auto;
-  width:1290px;
-  height:100px;
-  border:0px;
-  /* 背景跟著移動 */
-  background-attachment:fixed;
-  overflow: hidden;
-  /* background-image:url('.gif'); */
+.border11 {
+     border: 3px solid #FEC396;
+    margin: 10px 7.5px;
+    width: 500px;
+    height: 220px;
+
 }
-.menubt{
-width: 118px;
-height: 50px;
-text-align:center;
-font-size: 32px;
-opacity: 1;
-color:white;
-margin:25px auto;
-font-weight:bold;
-border: 3px solid white;
-}
-.menubt a:hover{
-  cursor: pointer;
-  background-color: white;
-  opacity: 0.9;
-}
-/* 鼠標點擊時的狀態 */
-.menubt a:active{
-  background-color: white;
-  opacity: 0.5;
-}
-.resultbg{
-  background-repeat:no-repeat;
-  background-color: pink;
-  padding:auto;
-  margin:0px auto;
-  width:1636px;
-  height:300px;
-  border:0px;
-/* 文字超過自動產生捲軸 */
-  overflow: scroll;
-}
+
 .searchbox{
 width: 400px;
 height: 60px;
@@ -362,6 +402,11 @@ font-weight:bold;
 .bg{
   /* background-color: lightpink; */
   background-image: linear-gradient(to top, #feada6 0%, #f5efef 100%);
+  <!--margin:0px;-->
+  <!--padding:0px;-->
+  <!--background-image: url(https://images.unsplash.com/photo-1521540124319-66c09f0d5999?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=de1ecb553b42a0e7c749445672db4cf2&auto=format&fit=crop&w=1000&q=60);-->
+  <!--background-size: cover;-->
+  <!--background-repeat:no-repeat;-->
 }
 .center5{
   /* line-height:30px; */
@@ -374,16 +419,27 @@ font-weight:bold;
  margin-top: 15px;
   text-align: center;
 }
+.center45{
+ margin-top: 45px;
+  text-align: center;
+}
 
 .center20{
  margin-top: 20px;
   text-align: center;
 }
+.center25{
+ margin-top: 25px;
+  text-align: center;
+}
+
 .left{
   margin-top: 0px;
+
   text-align:left;
 }
 .right{
+  margin-top: 0px;
   text-align:right;
 }
 .wrap {
@@ -415,355 +471,429 @@ font-weight:bold;
 .span{
   font-family:Microsoft JhengHei;
 }
-
-/* 三個搜尋框 */
-.Phborder3 {
-    border: 3px solid #FEC396;
-    margin: 15px 20px;
-    /* width: 600px; */
-    height: 320px;
-}
-/* 二個搜尋框 */
-.Phborder2 {
-    border: 3px solid #FEC396;
-    margin: 15px 20px;
-    /* width: 600px; */
-    height: 255px;
-}
-/* 一個搜尋框 */
-.Phborder1 {
-    border: 3px solid #FEC396;
-    margin: 15px 20px;
-    /* width: 600px; */
-    height: 190px;
-}
 .imgLogo{
   border:2px solid rgba(150, 150, 150, 0.507);
 border-radius:25px;
 }
 </style>
+    <!--自動切手機板 -->
+    <!--<script type="text/javascript">-->
+    <!--if (window.innerWidth && window.innerWidth >= 480) {-->
+    <!--document.location.href = "phone_search";-->
+    <!--}-->
+    <!--</script>-->
 
 </head>
-
-<body>
 <!-- 導覽列 -->
+<body class="span">
 <nav class="navbar navbar-expand-lg navbar-light navbar-default " id="Search">
-  <a class="navbar-brand span" href="phone_search">
-    <img src="https://pbs.twimg.com/media/DrvK7_5UcAARp62.png" href="phone_search" class="navbar-brand span" style="width:70px;">
-  </a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav"
-          aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <div class="collapse navbar-collapse" id="navbarNav">
-    <ul class="navbar-nav span" style="text-align:center;">
-      <li class="nav-item active">
-        <a class="nav-link span" href="phone_search">搜尋 <span class="sr-only">(current)</span></a>
-      </li>
-      <li class="nav-item ">
-        <a class="nav-link span" href="phone_sort">排序</a>
-      </li>
-      <!--<li class="nav-item">-->
-        <!--<a class="nav-link span" href="phone_collection">Collection </a>-->
-      <!--</li>-->
-      <!--<li class="nav-item">-->
-        <!--<a class="nav-link span" href="phone_login">Log in </a>-->
-      <!--</li>-->
-      <li class="nav-item">
-        <a class="nav-link span" href="/">電腦版</a>
-      </li>
-    </ul>
-  </div>
+    <!--導覽列圖片-->
+    <img src="https://pbs.twimg.com/media/DrvK7_5UcAARp62.png" href="search" class="navbar-brand span" style="width:70px;">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav"
+            aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav span" style="text-align:center;">
+            <li class="nav-item active">
+                <a class="nav-link span" href="/">搜尋 <span class="sr-only">(current)</span></a>
+            </li>
+            <!--<li class="nav-item">-->
+                <!--<a class="nav-link span" href="sort">排序</a>-->
+            <!--</li>-->
+            <!--<li class="nav-item">-->
+            <!--<a class="nav-link span" href="collection">Collection</a>-->
+            <!--</li>-->
+            <!--<li class="nav-item">-->
+            <!--<a class="nav-link span" href="login">Log in</a>-->
+            <!--</li>-->
+            <!--<li class="nav-item">-->
+                <!--<a class="nav-link span" href="phone_search">手機版</a>-->
+            <!--</li>-->
+        </ul>
+    </div>
 </nav>
-<!-- head -->
-<div class="container-fiuld bg">
 
-  <div style=" height:550px;">
-    <div style="padding-top:20px">
-      <!--<h6 class="textcolorg" style="font-size:15px;">The world is changing,</h6>-->
-      <!--<h5 class="textcolorg" style="font-size:15px;">the only constant is always changing.</h5>-->
-      <h1 class="textcolorg" style="font-size:50px;font-weight:bold;">Hospital Evalution</h1>
-      <img src="https://pbs.twimg.com/media/DrvK7_4VYAAWWNh.jpg" style="display:block; margin:20px auto; width: 250px" class="imgLogo">
-    </div>
-     <div style="text-align: center;padding-top:10px">
-      <div class="dropdown">
-        <button class="btn btn-outline-dark dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Start
-        </button>
-        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="text-align: center;">
-          <a class="dropdown-item" href="#name">名稱搜尋</a>
-          <a class="dropdown-item" href="#area">地點搜尋</a>
-          <a class="dropdown-item" href="#department">科別搜尋</a>
-          <a class="dropdown-item" href="#disease">特殊疾病搜尋</a>
-          <a class="dropdown-item" href="#type">層級搜尋</a>
-          <a class="dropdown-item" href="#topic">分類主題搜尋</a>
+<div class="container-fiuld bg span">
+    <!-- 首頁背景圖 -->
+
+    <div style="text-align:center">
+        <!-- 首頁logo -->
+        <div style="display: inline-block;vertical-align: top;">
+            <div style="margin:50px 150px">
+                <img src="https://i.imgur.com/aHTZuSG.jpg" style="display:block;width: 200px" class="imgLogo">
+            </div>
         </div>
-      </div>
+        <!-- 首頁文字介紹 -->
+
+        <div style="padding-top: 20px ;display: inline-block;vertical-align: top;">
+
+            <div style="padding: 50px ;background:rgba(255, 255, 255, 0.7);margin: 20px auto;">
+                <h1 class="textcolorg" style="font-size:50px;font-weight:bold;">醫院評價網站</h1>
+                <h6 class="textcolorg">Fu Jen University</h6>
+                <h6 class="textcolorg">equality.fju.edu.tw</h6>
+                <div style="text-align: center;padding-top:10px;padding-bottom: 10px">
+                    <div class="dropdown span">
+                        <button class="btn btn-outline-dark dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false">
+                            Start
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="text-align: center;">
+                            <a class="dropdown-item" href="#name">醫院名稱搜尋</a>
+                            <a class="dropdown-item" href="#area">醫院地點搜尋</a>
+                            <a class="dropdown-item" href="#department">醫院科別搜尋</a>
+                            <a class="dropdown-item" href="#disease">特殊疾病搜尋</a>
+                            <a class="dropdown-item" href="#type">醫院層級搜尋</a>
+                            <a class="dropdown-item" href="#topic">分類主題搜尋</a>
+                            <a class="dropdown-item" href="#point">組合分數搜尋</a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
 <!-- body -->
 <form action="/search" method="post">
-  <div class="container-fiuld">
-    <div style=" height:1350px;background-color: white">
-      <!-- 醫院名稱搜尋 -->
-      <div class="card Phborder3" id="name">
-        <div class="card-body">
-          <h5 class="card-title center5 span">醫院名稱搜尋</h5>
-          <div class="center20">
-            <div class="form-group row span">
-              <div class="col-sm-7 " style="margin:5px auto;">
-                <input type="text" class="form-control" name="name1" id="name1" placeholder="請輸入醫院名稱">
-              </div>
+    <div class="container-fiuld">
+        <!--<div style=" height:1550px;background-color: white" >-->
+        <div style="margin: 0px auto;text-align: center">
+            <!-- 醫院名稱搜尋 -->
+            <div class="card border3" id="name">
+                <div class="card-body">
+                    <h5 class="card-title left span">醫院名稱搜尋</h5>
+                    <div class="center20">
+                        <div class="form-group row span">
+                            <div class="col-sm-7 " style="margin:5px auto;">
+                                <input type="text" class="form-control" name="name1"  placeholder="請輸入醫院名稱">
+                            </div>
+                        </div>
+                        <div class="form-group row span">
+                            <div class="col-sm-7" style="margin:5px auto;">
+                                <input type="text" class="form-control" name="name2"  placeholder="請輸入醫院名稱">
+                            </div>
+                        </div>
+                        <div class="form-group row span">
+                            <div class="col-sm-7" style="margin:5px auto;">
+                                <input type="text " class="form-control" name="name3"  placeholder="請輸入醫院名稱">
+                            </div>
+                        </div>
+                        <div class=" right">
+                            <button type="submit" name="searchName" class="btn span" style="background-color:#FEC396;color:white" title="名稱搜尋">確定</button>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="form-group row span">
-              <div class="col-sm-7" style="margin:5px auto;">
-                <input type="text" class="form-control" name="name2" id="name2" placeholder="請輸入醫院名稱">
-              </div>
-            </div>
-            <div class="form-group row span">
-              <div class="col-sm-7" style="margin:5px auto;">
-                <input type="text " class="form-control" name="name3" id="name3" placeholder="請輸入醫院名稱">
-              </div>
-            </div>
-            <div class=" right">
-              <button type="submit" name="searchName" class="btn span" style="background-color:#FEC396;color:white">搜尋</button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- 醫院地點搜尋 -->
-      <div class="card Phborder2" id="area">
-        <div class="card-body">
-          <h5 class="card-title center5 span">醫院地點搜尋</h5>
-          <!-- 縣市搜尋 -->
-          <div class="center20">
-            <div class="form-group row span">
-              <div class="col-sm-7 " style="margin:5px auto;">
-                <input type="text" class="form-control" id="inputc1" name="county" placeholder="請輸入縣市">
-              </div>
-            </div>
-            <div class="form-group row span">
-              <div class="col-sm-7" style="margin:5px auto;">
-                <input type="text" class="form-control" id="inputc2" name="township" placeholder="請輸入鄉鎮市區">
-              </div>
-            </div>
-            <div class=" right">
-              <button type="submit" name="searchArea" class="btn span" style="background-color:#FEC396;color:white">搜尋</button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- 科別搜尋 -->
-      <div class="card Phborder1" id="department">
-        <div class="card-body">
-          <h5 class="card-title center5 span">醫院科別搜尋</h5>
-          <div class="center20">
-            <div class="form-group row span">
-              <div class="col-sm-7 my-1" style="margin:5px auto;">
-                <select class="custom-select mr-sm-2" id="c">
-                  <option selected>請選擇科別</option>
-                  <option value="1">心臟科</option>
-                  <option value="2">小兒科</option>
-                  <option value="3">家醫科</option>
-                  <option value="4">內科</option>
-                  <option value="5">外科</option>
-                </select>
-              </div>
-            </div>
-            <div class="right">
-              <button type="submit" class="btn span" style="background-color:#FEC396;color:white">搜尋</button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- 特殊疾病搜尋 -->
-      <div class="card Phborder1" id="disease">
-        <div class="card-body">
-          <h5 class="card-title center5 span">特殊疾病搜尋</h5>
-          <div class="center20">
-            <div class="form-group row span">
-              <div class="col-sm-7 " style="margin:5px auto;">
-                <input type="text" class="form-control" id="inputs1" name="disease" placeholder="請輸入疾病名稱">
-              </div>
-            </div>
-            <div class="right">
-              <button type="submit" name="searchDisease" class="btn span" style="background-color:#FEC396;color:white">搜尋</button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- 醫院層級搜尋 -->
-      <div class="card Phborder1" id="type">
-        <div class="card-body">
-          <h5 class="card-title center5 span">醫院層級搜尋</h5>
-          <!-- 層級搜尋 -->
-          <div class="center20">
-            <div class="col-sm-7 my-1" style="margin:5px auto;">
-              <select class="custom-select mr-sm-2" name="type" id="inlineFormCustomSelect">
-                <option selected>請選擇層級</option>
-                <option value="1">醫學中心</option>
-                <option value="2">區域醫院</option>
-                <option value="3">地區醫院</option>
-                <option value="4">診所</option>
-              </select>
-            </div>
-            <div class="right" style="padding-top:20px">
-              <button type="submit" name="searchType" class="btn span" style="background-color:#FEC396;color:white">搜尋</button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="card Phborder3" id="topic">
-        <div class="card-body">
-          <h5 class="card-title center5 span">分類主題搜尋</h5>
-          <!-- 主題搜尋 -->
-          <div class="center20">
 
-            <div class="form-group row span">
-              <div class="col-sm-7 " style="margin:5px auto;">
-                <input type="text" class="form-control" name="keyword1" id="inputt1" placeholder="請輸入主題1">
-              </div>
+            <!-- 醫院地點搜尋 -->
+            <div class="card border2" id="area">
+                <div class="card-body">
+                    <h5 class="card-title left span">醫院地點搜尋</h5>
+                    <div class="center45">
+                        <div class="form-group row span">
+                            <div class="col-sm-7 " style="margin:5px auto;">
+                                <input type="text" class="form-control" id="inputc1" name="county" placeholder="請輸入縣市，如：新北市">
+                            </div>
+                        </div>
+                        <div class="form-group row span">
+                            <div class="col-sm-7" style="margin:5px auto;">
+                                <input type="text" class="form-control" id="inputc2" name="township" placeholder="請輸入鄉鎮市區，如：新莊區">
+                            </div>
+                        </div>
+                        <div class=" right" style="padding-top:40px">
+                            <button type="submit" name="searchArea" class="btn span" style="background-color:#FEC396;color:white" title="地點搜尋">確定</button>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="form-group row span">
-              <div class="col-sm-7" style="margin:5px auto;">
-                <input type="text" class="form-control" name="keyword2" id="inputt2" placeholder="請輸入主題2">
-              </div>
+            <!-- 醫院科別搜尋 -->
+            <div class="card border1 span" id="department">
+                <div class="card-body">
+                    <h5 class="card-title left">醫院科別搜尋</h5>
+                    <!-- 科別搜尋 -->
+                    <div class="center45">
+                        <form>
+                            <div class="col-sm-7 my-1" style="margin:5px auto;">
+                                <input type="text" class="form-control" name="c" placeholder="請輸入科別，如：小兒科">
+                            </div>
+                        </form>
+                        <div class="right" style="padding-top:25px">
+                            <button type="submit" class="btn span" style="background-color:#FEC396;color:white" title="科別搜尋">確定</button>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="form-group row span">
-              <div class="col-sm-7" style="margin:5px auto;">
-                <input type="text" class="form-control" name="keyword3" id="inputt3" placeholder="請輸入主題3">
-              </div>
+            <!-- 特殊疾病搜尋 -->
+            <div class="card border1" id="disease">
+                <div class="card-body">
+                    <h5 class="card-title left span">特殊疾病搜尋</h5>
+                    <!-- 疾病搜尋 -->
+                    <div class="center45">
+                        <div class="form-group row span">
+                            <div class="col-sm-7 " style="margin:5px auto;">
+                                <input type="text" class="form-control" id="inputs1" name="disease" placeholder="請輸入疾病名稱">
+                            </div>
+                        </div>
+                        <div class=" right" style="padding-top:15px">
+                            <button type="submit" name="searchDisease" class="btn span" style="background-color:#FEC396;color:white" title="特殊疾病搜尋">確定</button>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="right">
-              <button type="submit" name="searchCategory" class="btn span" style="background-color:#FEC396;color:white">搜尋</button>
+            <div style="display: inline-block;vertical-align: top;">
+                <!-- 醫院層級搜尋 -->
+                <div class="card border11" id="type">
+                    <div class="card-body">
+                        <h5 class="card-title left span">醫院層級搜尋</h5>
+                        <!-- 層級多選 -->
+                        <div class="center20">
+                            <div style="font-size: 18px">
+                                <div style=" display: inline-block;vertical-align: top;text-align: left;padding-right: 30px">
+                                    <input type="checkbox" value="1" name="type" style="width:30px;height: 15px;" />醫學中心<br />
+                                    <div style="padding-top:20px">
+                                        <input type="checkbox" value="2" name="type" style="width:30px;height: 15px;" />區域醫院<br />
+                                    </div>
+                                </div>
+                                <div style=" display: inline-block;vertical-align: top;text-align: left;padding-left: 30px;">
+                                    <input type="checkbox" value="3" name="type" style="width:30px;height: 15px;" />地區醫院<br />
+                                    <div style="padding-top:20px">
+                                        <input type="checkbox" value="4" name="type" style="width:30px;height: 15px;"/>診所<br />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="right" style="padding-top:20px">
+                            <input type="submit" name="searchType" class="btn span" style="background-color:#FEC396;color:white" title="層級搜尋" value="確定">
+                        </div>
+                    </div>
+                </div>
+                <!-- 組合分數搜尋 -->
+                <div class="card border3" id="point">
+                    <div class="card-body">
+                        <h5 class="card-title left span">組合分數搜尋(至多選擇3種疾病)</h5>
+                        <div class="center25">
+                            <div style="font-size: 18px">
+                                <div style=" display: inline-block;vertical-align: top;text-align: left;padding-right: 10px">
+                                    <input type="checkbox" value="value1" name="dis" onClick="onCheckBox2(this)" style="width:30px;height: 15px;" />氣喘疾病<br />
+                                    <div style="padding-top:20px">
+                                        <input type="checkbox" value="value2" name="dis" onClick="onCheckBox2(this)" style="width:30px;height: 15px;" />急性心肌梗塞疾病<br />
+                                    </div>
+                                    <div style="padding-top:20px">
+                                        <input type="checkbox" value="value3" name="dis" onClick="onCheckBox2(this)" style="width:30px;height: 15px;" />糖尿病<br />
+                                        <div style="padding-top:20px">
+                                            <input type="checkbox" value="value4" name="dis" onClick="onCheckBox2(this)" style="width:30px;height: 15px;" />人工膝關節手術<br />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div style=" display: inline-block;vertical-align: top;text-align: left;padding-left: 10px">
+                                    <input type="checkbox" value="value5" name="dis" onClick="onCheckBox2(this)" style="width:30px;height: 15px;" />腦中風<br />
+                                    <div style="padding-top:20px">
+                                        <input type="checkbox" value="value6" name="dis" onClick="onCheckBox2(this)" style="width:30px;height: 15px;" />鼻竇炎<br />
+                                    </div>
+                                    <div style="padding-top:20px">
+                                        <input type="checkbox" value="value7" name="dis" onClick="onCheckBox2(this)" style="width:30px;height: 15px;" />子宮肌瘤手術<br />
+                                        <div style="padding-top:20px">
+                                            <input type="checkbox" value="value8" name="dis" onClick="onCheckBox2(this)" style="width:30px;height: 15px;" />消化性潰瘍疾病<br />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="right" style="padding-top:20px">
+                            <button type="submit" class="btn span" style="background-color:#FEC396;color:white" title="組合分數搜尋">確定</button>
+                        </div>
+                    </div>
+                </div>
+
             </div>
-          </div>
+            <!--分類主題搜尋-->
+            <div class="card border3" id="topic">
+                <div class="card-body">
+                    <h5 class="card-title left span">分類主題搜尋</h5>
+                    <!-- 主題搜尋 -->
+                    <div class="center20">
+
+                        <div class="form-group row span">
+                            <div class="col-sm-7 " style="margin:5px auto;">
+                                <input type="text" class="form-control" name="keyword1" id="inputt1" placeholder="請輸入主題1">
+                            </div>
+                        </div>
+                        <div class="form-group row span">
+                            <div class="col-sm-7" style="margin:5px auto;">
+                                <input type="text" class="form-control" name="keyword2" id="inputt2" placeholder="請輸入主題2">
+                            </div>
+                        </div>
+                        <div class="form-group row span">
+                            <div class="col-sm-7" style="margin:5px auto;">
+                                <input type="text" class="form-control" name="keyword3" id="inputt3" placeholder="請輸入主題3">
+                            </div>
+                        </div>
+                        <div class=" right">
+                            <button type="submit" name="searchCategory" class="btn span" style="background-color:#FEC396;color:white" title="分類主題搜尋">確定</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-    <!-- 確定 -->
-    <div class="center5" style="padding-top: 220px">
-      <button type="button" class="btn span" style="background-color:#FEC396;color:white">綜合搜尋</button>
-    </div>
-    <!-- 搜尋結果 -->
-    <div id="results">
-      {% if scroll %}
-      <script>
+        <!-- 綜合搜尋 -->
+        <div class="center5" style="padding-top: 30px">
+            <button type="submit" name="searchAll" class="btn span" style="background-color:#FEC396;color:white">綜合搜尋</button>
+        </div>
+        <!--指標選擇-->
+        <div style="text-align:center;border: 3px solid rgba(254, 195, 150,1);border-style:dotted;margin: 20px ;" id="checkBox" >
+            <input type="hidden" name="sqlstr" value="{{sql_where}}">
+            {% if scroll %}
+            <script>
             document.location.hash = '#' + '{{ scroll }}';
-    </script>
-      {% endif %}
-
-      <div class="center20 span" style="margin:20px">
-        <h3>醫院搜尋結果</h3>
-      </div>
-      <div style="background-color:#F5E2E2;height: 500px;margin:30px 20px;overflow:auto;word-break:break-all;">
-        {% for message in get_flashed_messages(with_categories=True) %}
-        <div class="alert alert-secondary" role="alert">
-          {{ message[1] }}
+            </script>
+            {% endif %}
+            <h5 style="margin: 20px auto;">請選擇指標(至多選擇5個)</h5>
+            <div style="display: inline-block;vertical-align: top;text-align: left;padding-right: 100px;padding-left: 100px;">
+                {% for n, l in z_ckbox %}
+                <div style="display: inline-block;vertical-align: top;width: 200px;word-break: break-all;padding:10px">
+                    <input type="checkbox" value="{{n}}" name="item" style="width:30px;height: 15px;" onclick="onCheckBox(this)">{{ l }}
+                </div>
+                {% endfor %}
+            </div>
+            <!--指標確定鈕-->
+            <div class="center5" style="padding-bottom: 20px">
+                <input type="submit" class="btn span" style="background-color:#FEC396;color:white" id="submit_vote" name="choose" value="確定" onclick="onSubmitVote()">
+            </div>
         </div>
-        {% endfor %}
-        <table class="table table-bordered table-striped span" >
-<tr>
-                {% for column in columns %}
-                <th>{{ column }}</th>
-                {% endfor %}
-            </tr>
 
-            {% for n, c in z %}
-            <tr>
-                <td>{{ n[0] }}</td>
-                {% for i in range(ck_len) %}
-                <td rowspan="6">{{ c[columns[i+1]] }}</td>
+
+        <!-- 搜尋結果 -->
+        <div id="results">
+            {% if scroll %}
+            <script>
+            document.location.hash = '#' + '{{ scroll }}';
+        </script>
+            {% endif %}
+
+            <div class="center20 span" style="margin:30px" >
+                <h3>醫院搜尋結果</h3>
+            </div>
+            <div style="background-color:#F5E2E2;height: 500px;margin:10px 20px; overflow:scroll;word-break:break-all;">
+                {% for message in get_flashed_messages(with_categories=True) %}
+                <div class="alert alert-secondary" role="alert">
+                    {{ message[1] }}
+                </div>
                 {% endfor %}
-            </tr>
-            <tr>
-                <td>
-                    {{ n[1] }}
-                    {% if n[1] == 0 %}
-                        <img src="{{ url_for('static', filename='0.png')}}" height="20px">
-                    {% endif %}
-                    {% if n[1] == 1.0 %}
-                        <img src="{{ url_for('static', filename='1.png')}}" height="20px">
-                    {% endif %}
-                    {% if n[1] == 2.0 %}
-                        <img src="{{ url_for('static', filename='2.png')}}" height="20px">
-                    {% endif %}
-                    {% if n[1] == 3.0 %}
-                        <img src="{{ url_for('static', filename='3.png')}}" height="20px">
-                    {% endif %}
-                    {% if n[1] == 4.0 %}
-                        <img src="{{ url_for('static', filename='4.png')}}" height="20px">
-                    {% endif %}
-                    {% if n[1] == 5.0 %}
-                        <img src="{{ url_for('static', filename='5.png')}}" height="20px">
-                    {% endif %}
-                </td>
-            </tr>
-            <tr>
-                <td>{{ n[2] }}</td>
-            </tr>
-            <tr>
-                <td>{{ n[3] }}</td>
-            </tr>
-            <tr>
-                <td>{{ n[4] }}</td>
-            </tr>
-            <tr>
-                <td>電話：{{ n[5] }}　　地址：<img src="{{ url_for('static', filename='地址.png')}}" height="20px" alt="圖片替代文字" title={{ n[6] }}></td>
-            </tr>
-            {% endfor %}
-        </table>
-      </div>
+                <table class="table table-hover span" style="border:2px rgba(254,159,150,0.8) solid;" rules="all" >
+                    <thead>
+                    <tr>
+                        {% for column in columns %}
+                        <th>{{ column }}</th>
+                        {% endfor %}
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for n, c in z %}
+                    <tr >
+                        <td style="background-color:rgba(254,159,150,0.8);">{{ n[0] }}</td>
+                        {% for i in range(ck_len) %}
+                        <td rowspan="6" style="vertical-align:middle;text-align:center">{{ c[columns[i+1]] }}</td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        <td>
+                            {{ n[1] }}
+                            {% if n[1] == 0 %}
+                            <img src="{{ url_for('static', filename='0.png')}}" height="20px">
+                            {% endif %}
+                            {% if n[1] == 1.0 %}
+                            <img src="{{ url_for('static', filename='1.png')}}" height="20px">
+                            {% endif %}
+                            {% if n[1] == 2.0 %}
+                            <img src="{{ url_for('static', filename='2.png')}}" height="20px">
+                            {% endif %}
+                            {% if n[1] == 3.0 %}
+                            <img src="{{ url_for('static', filename='3.png')}}" height="20px">
+                            {% endif %}
+                            {% if n[1] == 4.0 %}
+                            <img src="{{ url_for('static', filename='4.png')}}" height="20px">
+                            {% endif %}
+                            {% if n[1] == 5.0 %}
+                            <img src="{{ url_for('static', filename='5.png')}}" height="20px">
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>正面評論數：{{ n[2] }}</td>
+                    </tr>
+                    <tr>
+                        <td>負面評論數：{{ n[3] }}</td>
+                    </tr>
+                    <tr>
+                        <td>中立評論數：{{ n[4] }}</td>
+                    </tr>
+                    <tr>
+                        <td>電話：{{ n[5] }}　　地址：<img src="{{ url_for('static', filename='地址.png')}}" height="20px" alt="圖片替代文字" title={{ n[6] }}></td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!-- 結果分頁 -->
+        <div class="center5 span">
+            <div style=" width: 150px;height: 60px;overflow: auto; overflow-y:hidden;margin: 0px auto">
+                <h2></h2>
+            </div>
+        </div>
     </div>
-    <!-- 結果分頁 -->
-    <div class="center5 span" id="tab">
-      <div style=" width: 150px;height: 65px;overflow: auto; overflow-y:hidden;margin: 0px auto">
-        <h2></h2>
-      </div>
-    </div>
-  </div>
 </form>
+
+
 <!-- contact -->
 <!-- <div style=" height:300px;background-color: #fe9696;"> -->
 <div style="margin: 20px;">
-  <form style="background-color:#FE9696;height: 450px;">
-    <div class="row">
-      <div class="col">
-        <div class="center5 span" style="padding-top:5px;">
+    <form style="background-color:#FE9696;height: 350px;">
+        <div class="row">
+            <div class="col">
+                <div class="center5 span" style="padding-top:5px;">
 
-          <div style="margin:15px auto; color: white;">
-            <h4>Contact Us</h4>
-            <h6>聯絡我們</h6>
-            <!--<h6>建議您先不要</h6>-->
-          </div>
-          <form>
-            <div class="form-group form-control-sm col-7" style="margin: auto;">
-              <label for="exampleFormControlInput1"></label>
-              <input type="text" class="form-control" id="exampleForControlInput1" placeholder="Name">
-            </div>
-            <div class="form-group form-control-sm col-7" style="margin:15px auto;">
-              <label for="exampleFormControlInput1"></label>
-              <input type="email" class="form-control" id="exampleFrmControlInput1" placeholder="name@example.com">
-            </div>
-            <div class="form-group form-control-sm col-7" style="margin:15px auto;">
-              <label for="exampleFormControlInput1"></label>
-              <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Subject">
-            </div>
+                    <div style="margin:25px auto; color: white;">
+                        <h4>Contact Us</h4>
+                        <h6>聯絡我們</h6>
+                        <!--<h6>建議您先不要</h6>-->
+                    </div>
 
-            <div class="form-group form-control-sm col-7" style="margin:15px auto;">
-              <label for="exampleFormControlTextarea1"></label>
-              <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" placeholder="Message"></textarea>
+                </div>
+            </div>
+            <div class="col">
+                <div class="center5 span" style="padding-top:10px">
 
+                    <form>
+                        <div class="form-group form-control-sm col-7" style="margin: auto;">
+                            <label for="exampleFormControlInput1"></label>
+                            <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Name">
+                        </div>
+                        <div class="form-group form-control-sm col-7" style="margin:15px auto;">
+                            <label for="exampleFormControlInput1"></label>
+                            <input type="email" class="form-control" id="exampleolInput1" placeholder="name@example.com">
+                        </div>
+                        <div class="form-group form-control-sm col-7" style="margin:15px auto;">
+                            <label for="exampleFormControlInput1"></label>
+                            <input type="text" class="form-control" id="ControlInput1" placeholder="Subject">
+                        </div>
+
+                        <div class="form-group form-control-sm col-7" style="margin:15px auto;">
+                            <label for="exampleFormControlTextarea1"></label>
+                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" placeholder="Message"></textarea>
+
+                        </div>
+                        <div class="form-group form-control-sm col-7" style="margin:85px auto;">
+                            <button type="button" class="btn btn-outline-dark" style="float: right;">Send</button>
+                        </div>
+                    </form>
+
+                </div>
             </div>
-            <div class="form-group form-control-sm col-7" style="margin:85px auto;">
-              <button type="button" class="btn btn-outline-dark" style="float: center;">Send</button>
-            </div>
-          </form>
         </div>
-      </div>
-    </div>
-  </form>
+    </form>
 </div>
 <!-- footer -->
 <div style=" height:18px;background-color:white;">

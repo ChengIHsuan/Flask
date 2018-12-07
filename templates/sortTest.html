@@ -31,10 +31,22 @@
         {% endif %}
         <table width="100%" border="1">
 
-            <select name="index">
+           <select name="index4">
                 <option selected>請選擇排序</option>
                 {% for index in indexes %}
                 <option value={{index}}&{{sqlstr}}>{{ index }}</option>
+                {% endfor %}
+            </select>
+           <select name="index5">
+                <option selected>請選擇排序</option>
+                {% for index in indexes %}
+                <option value={{index}}>{{ index }}</option>
+                {% endfor %}
+            </select>
+           <select name="index6">
+                <option selected>請選擇排序</option>
+                {% for index in indexes %}
+                <option value={{index}}>{{ index }}</option>
                 {% endfor %}
             </select>
             <input type="submit" name="reSort" value="Sort">
@@ -45,13 +57,30 @@
                 {% endfor %}
             </tr>
 
-            {% for a in context %}
+            {% for n, c in z %}
             <tr>
-                {% for i in range(long)%}
-                <td>{{ a[columns[i]] }}</td>
+                <td>{{ n[0] }}</td>
+                {% for i in range(long) %}
+                <td rowspan="6">{{ c[columns[i+1]] }}</td>
                 {% endfor %}
             </tr>
+            <tr>
+                <td>{{ n[1] }}</td>
+            </tr>
+            <tr>
+                <td>{{ n[2] }}</td>
+            </tr>
+            <tr>
+                <td>{{ n[3] }}</td>
+            </tr>
+            <tr>
+                <td>{{ n[4] }}</td>
+            </tr>
+            <tr>
+                <td>{{ n[5] }} <img src="https://pbs.twimg.com/media/DtGzqZHU0AEyjpb.png" width="30px" alt="圖片替代文字" title={{ n[6] }}></td>
+            </tr>
             {% endfor %}
+
         </table>
 
     </div>

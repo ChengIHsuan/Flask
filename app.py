@@ -19,7 +19,7 @@ def shutdown_session(exception=None):
 ##在地區搜尋介面取得使用者輸入的值/search_area
 @app.route('/', methods=['GET'])
 def renderSearch():
-    return render_template('searchArea.html')
+    return render_template('hospital.html')
 
 @app.route('/search', methods=['POST'])
 def panduan():
@@ -29,7 +29,7 @@ def panduan():
             sql_where = request.form.get('sqlstr')
             return Select().select_normal(sql_where, items)
         elif 'searchArea' in request.form:
-            #從前端searchArea.html的unputbox的name抓使用者輸入的值
+            #從前端hospital.html的unputbox的name抓使用者輸入的值
             county = request.form.get("county")
             township = request.form.get("township")
             # return Search().search_area(county, township)
@@ -95,8 +95,10 @@ def sort_judge():
             indexes.append(index3)
             return Sort().sort_value(indexes)
         elif 'reSort' in request.form:
-            index = request.form.get('index')
-            return Sort().reSort(index)
+            index1 = request.form.get('index4')
+            index2 = request.form.get('index5')
+            index3 = request.form.get('index6')
+            return Sort().reSort(index1,index2,index3)
 
 @app.route('/collection', methods=['GET'])
 def renderCollection():
@@ -119,7 +121,7 @@ def renderPhoneSearch():
 def phone_panduan():
     if request.method == 'POST':
         if 'searchArea' in request.form:
-            #從前端searchArea.html的unputbox的name抓使用者輸入的值
+            #從前端hospital.html的unputbox的name抓使用者輸入的值
             county = request.form.get("county")
             township = request.form.get("township")
             ##使用class Hospital()裡面的search_area方法
