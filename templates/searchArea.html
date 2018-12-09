@@ -119,8 +119,8 @@
         </script>
         {% endif %}
 
-        {% for n, l in z_ckbox %}
-        <input type="checkbox" value="{{n}}" name="item" onclick="onCheckBox(this)">{{ l }}
+        {% for v, n in z_ckbox %}
+        <input type="checkbox" value="{{v}}" name="item" onclick="onCheckBox(this)">{{ n }}
         {% endfor %}
     </div>
     <input type="submit" name="choose" value="提交">
@@ -133,56 +133,71 @@
 </script>
         {% endif %}
         <table width="100%" border="1">
-            <tr>
-                {% for column in columns %}
-                <th>{{ column }}</th>
-                {% endfor %}
-            </tr>
-
-            {% for n, c in z %}
-            <tr>
-                <td>{{ n[0] }}</td>
-                {% for i in range(ck_len) %}
-                <td rowspan="6">{{ c[columns[i+1]] }}</td>
-                {% endfor %}
-            </tr>
-            <tr>
-                <td>
-                    {{ n[1] }}
-                    {% if n[7] == 0 %}
-                    <img src="{{ url_for('static', filename='0.png')}}" height="20px">
-                    {% endif %}
-                    {% if n[7] == 1.0 %}
-                    <img src="{{ url_for('static', filename='1.png')}}" height="20px">
-                    {% endif %}
-                    {% if n[7] == 2.0 %}
-                    <img src="{{ url_for('static', filename='2.png')}}" height="20px">
-                    {% endif %}
-                    {% if n[7] == 3.0 %}
-                    <img src="{{ url_for('static', filename='3.png')}}" height="20px">
-                    {% endif %}
-                    {% if n[7] == 4.0 %}
-                    <img src="{{ url_for('static', filename='4.png')}}" height="20px">
-                    {% endif %}
-                    {% if n[7] == 5.0 %}
-                    <img src="{{ url_for('static', filename='5.png')}}" height="20px">
-                    {% endif %}
-                </td>
-            </tr>
-            <tr>
-                <td>{{ n[2] }}</td>
-            </tr>
-            <tr>
-                <td>{{ n[3] }}</td>
-            </tr>
-            <tr>
-                <td>{{ n[4] }}</td>
-            </tr>
-            <tr>
-                <td>電話：{{ n[5] }}　　地址：<img src="{{ url_for('static', filename='地址.png')}}" height="20px" alt="圖片替代文字" title={{ n[6] }}></td>
-            </tr>
-            {% endfor %}
-        </table>
+                    <thead>
+                    <tr>
+                        {% for column, full_name in z_col %}
+                        <th>{{ column }}<img src="{{ url_for('static', filename='指標說明.png')}}" height="20px" title="{{ full_name }}"></th>
+                        {% endfor %}
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for n, d, l, v in z %}
+                    <tr >
+                        <td style="background-color:rgba(254,159,150,0.8);">{{ n[0] }}</td>
+                        {% for i in range(ck_len) %}
+                        <td rowspan="5" style="vertical-align:middle;text-align:center">
+                            {% if l[columns[i]] == 75 %}
+                            <img src="{{ url_for('static', filename='高指標.png')}}" height="50px" title="{{ v[columns[i]] }}{{ d[columns[i]] }}">
+                            {% endif %}
+                            {% if l[columns[i]] == 50 %}
+                            <img src="{{ url_for('static', filename='中指標.png')}}" height="50px" title="{{ v[columns[i]] }}{{ d[columns[i]] }}">
+                            {% endif %}
+                            {% if l[columns[i]] == 0 %}
+                            <img src="{{ url_for('static', filename='低指標.png')}}" height="50px" title="{{ v[columns[i]] }}{{ d[columns[i]] }}">
+                            {% endif %}
+                            {% if l[columns[i]] == -1 %}
+                            <img src="{{ url_for('static', filename='無指標.png')}}" height="50px" title="此醫療機構無此指標值">
+                            {% endif %}
+                        </td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        <td valign="center">
+                            {{ n[1] }}
+                            {% if n[6] == 0 %}
+                            <img src="{{ url_for('static', filename='0.png')}}" height="20px">
+                            {% endif %}
+                            {% if n[6] == 1.0 %}
+                            <img src="{{ url_for('static', filename='1.png')}}" height="20px">
+                            {% endif %}
+                            {% if n[6] == 2.0 %}
+                            <img src="{{ url_for('static', filename='2.png')}}" height="20px">
+                            {% endif %}
+                            {% if n[6] == 3.0 %}
+                            <img src="{{ url_for('static', filename='3.png')}}" height="20px">
+                            {% endif %}
+                            {% if n[6] == 4.0 %}
+                            <img src="{{ url_for('static', filename='4.png')}}" height="20px">
+                            {% endif %}
+                            {% if n[6] == 5.0 %}
+                            <img src="{{ url_for('static', filename='5.png')}}" height="20px">
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>正面評論數：{{ n[2] }}</td>
+                    </tr>
+                    <tr>
+                        <td>負面評論數：{{ n[3] }}</td>
+                    </tr>
+                    <tr>
+                        <td>電話：{{ n[4] }}
+                            <br>
+                            地址：<img src="{{ url_for('static', filename='地址圖.png')}}" height="20px" alt="圖片替代文字" title={{ n[5] }}></td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
 
     </div>
 </form>

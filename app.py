@@ -34,17 +34,12 @@ def panduan():
             if county.find('台') != -1:
                 county = county.replace('台', '臺')
             township = request.form.get("township")
-            # return Search().search_area(county, township)
-            if county == '' and township == '':
-                return
             return CheckBox().print_ckbox(Search().search_area(county, township))
         elif 'searchDisease' in request.form:
             disease = request.form.get('disease')
-            # return Search().search_disease(disease)
             return Select().select_disease(Search().search_disease(disease))
         elif 'searchType' in request.form:
             types = request.values.getlist('type')
-            # return Search().search_type(types)
             return CheckBox().print_ckbox(Search().search_type(types))
         elif 'searchCategory' in request.form:
             keyword1 = request.form.get('keyword1')
