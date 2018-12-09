@@ -31,6 +31,8 @@ def panduan():
         elif 'searchArea' in request.form:
             #從前端hospital.html的unputbox的name抓使用者輸入的值
             county = request.form.get("county")
+            if county.find('台') != -1:
+                county = county.replace('台', '臺')
             township = request.form.get("township")
             # return Search().search_area(county, township)
             if county == '' and township == '':
@@ -59,6 +61,8 @@ def panduan():
         elif 'searchAll' in request.form:
             ## 地區
             county = request.form.get("county")
+            if county.find('台') != -1:
+                county = county.replace('台', '臺')
             township = request.form.get("township")
             ## 特殊疾病
             disease = request.form.get('disease')

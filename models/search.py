@@ -200,12 +200,16 @@ class SelectAll():
         try:
             if sql_where != '':
                 sql_where = ' WHERE ' + sql_where
-            sqlstr = "SELECT h.name, fr.star, '正面評論數：'||fr.positive,  '負面評論數：'||fr.negative, '中立評論數：'||fr.neutral, h.phone, h.address FROM hospitals h JOIN final_reviews fr ON h.id=fr.hospital_id" +sql_where
+            sqlstr = "SELECT h.name, fr.star, fr.positive,  fr.negative, fr.neutral, h.phone, h.address, round(fr.star) FROM hospitals h JOIN final_reviews fr ON h.id=fr.hospital_id" +sql_where
             normal = self.cursor.execute(sqlstr).fetchall()
             sqlstr = "SELECT h.id, " + disease_select + " FROM hospitals h JOIN merge_data m ON h.id = m.hospital_id" +sql_where
-            ckbox = self.cursor.execute(sqlstr).fetchall()  ##執行sqlstr，並列出所有結果到results[]
+            l_deno = self.cursor.execute(sqlstr).fetchall()  ##執行sqlstr，並列出所有結果到results[]
+            sqlstr = "SELECT h.id, " + disease_select.replace('m.m_', 'm.l_') + " FROM hospitals h JOIN merge_data m ON h.id = m.hospital_id"
+            l_level = self.cursor.execute(sqlstr).fetchall()  ##執行sqlstr，並列出所有結果到results[]
+            sqlstr = "SELECT h.id, " + disease_select.replace('m.m_', 'm.v_') + " FROM hospitals h JOIN merge_data m ON h.id = m.hospital_id"
+            l_value = self.cursor.execute(sqlstr).fetchall()  ##執行sqlstr，並列出所有結果到results[]
             items = disease_select.split(", ")
-            return Result().get_column_name(normal, ckbox, items)
+            return Result().get_column_name(normal, l_deno, items, l_level, l_value)
         except:
             flash("綜合搜尋查詢錯誤。")
             return render_template("hospital.html")
@@ -241,7 +245,7 @@ class CheckBox():
         ckboxNum = []
         ckboxList = []
         for i in range(len(indexes)):
-            ckboxNum.append('m.m_' + str(indexes[i][0]))  ##加上'm.m_'方便之後在資料庫搜尋
+            ckboxNum.append('m.m_' + str((indexes[i][0])))  ##加上'm.m_'方便之後在資料庫搜尋
             ckboxList.append(indexes[i][1])
         ## 用zip()將兩個List打包
         z_ckbox = zip(ckboxNum, ckboxList)
@@ -256,7 +260,7 @@ class CheckBox():
         ckboxNum = []
         ckboxList = []
         for i in range(len(indexes)):
-            ckboxNum.append(indexes[i])
+            ckboxNum.append('m.m_' + str(indexes[i]))
             ckboxList.append(self.cursor.execute("SELECT name FROM indexes WHERE id = " + indexes[i][4:]).fetchone()[0])
             ## 用zip()將兩個List打包
             z_ckbox = zip(ckboxNum, ckboxList)
@@ -275,7 +279,7 @@ class Select():
         ## 將condition改回
         sql_where = sql_where.replace("//", " ")
         ## select醫院的基本資料：名字、分數＆星等、正向評論數、中立評論數、負向評論數、電話與地址並存入normal[]
-        sqlstr = "SELECT h.abbreviation, fr.star, fr.positive,  fr.negative, fr.neutral, h.phone, h.address FROM hospitals h JOIN final_reviews fr ON h.id=fr.hospital_id " + sql_where
+        sqlstr = "SELECT h.abbreviation, fr.star, fr.positive,  fr.negative, fr.neutral, h.phone, h.address, round(fr.star) FROM hospitals h JOIN final_reviews fr ON h.id=fr.hospital_id " + sql_where
         normal = self.cursor.execute(sqlstr).fetchall()
         ## 若未找到任何資料，出現錯誤訊息，若有則進入else
         if normal == []:
@@ -290,16 +294,39 @@ class Select():
         for r in range(len(items)):
             s += (', ' + items[r])
         sqlstr = "SELECT " + s + " FROM merge_data m JOIN hospitals h ON m.hospital_id = h.id " + sql_where
-        ckbox = self.cursor.execute(sqlstr).fetchall()
-        return Result().get_column_name(normal, ckbox, items)
+        l_deno = self.cursor.execute(sqlstr).fetchall()
+
+        s = 'm.hospital_id'
+        for rr in range(len(items)):
+            item = items[rr]
+            item = item.replace('m.m_', 'm.l_')
+            s += (', ' + item)
+        sqlstr = "SELECT " + s + " FROM merge_data m JOIN hospitals h ON m.hospital_id = h.id " + sql_where
+        l_level = self.cursor.execute(sqlstr).fetchall()
+
+        s = 'm.hospital_id'
+        for rrr in range(len(items)):
+            item = items[rrr]
+            item = item.replace('m.m_', 'm.v_')
+            s += (', ' + item)
+        sqlstr = "SELECT " + s + " FROM merge_data m JOIN hospitals h ON m.hospital_id = h.id " + sql_where
+        l_value = self.cursor.execute(sqlstr).fetchall()
+        return Result().get_column_name(normal, l_deno, items, l_level, l_value)
 
     def select_disease(self, select_str):
-        sqlstr = "SELECT h.abbreviation, fr.star, fr.positive,  fr.negative, fr.neutral, h.phone, h.address FROM hospitals h JOIN final_reviews fr ON h.id=fr.hospital_id"
+        sqlstr = "SELECT h.abbreviation, fr.star, fr.positive,  fr.negative, fr.neutral, h.phone, h.address, round(fr.star) FROM hospitals h JOIN final_reviews fr ON h.id=fr.hospital_id"
         normal = self.cursor.execute(sqlstr).fetchall()
         sqlstr = "SELECT h.id, " + select_str + " FROM hospitals h JOIN merge_data m ON h.id = m.hospital_id"
-        ckbox = self.cursor.execute(sqlstr).fetchall()  ##執行sqlstr，並列出所有結果到results[]
+        l_deno = self.cursor.execute(sqlstr).fetchall()  ##執行sqlstr，並列出所有結果到results[]
+
+        sqlstr = "SELECT h.id, " + select_str.replace('m.m_', 'm.l_') + " FROM hospitals h JOIN merge_data m ON h.id = m.hospital_id"
+        l_level = self.cursor.execute(sqlstr).fetchall()  ##執行sqlstr，並列出所有結果到results[]
+
+        sqlstr = "SELECT h.id, " + select_str.replace('m.m_', 'm.v_') + " FROM hospitals h JOIN merge_data m ON h.id = m.hospital_id"
+        l_value = self.cursor.execute(sqlstr).fetchall()  ##執行sqlstr，並列出所有結果到results[]
+
         items = select_str.split(", ")
-        return Result().get_column_name(normal, ckbox, items)
+        return Result().get_column_name(normal, l_deno, items, l_level, l_value)
 
 class Result():
 
@@ -308,31 +335,53 @@ class Result():
         self.cursor = db.cursor()
 
     ## 取得欄位名稱
-    def get_column_name(self, normal, ckbox, items):
+    def get_column_name(self, normal, l_deno, items, l_level, l_value):
         ## 先取得欄位的原始名字，「醫院資訊」為固定欄位，直接手動新增
-        getColumns=['醫院資訊']
+        getColumns=['醫療機構資訊']
         for r in range(len(items)):
             getColumns.append(items[r])
         ## 從資料庫中取得欄位名稱
         columns = []
+        print(getColumns)
         for c in getColumns:
             col = self.cursor.execute("SELECT abbreviation FROM column_name WHERE name = '" + c + "'").fetchone()[0]
             columns.append(col)
-        return Result().table(normal, ckbox, columns)
+        full_name = ['醫療機構相關資訊']
+        for fn in columns:
+            if fn != '醫療機構資訊':
+                full_name.append(self.cursor.execute("SELECT name FROM indexes WHERE abbreviation = '" + fn + "'").fetchone()[0])
+        return Result().table(normal, l_deno, columns, full_name, l_level, l_value)
 
     ## 將搜尋結果寫進表格
-    def table(self, normal, ckbox, columns):
+    def table(self, normal, l_deno, columns, full_name, l_level, l_value):
         ## 選取的指標數量，-1是因為扣掉第一欄的醫院資訊
         ck_len = len(columns) - 1
         ## 建立context[]存放與指標直相關資料
-        context = []
-        for i in range(len(ckbox)):  #ckbox[][]為Select().get_checkbox()取得的指標值
+        deno = []
+        for i in range(len(l_deno)):  #ckbox[][]為Select().get_checkbox()取得的指標值
             ## 建立一個dict，將每一筆結果轉存成dict的型態
             d = {}
             for j in range(ck_len):
-                d[columns[j + 1]] = ckbox[i][j + 1]
-            context.append(d)
+                d[columns[j]] = l_deno[i][j + 1]
+            deno.append(d)
+
+        level = []
+        for i in range(len(l_level)):  # ckbox[][]為Select().get_checkbox()取得的指標值
+            ## 建立一個dict，將每一筆結果轉存成dict的型態
+            d = {}
+            for j in range(ck_len):
+                d[columns[j]] = l_level[i][j + 1]
+            level.append(d)
+
+        value = []
+        for i in range(len(l_value)):  # ckbox[][]為Select().get_checkbox()取得的指標值
+            ## 建立一個dict，將每一筆結果轉存成dict的型態
+            d = {}
+            for j in range(ck_len):
+                d[columns[j]] = l_value[i][j + 1]
+            value.append(d)
         ## 用zip()，讓兩個List同時進行迭代
-        z = zip(normal, context)
+        z_col = zip(columns, full_name)
+        z = zip(normal, deno, level, value)
         ## render至前端HTML，ck_len為指標的長度，columns為欄位名稱，z為醫院資訊和指標值的zip
-        return render_template('hospital.html', scroll = 'results', ck_len=ck_len, columns=columns, z=z)
+        return render_template('hospital.html', scroll = 'results', ck_len=ck_len, z_col=z_col, z=z, columns = columns)
