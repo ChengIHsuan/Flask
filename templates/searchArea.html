@@ -8,6 +8,11 @@
 
     {% block scripts %}
     <script language="javascript" type="text/javascript">
+    $(function(){
+   {% if alert %}
+      alert('{{alert}}');
+   {% endif %}
+ });
     // 判斷5個以上不能選
     var maxChoices = 5;
     var flag = 0;
@@ -77,7 +82,9 @@
     <h2>特殊疾病搜尋</h2>
     <p></p>
     <label>特殊疾病:</label>
-    <input type="textbox" name="disease">
+    <input type="textbox" name="disease1">
+    <input type="textbox" name="disease2">
+    <input type="textbox" name="disease3">
     <input type="submit" name="searchDisease" value="Search">
 
     <h2>醫院層級搜尋</h2>
@@ -133,71 +140,86 @@
 </script>
         {% endif %}
         <table width="100%" border="1">
-                    <thead>
-                    <tr>
-                        {% for column, full_name in z_col %}
-                        <th>{{ column }}<img src="{{ url_for('static', filename='指標說明.png')}}" height="20px" title="{{ full_name }}"></th>
-                        {% endfor %}
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for n, d, l, v in z %}
-                    <tr >
-                        <td style="background-color:rgba(254,159,150,0.8);">{{ n[0] }}</td>
-                        {% for i in range(ck_len) %}
-                        <td rowspan="5" style="vertical-align:middle;text-align:center">
-                            {% if l[columns[i]] == 75 %}
-                            <img src="{{ url_for('static', filename='高指標.png')}}" height="50px" title="{{ v[columns[i]] }}{{ d[columns[i]] }}">
-                            {% endif %}
-                            {% if l[columns[i]] == 50 %}
-                            <img src="{{ url_for('static', filename='中指標.png')}}" height="50px" title="{{ v[columns[i]] }}{{ d[columns[i]] }}">
-                            {% endif %}
-                            {% if l[columns[i]] == 0 %}
-                            <img src="{{ url_for('static', filename='低指標.png')}}" height="50px" title="{{ v[columns[i]] }}{{ d[columns[i]] }}">
-                            {% endif %}
-                            {% if l[columns[i]] == -1 %}
-                            <img src="{{ url_for('static', filename='無指標.png')}}" height="50px" title="此醫療機構無此指標值">
-                            {% endif %}
-                        </td>
-                        {% endfor %}
-                    </tr>
-                    <tr>
-                        <td valign="center">
-                            {{ n[1] }}
-                            {% if n[6] == 0 %}
-                            <img src="{{ url_for('static', filename='0.png')}}" height="20px">
-                            {% endif %}
-                            {% if n[6] == 1.0 %}
-                            <img src="{{ url_for('static', filename='1.png')}}" height="20px">
-                            {% endif %}
-                            {% if n[6] == 2.0 %}
-                            <img src="{{ url_for('static', filename='2.png')}}" height="20px">
-                            {% endif %}
-                            {% if n[6] == 3.0 %}
-                            <img src="{{ url_for('static', filename='3.png')}}" height="20px">
-                            {% endif %}
-                            {% if n[6] == 4.0 %}
-                            <img src="{{ url_for('static', filename='4.png')}}" height="20px">
-                            {% endif %}
-                            {% if n[6] == 5.0 %}
-                            <img src="{{ url_for('static', filename='5.png')}}" height="20px">
-                            {% endif %}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>正面評論數：{{ n[2] }}</td>
-                    </tr>
-                    <tr>
-                        <td>負面評論數：{{ n[3] }}</td>
-                    </tr>
-                    <tr>
-                        <td>電話：{{ n[4] }}
-                            <br>
-                            地址：<img src="{{ url_for('static', filename='地址圖.png')}}" height="20px" alt="圖片替代文字" title={{ n[5] }}></td>
-                    </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
+            <thead>
+            <tr>
+                {% for column, full_name in z_col %}
+                <th>{{ column }}<img src="{{ url_for('static', filename='指標說明.png')}}" height="20px" title="{{ full_name }}"></th>
+                {% endfor %}
+            </tr>
+            </thead>
+            <tbody>
+            {% for n, d, l, v in z %}
+            <tr >
+                <td style="background-color:rgba(254,159,150,0.8);">{{ n[0] }}</td>
+                {% for i in range(ck_len) %}
+                <td rowspan="5" style="vertical-align:middle;text-align:center">
+                    {% if l[columns[i]] == 75 %}
+                    <img src="{{ url_for('static', filename='高指標.png')}}" height="50px" title="指標值：{{ v[columns[i]] }}{{ d[columns[i]] }}">
+                    {% endif %}
+                    {% if l[columns[i]] == 50 %}
+                    <img src="{{ url_for('static', filename='中指標.png')}}" height="50px" title="{{ v[columns[i]] }}{{ d[columns[i]] }}">
+                    {% endif %}
+                    {% if l[columns[i]] == 0 %}
+                    <img src="{{ url_for('static', filename='低指標.png')}}" height="50px" title="{{ v[columns[i]] }}{{ d[columns[i]] }}">
+                    {% endif %}
+                    {% if l[columns[i]] == -1 %}
+                    <img src="{{ url_for('static', filename='無指標.png')}}" height="50px" title="此醫療機構無此指標值">
+                    {% endif %}
+                </td>
+                {% endfor %}
+            </tr>
+            <tr>
+                <td valign="center">
+                    {{ n[1] }}
+                    {% if 0 <= n[6] < 0.5 %}
+                    <img src="{{ url_for('static', filename='0星.png')}}" height="20px">
+                    {% endif %}
+                    {% if 0.5 <= n[6] < 1 %}
+                    <img src="{{ url_for('static', filename='0半星.png')}}" height="20px">
+                    {% endif %}
+                    {% if 1 <= n[6] < 1.5 %}
+                    <img src="{{ url_for('static', filename='1星.png')}}" height="20px">
+                    {% endif %}
+                    {% if 1.5 <= n[6] < 2 %}
+                    <img src="{{ url_for('static', filename='1半星.png')}}" height="20px">
+                    {% endif %}
+                    {% if 2 <= n[6] < 2.5 %}
+                    <img src="{{ url_for('static', filename='2星.png')}}" height="20px">
+                    {% endif %}
+                    {% if 2.5 <= n[6] < 3 %}
+                    <img src="{{ url_for('static', filename='2半星.png')}}" height="20px">
+                    {% endif %}
+                    {% if 3 <= n[6] < 3.5 %}
+                    <img src="{{ url_for('static', filename='3星.png')}}" height="20px">
+                    {% endif %}
+                    {% if 3.5 <= n[6] < 4 %}
+                    <img src="{{ url_for('static', filename='3半星.png')}}" height="20px">
+                    {% endif %}
+                    {% if 4 <= n[6] < 4.5 %}
+                    <img src="{{ url_for('static', filename='4星.png')}}" height="20px">
+                    {% endif %}
+                    {% if 4.5 <= n[6] < 5 %}
+                    <img src="{{ url_for('static', filename='4半星.png')}}" height="20px">
+                    {% endif %}
+                    {% if n[6] == 5 %}
+                    <img src="{{ url_for('static', filename='5.png')}}" height="20px">
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <td>正面評論數：{{ n[2] }}</td>
+            </tr>
+            <tr>
+                <td>負面評論數：{{ n[3] }}</td>
+            </tr>
+            <tr>
+                <td>電話：{{ n[4] }}
+                    <br>
+                    地址：<img src="{{ url_for('static', filename='地址圖.png')}}" height="20px" alt="圖片替代文字" title={{ n[5] }}></td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
 
     </div>
 </form>

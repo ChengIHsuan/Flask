@@ -1,5 +1,5 @@
 import sqlite3
-from flask import Flask, request, render_template, flash
+from flask import Flask, request, render_template, flash, redirect
 
 class Search():
 
@@ -19,35 +19,42 @@ class Search():
                 area = str(county + '%' + township)
             ## 依照使用者在前端輸入的條件寫成SQL字串中的condition
             sql_where = "h.area LIKE '" + area + "%'"
-            # return CheckBox().print_ckbox(sql_where)
-            return sql_where
+            ## 驗證使用者是否輸入不存在的條件
+            validate = self.cursor.execute("SELECT h.id FROM hospitals h WHERE " + sql_where).fetchall()
+            if validate == []:
+                return "抱歉，找不到您要的「{}{}」相關資訊".format(county, township)
+            else:
+                # return CheckBox().print_ckbox(sql_where)
+                return sql_where
         except:
-            flash("操作失敗")
-            return render_template("hospital.html")
+            return "操作失敗"
 
     ## 特殊疾病搜尋
-    def search_disease(self, disease):
+    def search_disease(self, diseases):
         try:
-            if disease != '':
+            getStr = {
+                1: "m.m_2, m.m_3",
+                2: "m.m_6, m.m_7, m.m_8, m.m_9, m.m_10, m.m_11",
+                3: "m.m_12, m.m_13, m.m_14, m.m_15",
+                4: "m.m_16, m.m_17, m.m_18",
+                5: "m.m_19, m.m_20, m.m_21, m.m_22",
+                6: "m.m_23, m.m_24, m.m_25, m.m_26, m.m_27",
+                7: "m.m_28, m.m_29, m.m_30, m.m_31",
+                8: "m.m_32, m.m_33"
+            }
+            sub_str = ''
+            while '' in diseases:
+                diseases.remove('')
+            for disease in diseases:
                 getId = self.cursor.execute("SELECT id FROM diseases WHERE (name LIKE '%" + disease + "%' OR eng_name LIKE '%" + disease + "%')")
-                diseaseId = (getId.fetchone()[0])
-                getStr = {
-                    1: "m.m_1, m.m_2, m.m_3, m.m_4, m.m_5",
-                    2: "m.m_6, m.m_7, m.m_8, m.m_9, m.m_10, m.m_11",
-                    3: "m.m_12, m.m_13, m.m_14, m.m_15",
-                    4: "m.m_16, m.m_17, m.m_18",
-                    5: "m.m_19, m.m_20, m.m_21, m.m_22",
-                    6: "m.m_23, m.m_24, m.m_25, m.m_26, m.m_27",
-                    7: "m.m_28, m.m_29, m.m_30, m.m_31",
-                    8: "m.m_32, m.m_33"
-                }
-                select_str = getStr.get(diseaseId)
-                return select_str
-            else:
-                return ''
+                diseaseId = getId.fetchone()[0]
+                if disease != diseases[-1]:
+                    sub_str += getStr.get(diseaseId) + ', '
+                else:
+                    sub_str += getStr.get(diseaseId)
+            return sub_str
         except:
-            flash('抱歉，找不到您要的「{}」相關資訊。目前只有8個疾病相關的資訊，包括：氣喘疾病(Asthma)、急性心肌梗塞疾病(AMI)、糖尿病(DM，Diabetes)、人工膝關節手術(TKR，Total Knee Replace)、腦中風(Stroke)、鼻竇炎(Sinusitis)、子宮肌瘤手術(Myoma)、消化性潰瘍疾病(Ulcer)。'.format(disease))
-            return render_template("hospital.html")
+            return "抱歉，找不到您要的「{}」相關資訊。目前只有8個疾病相關的資訊，包括：氣喘疾病(Asthma)、急性心肌梗塞疾病(AMI)、糖尿病(DM，Diabetes)、人工膝關節手術(TKR，Total Knee Replace)、腦中風(Stroke)、鼻竇炎(Sinusitis)、子宮肌瘤手術(Myoma)、消化性潰瘍疾病(Ulcer)。".format(disease)
 
     ## 醫院層級搜尋
     def search_type(self, types):
@@ -76,9 +83,9 @@ class Search():
                 1: "m.m_3, m.m_6, m.m_7, m.m_10, m.m_11, m.m_20, m.m_21, m.m_22, m.m_23, m.m_24, m.m_26, m.m_27, m.m_32, m.m_33",
                 2: "m.m_12, m.m_13, m.m_14, m.m_15, m.m_25",
                 3: "m.m_30",
-                4: "m.m_1",
-                5: "m.m_2, m.m_4, m.m_8, m.m_18, m.m_31",
-                6: "m.m_5, m.m_9",
+                4: "",
+                5: "m.m_2, m.m_8, m.m_18, m.m_31",
+                6: "m.m_9",
                 7: "m.m_16, m.m_17",
                 8: "m.m_19",
                 9: "m.m_28, m.m_29"
@@ -96,19 +103,16 @@ class Search():
                     sub_str += getStr.get(keyId)
             return sub_str
         except:
-            flash('抱歉，找不到您要的「{}」相關資訊。'.format(keyword))
-            return render_template("hospital.html")
+            return "抱歉，找不到您要的「{}」相關資訊。".format(keyword)
 
     ## 醫院名稱搜尋
-    def search_name(self, enter_names):
+    def search_name(self, names):
         try:
             ## 建立一個SQL語法中condition的開頭字串
             sql_where = ''
-            ## 建立陣列names，只存放非空值之name
-            names = []
-            for enter_name in enter_names:
-                if enter_name != "":
-                    names.append(enter_name)
+            ## 移除陣列中的空字串
+            while '' in names:
+                names.remove('')
             ## 寫入condition字串中，對應全名或是縮寫
             for name in names:
                 ## 判斷若非陣列最後一個元素則不加"OR"
@@ -118,8 +122,7 @@ class Search():
                     sql_where += ("h.name LIKE '%" + name + "%' OR h.abbreviation LIKE '%" + name + "%'")
             return sql_where
         except:
-            flash('抱歉，找不到您要的「{}」相關資訊。'.format(name))
-            return render_template("hospital.html")
+            return "抱歉，找不到您要的「{}」相關資訊。".format(name)
 
     ## 綜合搜尋
     def search_all(self, county, township, disease, types, keywords, enter_names):
@@ -172,7 +175,7 @@ class SelectAll():
             ckboxName = []
             ## 若條件indexes == ''表示沒搜尋特殊疾病和分類主題，直接列出所有指標
             if indexes == '':
-                indexes = self.cursor.execute("SELECT id, name FROM indexes").fetchall()
+                indexes = self.cursor.execute("SELECT id, name FROM indexes WHERE").fetchall()
                 for i in range(len(indexes)):
                     ckboxVal.append('m.m_' + str(indexes[i][0]))  ##加上'm.m_'方便之後在資料庫搜尋
                     ckboxName.append(indexes[i][1])
@@ -184,45 +187,15 @@ class SelectAll():
             z_ckbox = zip(ckboxVal, ckboxName)
             ## 將sql_where傳至前端暫存，value不接受空格，因此將空格以//取代
             sql_where = self.sql_where.replace(' ', '//')
-            return render_template('hospital.html', scroll='checkBox', sql_where=sql_where, z_ckbox=z_ckbox)
+            return render_template('searchArea.html', scroll='checkBox', sql_where=sql_where, z_ckbox=z_ckbox)
         except:
             flash("綜合搜尋查詢錯誤。")
-            return render_template("hospital.html")
-
-    # def have_category_have_disease(self, both_items):
-    #     try:
-    #         ckboxVal = []
-    #         ckboxName = []
-    #         for i in range(len(both_items)):
-    #             ckboxVal.append(both_items[i])
-    #             ckboxName.append(self.cursor.execute("SELECT name FROM indexes WHERE id = " + both_items[i][4:]).fetchone()[0])
-    #             ## 用zip()將兩個List打包
-    #             z_ckbox = zip(ckboxVal, ckboxName)
-    #         self.sql_where = self.sql_where.replace(" ", "//")
-    #         return render_template('hospital.html', scroll='checkBox', sql_where=self.sql_where, z_ckbox=z_ckbox)
-    #     except:
-    #         flash("綜合搜尋查詢錯誤。")
-    #         return render_template("hospital.html")
-
-    # def have_category_no_disease(self, category_items):
-    #     try:
-    #         ckboxVal = []
-    #         ckboxName = []
-    #         for i in range(len(category_items)):
-    #             ckboxVal.append(category_items[i])
-    #             ckboxName.append(self.cursor.execute("SELECT name FROM indexes WHERE id = " + category_items[i][4:]).fetchone()[0])
-    #             ## 用zip()將兩個List打包
-    #             z_ckbox = zip(ckboxVal, ckboxName)
-    #         self.sql_where = self.sql_where.replace(" ", "//")
-    #         return render_template('hospital.html', scroll='checkBox', sql_where=self.sql_where, z_ckbox=z_ckbox)
-    #     except:
-    #         flash("綜合搜尋查詢錯誤。")
-    #         return render_template("hospital.html")
+            return render_template("searchArea.html")
 
     def no_category_have_disease(self, disease_select):
         try:
             ## 取得醫療機構資訊
-            sqlstr = "SELECT h.abbreviation, fr.star, fr.positive,  fr.negative, h.phone, h.address, round(fr.star) FROM hospitals h JOIN final_reviews fr ON h.id=fr.hospital_id" + self.sql_where
+            sqlstr = "SELECT h.abbreviation, fr.star, fr.positive,  fr.negative, h.phone, h.address, cast(fr.star as float) FROM hospitals h JOIN final_reviews fr ON h.id=fr.hospital_id" + self.sql_where
             normal = self.cursor.execute(sqlstr).fetchall()
             ## 取得data分母(就醫人數)
             sqlstr = "SELECT h.id, " + disease_select + " FROM hospitals h JOIN merge_data m ON h.id = m.hospital_id" + self.sql_where
@@ -237,22 +210,7 @@ class SelectAll():
             return Result().get_column_name(normal, items, l_deno, l_level, l_value)
         except:
             flash("綜合搜尋查詢錯誤。")
-            return render_template("hospital.html")
-
-    # def no_category_no_disease(self):
-    #     try:
-    #         indexes = self.cursor.execute("SELECT id, name FROM indexes").fetchall()
-    #         ckboxVal = []
-    #         ckboxName = []
-    #         for i in range(len(indexes)):
-    #             ckboxVal.append('m.m_' + str(indexes[i][0]))  ##加上'm.m_'方便之後在資料庫搜尋
-    #             ckboxName.append(indexes[i][1])
-    #         z_ckbox = zip(ckboxVal, ckboxName)
-    #         self.sql_where = self.sql_where.replace(" ", "//")
-    #         return render_template('hospital.html', scroll='checkBox', sql_where=self.sql_where, z_ckbox=z_ckbox)
-    #     except:
-    #         flash("綜合搜尋查詢錯誤。")
-    #         return render_template("hospital.html")
+            return render_template("searchArea.html")
 
 class CheckBox():
 
@@ -262,32 +220,40 @@ class CheckBox():
 
     ## 印出相關的指標供使用者選擇，大部分搜尋方式只需列出33個指標
     def print_ckbox(self, sql_where):
-        ## 列出33個指標存入fetch[]，格式為二維陣列，[('指標名稱',), ('指標名稱',)]
-        indexes = self.cursor.execute("SELECT id, name FROM indexes").fetchall()
-        ## 建立兩個List，一個存放傳至前端checkbox時的value，一個存放checkbox會顯示的名稱
-        ckboxVal = []
-        ckboxName = []
-        for i in range(len(indexes)):
-            ckboxVal.append('m.m_' + str((indexes[i][0])))  ##加上'm.m_'方便之後在資料庫搜尋
-            ckboxName.append(indexes[i][1])
-        ## 用zip()將兩個List打包
-        z_ckbox = zip(ckboxVal, ckboxName)
-        ## 因為要將condition暫存至前端的隱藏欄位value，因為value不接受空格所以先轉成//
-        sql_where = 'WHERE ' + sql_where
-        sql_where = sql_where.replace(" ", "//")
-        ##r ender至前端HTML，將condition傳至前端暫存，z_ckbox為checkbox的值和名稱zip
-        return render_template('hospital.html', scroll='checkBox', sql_where=sql_where, z_ckbox=z_ckbox)
-
-    def category_ckbox(self, substr):
-        indexes = substr.split(", ")
-        ckboxVal = []
-        ckboxName = []
-        for i in range(len(indexes)):
-            ckboxVal.append(str(indexes[i]))
-            ckboxName.append(self.cursor.execute("SELECT name FROM indexes WHERE id = " + indexes[i][4:]).fetchone()[0])
+        print(sql_where)
+        if sql_where.find('抱歉') != -1:
+            return render_template('searchArea.html', alert=sql_where)
+        else:
+            ## 列出33個指標存入fetch[]，格式為二維陣列，[('指標名稱',), ('指標名稱',)]
+            indexes = self.cursor.execute("SELECT id, name FROM indexes WHERE id != 1 AND id != 4 AND id != 5").fetchall()
+            ## 建立兩個List，一個存放傳至前端checkbox時的value，一個存放checkbox會顯示的名稱
+            ckboxVal = []
+            ckboxName = []
+            for i in range(len(indexes)):
+                ckboxVal.append('m.m_' + str((indexes[i][0])))  ##加上'm.m_'方便之後在資料庫搜尋
+                ckboxName.append(indexes[i][1])
             ## 用zip()將兩個List打包
-        z_ckbox = zip(ckboxVal, ckboxName)
-        return render_template('hospital.html', scroll='checkBox', sql_where='', z_ckbox=z_ckbox)
+            z_ckbox = zip(ckboxVal, ckboxName)
+            ## 因為要將condition暫存至前端的隱藏欄位value，因為value不接受空格所以先轉成//
+            sql_where = 'WHERE ' + sql_where
+            sql_where = sql_where.replace(" ", "//")
+            ##r ender至前端HTML，將condition傳至前端暫存，z_ckbox為checkbox的值和名稱zip
+            return render_template('searchArea.html', scroll='checkBox', sql_where=sql_where, z_ckbox=z_ckbox)
+
+    def specific_ckbox(self, sub_str):
+        if sub_str.find('抱歉') != -1:
+            flash(sub_str)
+            return render_template('searchArea.html')
+        else:
+            indexes = sub_str.split(", ")
+            ckboxVal = []
+            ckboxName = []
+            for i in range(len(indexes)):
+                ckboxVal.append(str(indexes[i]))
+                ckboxName.append(self.cursor.execute("SELECT name FROM indexes WHERE id = " + indexes[i][4:]).fetchone()[0])
+                ## 用zip()將兩個List打包
+            z_ckbox = zip(ckboxVal, ckboxName)
+            return render_template('searchArea.html', scroll='checkBox', sql_where='', z_ckbox=z_ckbox)
 
 class Select():
 
@@ -302,12 +268,12 @@ class Select():
         ## 將condition改回
         sql_where = sql_where.replace("//", " ")
         ## select醫院的基本資料：名字、分數＆星等、正向評論數、中立評論數、負向評論數、電話與地址並存入normal[]
-        sqlstr = "SELECT h.abbreviation, fr.star, fr.positive,  fr.negative, h.phone, h.address, round(fr.star) FROM hospitals h JOIN final_reviews fr ON h.id=fr.hospital_id " + sql_where
+        sqlstr = "SELECT h.abbreviation, fr.star, fr.positive,  fr.negative, h.phone, h.address, cast(fr.star as float) FROM hospitals h JOIN final_reviews fr ON h.id=fr.hospital_id " + sql_where
         normal = self.cursor.execute(sqlstr).fetchall()
         ## 若未找到任何資料，出現錯誤訊息，若有則進入else
         if normal == []:
             flash('抱歉，找不到您要的資料訊息。')
-            return render_template("hospital.html")
+            return render_template("searchArea.html")
         else:
             return Select().select_data(normal, items, sql_where)
 
@@ -331,23 +297,6 @@ class Select():
         ## 取得data指標值
         sqlstr = "SELECT " + value_substr + " FROM merge_data m JOIN hospitals h ON m.hospital_id = h.id " + sql_where
         l_value = self.cursor.execute(sqlstr).fetchall()
-        return Result().get_column_name(normal, items, l_deno, l_level, l_value)
-
-    def select_disease(self, select_str):
-        ## 取得醫療機構資訊
-        sqlstr = "SELECT h.abbreviation, fr.star, fr.positive,  fr.negative, h.phone, h.address, round(fr.star) FROM hospitals h JOIN final_reviews fr ON h.id=fr.hospital_id"
-        normal = self.cursor.execute(sqlstr).fetchall()
-        ## 取得data分母(就醫人數)
-        sqlstr = "SELECT h.id, " + select_str + " FROM hospitals h JOIN merge_data m ON h.id = m.hospital_id"
-        l_deno = self.cursor.execute(sqlstr).fetchall()  ##執行sqlstr，並列出所有結果到results[]
-        ## 取得data指標值等級
-        sqlstr = "SELECT h.id, " + select_str.replace('m.m_', 'm.l_') + " FROM hospitals h JOIN merge_data m ON h.id = m.hospital_id"
-        l_level = self.cursor.execute(sqlstr).fetchall()  ##執行sqlstr，並列出所有結果到results[]
-        ## 取得data指標值
-        sqlstr = "SELECT h.id, " + select_str.replace('m.m_', 'm.v_') + " FROM hospitals h JOIN merge_data m ON h.id = m.hospital_id"
-        l_value = self.cursor.execute(sqlstr).fetchall()  ##執行sqlstr，並列出所有結果到results[]
-        ## 將select_str以", "切割，存成陣列
-        items = select_str.split(", ")
         return Result().get_column_name(normal, items, l_deno, l_level, l_value)
 
 class Result():
@@ -405,4 +354,4 @@ class Result():
         z_col = zip(columns, full_name)
         z = zip(normal, deno, level, value)
         ## render至前端HTML，ck_len為指標的長度，columns為欄位名稱，z為醫院資訊和指標值的zip
-        return render_template('hospital.html', scroll = 'results', ck_len=ck_len, z_col=z_col, z=z, columns = columns)
+        return render_template('searchArea.html', scroll = 'results', ck_len=ck_len, z_col=z_col, z=z, columns = columns)
