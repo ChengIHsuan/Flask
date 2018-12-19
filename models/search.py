@@ -27,7 +27,7 @@ class Search():
                 # return CheckBox().print_ckbox(sql_where)
                 return sql_where
         except:
-            return "操作失敗"
+            return "抱歉，操作失敗"
 
     ## 特殊疾病搜尋
     def search_disease(self, diseases):
@@ -120,9 +120,12 @@ class Search():
                     sql_where += ("h.name LIKE '%" + name + "%' OR h.abbreviation LIKE '%" + name + "%' OR ")
                 else:
                     sql_where += ("h.name LIKE '%" + name + "%' OR h.abbreviation LIKE '%" + name + "%'")
+                validate = self.cursor.execute("SELECT h.id FROM hospitals h WHERE " + sql_where).fetchall()
+                if validate == []:
+                    return "抱歉，找不到您要的「{}」相關資訊。".format(name)
             return sql_where
         except:
-            return "抱歉，找不到您要的「{}」相關資訊。".format(name)
+            return "抱歉，操作失敗"
 
     ## 綜合搜尋
     def search_all(self, county, township, disease, types, keywords, enter_names):
@@ -220,7 +223,6 @@ class CheckBox():
 
     ## 印出相關的指標供使用者選擇，大部分搜尋方式只需列出33個指標
     def print_ckbox(self, sql_where):
-        print(sql_where)
         if sql_where.find('抱歉') != -1:
             return render_template('searchArea.html', alert=sql_where)
         else:
@@ -242,8 +244,7 @@ class CheckBox():
 
     def specific_ckbox(self, sub_str):
         if sub_str.find('抱歉') != -1:
-            flash(sub_str)
-            return render_template('searchArea.html')
+            return render_template('searchArea.html', alert=sub_str)
         else:
             indexes = sub_str.split(", ")
             ckboxVal = []
