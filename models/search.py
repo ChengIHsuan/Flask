@@ -22,7 +22,7 @@ class Search():
             ## 驗證使用者是否輸入不存在的條件
             validate = self.cursor.execute("SELECT h.id FROM hospitals h WHERE " + sql_where).fetchall()
             if validate == []:
-                return "抱歉，找不到您要的「{}{}」相關資訊".format(county, township)
+                return "抱歉，找不到您要的「{}{}」相關資訊。地區".format(county, township)
             else:
                 # return CheckBox().print_ckbox(sql_where)
                 return sql_where
@@ -78,32 +78,27 @@ class Search():
 
     ## 分類主題搜尋
     def search_category(self, keywords):
-        try:
-            getStr = {
-                1: "m.m_3, m.m_6, m.m_7, m.m_10, m.m_11, m.m_20, m.m_21, m.m_22, m.m_23, m.m_24, m.m_26, m.m_27, m.m_32, m.m_33",
-                2: "m.m_12, m.m_13, m.m_14, m.m_15, m.m_25",
-                3: "m.m_30",
-                4: "",
-                5: "m.m_2, m.m_8, m.m_18, m.m_31",
-                6: "m.m_9",
-                7: "m.m_16, m.m_17",
-                8: "m.m_19",
-                9: "m.m_28, m.m_29"
-            }
-            sub_str = ''
-            ## 移除陣列中的空字串
-            while '' in keywords:
-                keywords.remove('')
-            for keyword in keywords:
-                getId = self.cursor.execute("SELECT id FROM category WHERE name LIKE '%" + keyword + "%'")
-                keyId = getId.fetchone()[0]
-                if keyword != keywords[-1]:
-                    sub_str += getStr.get(keyId) + ', '
-                else:
-                    sub_str += getStr.get(keyId)
-            return sub_str
-        except:
-            return "抱歉，找不到您要的「{}」相關資訊。".format(keyword)
+        getStr = {
+            "1": "m.m_3, m.m_6, m.m_7, m.m_10, m.m_11, m.m_20, m.m_21, m.m_22, m.m_23, m.m_24, m.m_26, m.m_27, m.m_32, m.m_33",
+            "2": "m.m_12, m.m_13, m.m_14, m.m_15, m.m_25",
+            "3": "m.m_30",
+            "4": "",
+            "5": "m.m_2, m.m_8, m.m_18, m.m_31",
+            "6": "m.m_9",
+            "7": "m.m_16, m.m_17",
+            "8": "m.m_19",
+            "9": "m.m_28, m.m_29"
+        }
+        sub_str = ''
+        ## 移除陣列中的空字串
+        while '' in keywords:
+            keywords.remove('')
+        for keyword in keywords:
+            if keyword != keywords[-1]:
+                sub_str += getStr.get(keyword) + ', '
+            else:
+                sub_str += getStr.get(keyword)
+        return sub_str
 
     ## 醫院名稱搜尋
     def search_name(self, names):
@@ -122,7 +117,7 @@ class Search():
                     sql_where += ("h.name LIKE '%" + name + "%' OR h.abbreviation LIKE '%" + name + "%'")
                 validate = self.cursor.execute("SELECT h.id FROM hospitals h WHERE " + sql_where).fetchall()
                 if validate == []:
-                    return "抱歉，找不到您要的「{}」相關資訊。".format(name)
+                    return "抱歉，找不到您要的「{}」相關資訊。名稱".format(name)
             return sql_where
         except:
             return "抱歉，操作失敗"
@@ -171,7 +166,7 @@ class Search():
         for index in disease_indexes:
             if index in category_indexes:
                 both_indexes.append(index)
-                
+
         if category_select != '':   # 有分類主題
             if disease_select != '':   #有分類主題、特疾
                 return SelectAll(sql_where).print_ckbox(both_indexes)
