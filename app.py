@@ -73,10 +73,7 @@ def panduan():
             ## 醫院層級
             types = request.values.getlist('type')
             ## 分類主題
-            keyword1 = request.form.get('keyword1')
-            keyword2 = request.form.get('keyword2')
-            keyword3 = request.form.get('keyword3')
-            keywords = [keyword1, keyword2, keyword3]
+            keywords = request.values.getlist('keyword')
             ## 醫院名稱
             name1 = request.form.get('name1')
             name2 = request.form.get('name2')
