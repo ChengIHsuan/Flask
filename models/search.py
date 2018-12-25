@@ -59,7 +59,7 @@ class Search():
     ## 醫院層級搜尋
     def search_type(self, types):
         ## 建立一個tuple，使前端取回的type值可以對應正確的醫院層級
-        t = {
+        getStr = {
             '1': "醫學中心",
             '2': "區域醫院",
             '3': "地區醫院",
@@ -71,9 +71,9 @@ class Search():
         for type in types:
             ## 判斷若非陣列最後一個元素則不加"OR"
             if type != types[-1]:
-                sql_where += "h.type = '" + t.get(type) + "' OR "
+                sql_where += "h.type = '" + getStr.get(type) + "' OR "
             else:
-                sql_where += "h.type = '" + t.get(type) + "'"
+                sql_where += "h.type = '" + getStr.get(type) + "'"
         return sql_where
 
     ## 分類主題搜尋
@@ -122,8 +122,48 @@ class Search():
         except:
             return "抱歉，操作失敗"
 
+    ## 查詢條件
+    def search_filter(self, county, township, diseases, types, keywords, names):
+        search_filter = "查詢條件："
+        if county+township != '':
+            search_filter += (county+township) + ', '
+        while '' in diseases:
+            diseases.remove('')
+        for disease in diseases:
+            search_filter += disease + ', '
+        for type in types:
+            getStr = {
+                '1': "醫學中心",
+                '2': "區域醫院",
+                '3': "地區醫院",
+                '4': "診所"
+            }
+            search_filter += getStr.get(type) + ', '
+        for keyword in keywords:
+            getStr = {
+                '1': "應服藥物",
+                '2': "疾病檢查",
+                '3': "住院日數",
+                '4': "健保費用",
+                '5': "再次住院",
+                '6': "再次急診",
+                '7': "手術感染",
+                '8': "中風復健",
+                '9': "器官損傷"
+            }
+            search_filter += getStr.get(keyword) + ', '
+        while '' in names:
+            names.remove('')
+        for name in names:
+            search_filter += name + ', '
+        search_filter = search_filter[:-2]
+        return search_filter
+
+
+
     ## 綜合搜尋
-    def search_all(self, county, township, disease, types, keywords, enter_names):
+    def search_all(self, county, township, diseases, types, keywords, names):
+        search_filter = Search().search_filter(county, township, diseases, types, keywords, names)
         sql_where = ''
         ## 取得地區搜尋的condition
         area_condition = Search().search_area(county, township)
@@ -135,7 +175,7 @@ class Search():
         ## 取得醫院層級condition
         type_condition = '(' + Search().search_type(types) + ')'
         ## 取得醫院名稱condition
-        name_condition = Search().search_name(enter_names)
+        name_condition = Search().search_name(names)
         ## 若為錯誤訊息，以alert提示
         if name_condition.find('抱歉') != -1:
             return render_template('searchArea.html', alert=name_condition)
@@ -154,7 +194,7 @@ class Search():
                 else:
                     sql_where +=condition
 
-        disease_select = Search().search_disease(disease)
+        disease_select = Search().search_disease(diseases)
         if disease_select.find('抱歉') != -1:
             return render_template('searchArea.html', alert=disease_select)
         category_select = Search().search_category(keywords)
@@ -166,24 +206,25 @@ class Search():
         for index in disease_indexes:
             if index in category_indexes:
                 both_indexes.append(index)
-
+        print(search_filter)
         if category_select != '':   # 有分類主題
             if disease_select != '':   #有分類主題、特疾
-                return SelectAll(sql_where).print_ckbox(both_indexes)
+                return SelectAll(sql_where, search_filter).print_ckbox(both_indexes)
             else:   # 有分類主題沒有特疾
-                return SelectAll(sql_where).print_ckbox(category_indexes)
+                return SelectAll(sql_where, search_filter).print_ckbox(category_indexes)
         else:   ##沒有分類主題
             if disease_select != '':  # 沒有分類主題有特疾
-                return SelectAll(sql_where).print_ckbox(disease_indexes)
+                return SelectAll(sql_where, search_filter).print_ckbox(disease_indexes)
             else:  # 都沒有
-                return SelectAll(sql_where).print_ckbox('')
+                return SelectAll(sql_where, search_filter).print_ckbox('')
 
 class SelectAll():
-    def __init__(self, sql_where):
+    def __init__(self, sql_where, search_filter):
         db = sqlite3.connect('voyager.db')
         self.cursor = db.cursor()
         if sql_where != '':
             self.sql_where = ' WHERE ' + sql_where
+        self.search_filter = search_filter
 
     def print_ckbox(self, indexes):
         try:
@@ -204,7 +245,7 @@ class SelectAll():
             z_ckbox = zip(ckboxVal, ckboxName)
             ## 將sql_where傳至前端暫存，value不接受空格，因此將空格以//取代
             sql_where = self.sql_where.replace(' ', '//')
-            return render_template('searchArea.html', scroll='checkBox', sql_where=sql_where, z_ckbox=z_ckbox)
+            return render_template('searchArea.html', scroll='checkBox', sql_where=sql_where, z_ckbox=z_ckbox, tmp_filter=self.search_filter)
         except:
             flash("綜合搜尋查詢錯誤。")
             return render_template("searchArea.html")
@@ -279,7 +320,7 @@ class Select():
     ## 前端按下button後進入的第一個方法
     ## 將暫存在前端的condition、使用者勾選的指標寫成陣列取回
     ## 取得醫院的基本資訊
-    def select_normal(self, sql_where, items):
+    def select_normal(self, sql_where, items, search_filter):
         ## 將condition改回
         sql_where = sql_where.replace("//", " ")
         ## select醫院的基本資料：名字、分數＆星等、正向評論數、中立評論數、負向評論數、電話與地址並存入normal[]
@@ -290,10 +331,10 @@ class Select():
             flash('抱歉，找不到您要的資料訊息。')
             return render_template("searchArea.html")
         else:
-            return Select().select_data(normal, items, sql_where)
+            return Select().select_data(normal, items, sql_where, search_filter)
 
     ## 取得使用者勾選的資訊
-    def select_data(self, normal, items, sql_where):
+    def select_data(self, normal, items, sql_where, search_filter):
         deno_substr = 'm.hospital_id'
         level_substr = 'm.hospital_id'
         value_substr = 'm.hospital_id'
@@ -312,7 +353,7 @@ class Select():
         ## 取得data指標值
         sqlstr = "SELECT " + value_substr + " FROM merge_data m JOIN hospitals h ON m.hospital_id = h.id " + sql_where
         l_value = self.cursor.execute(sqlstr).fetchall()
-        return Result().get_column_name(normal, items, l_deno, l_level, l_value)
+        return Result().get_column_name(normal, items, l_deno, l_level, l_value, search_filter)
 
 class Result():
 
@@ -321,7 +362,7 @@ class Result():
         self.cursor = db.cursor()
 
     ## 取得欄位名稱
-    def get_column_name(self, normal, items, l_deno, l_level, l_value):
+    def get_column_name(self, normal, items, l_deno, l_level, l_value, search_filter):
         ## 先取得欄位的原始名字(m.m_?)，「醫院機構資訊」為固定欄位，直接手動新增
         getColumns=['醫療機構資訊']
         for r in range(len(items)):
@@ -335,10 +376,10 @@ class Result():
         for fn in columns:
             if fn != '醫療機構資訊':
                 full_name.append(self.cursor.execute("SELECT name FROM indexes WHERE abbreviation = '" + fn + "'").fetchone()[0])
-        return Result().table(normal, columns, full_name, l_deno, l_level, l_value)
+        return Result().table(normal, columns, full_name, l_deno, l_level, l_value, search_filter)
 
     ## 將搜尋結果寫進表格
-    def table(self, normal, columns, full_name, l_deno, l_level, l_value):
+    def table(self, normal, columns, full_name, l_deno, l_level, l_value, search_filter):
         ## 選取的指標數量，-1是因為扣掉第一欄的醫療機構資訊
         ck_len = len(columns) - 1
         ## 建立deno[]存放分母資料
@@ -369,4 +410,4 @@ class Result():
         z_col = zip(columns, full_name)
         z = zip(normal, deno, level, value)
         ## render至前端HTML，ck_len為指標的長度，columns為欄位名稱，z為醫院資訊和指標值的zip
-        return render_template('searchArea.html', scroll = 'results', ck_len=ck_len, z_col=z_col, z=z, columns = columns)
+        return render_template('searchArea.html', scroll = 'results', ck_len=ck_len, z_col=z_col, z=z, columns=columns, filter=search_filter)

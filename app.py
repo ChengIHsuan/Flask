@@ -27,9 +27,10 @@ def panduan():
         if 'choose' in request.form:
             items = request.values.getlist('item')
             sql_where = request.form.get('sqlstr')
-            return Select().select_normal(sql_where, items)
+            search_filter = request.form.get('tmp_filter')
+            return Select().select_normal(sql_where, items, search_filter)
         # elif 'searchArea' in request.form:
-        #     #從前端hospital.html的unputbox的name抓使用者輸入的值
+        #     #從前端searchArea.html的unputbox的name抓使用者輸入的值
         #     county = request.form.get("county")
         #     if county.find('台') != -1:
         #         county = county.replace('台', '臺')
@@ -67,9 +68,9 @@ def panduan():
             disease2 = request.form.get('disease2')
             disease3 = request.form.get('disease3')
             diseases = [disease1, disease2, disease3]
-            for disease in diseases:
-                if disease == '':
-                    disease == 0
+            # for disease in diseases:
+            #     if disease == '':
+            #         disease == 0
             ## 醫院層級
             types = request.values.getlist('type')
             ## 分類主題
@@ -80,6 +81,7 @@ def panduan():
             name3 = request.form.get('name3')
             names = [name1, name2, name3]
             return Search().search_all(county, township, diseases, types, keywords, names)
+            # return Search().filter(county, township, diseases, types, keywords, names)
 
 @app.route('/sort', methods=['GET'])
 def renderSort():
@@ -118,13 +120,13 @@ def renderSignup():
 ##########手機版##########
 @app.route('/phone_search', methods=['GET'])
 def renderPhoneSearch():
-    return render_template('phoneHospital.html')
+    return render_template('phonesearchArea.html')
 
 @app.route('/phone_search', methods=['POST'])
 def phone_panduan():
     if request.method == 'POST':
         if 'searchArea' in request.form:
-            #從前端hospital.html的unputbox的name抓使用者輸入的值
+            #從前端searchArea.html的unputbox的name抓使用者輸入的值
             county = request.form.get("county")
             township = request.form.get("township")
             ##使用class Hospital()裡面的search_area方法

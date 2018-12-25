@@ -168,6 +168,10 @@
         document.location.hash = '#' + '{{ scroll }}';
 </script>
         {% endif %}
+        <div class="span" style="padding-left:20px" >
+                <label>{{filter}}</label>
+                <input type="hidden" name="tmp_filter" value="{{tmp_filter}}">
+             </div>
         <table width="100%" border="1">
             <thead>
             <tr>
