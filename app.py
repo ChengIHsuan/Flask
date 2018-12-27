@@ -57,6 +57,11 @@ def panduan():
         #     name3 = request.form.get('name3')
         #     names = [name1, name2, name3]
         #     return CheckBox().print_ckbox(Search().search_name(names))
+        # elif 'searchR' in request.form:
+        #     star = request.form.get("star")
+        #     positive = request.form.get("positive")
+        #     negative = request.form.get("negative")
+        #     return Search().search_reviews(star, positive, negative)
         elif 'searchAll' in request.form:
             ## 地區
             county = request.form.get("county")
@@ -80,7 +85,11 @@ def panduan():
             name2 = request.form.get('name2')
             name3 = request.form.get('name3')
             names = [name1, name2, name3]
-            return Search().search_all(county, township, diseases, types, keywords, names)
+            ## 評價結果
+            star = request.form.get("star")
+            positive = request.form.get("positive")
+            negative = request.form.get("negative")
+            return Search().search_all(county, township, diseases, types, keywords, names, star, positive, negative)
             # return Search().filter(county, township, diseases, types, keywords, names)
 
 @app.route('/sort', methods=['GET'])

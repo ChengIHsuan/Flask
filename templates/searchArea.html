@@ -141,6 +141,22 @@
     <input type="textbox" name="name3">
     <!--<input type="submit" name="searchName" value="Search">-->
 
+    <h2>評價結果搜尋</h2>
+    <p></p>
+    <label>請選擇星等(大於等於)</label>
+    <select name="star">
+        <option selected>請選擇星等</option>
+        <option value="1">5</option>
+        <option value="2">4(以上)</option>
+        <option value="3">3(以上)</option>
+        <option value="4">2(以上)</option>
+        <option value="5">1(以上)</option>
+    </select>
+    <label>正面評價數(大於等於)</label>
+    <input type="textbox" name="positive" placeholder="如：5(則正面評論以上)">
+    <label>負面評價數(小於等於)</label>
+    <input type="textbox" name="negative" id="are" placeholder="如：5(則負面評論以下)">
+
     <div>
         <button type="submit" name="searchAll">綜合搜尋</button>
     </div>
@@ -169,9 +185,9 @@
 </script>
         {% endif %}
         <div class="span" style="padding-left:20px" >
-                <label>{{filter}}</label>
-                <input type="hidden" name="tmp_filter" value="{{tmp_filter}}">
-             </div>
+            <label>{{filter}}</label>
+            <input type="hidden" name="tmp_filter" value="{{tmp_filter}}">
+        </div>
         <table width="100%" border="1">
             <thead>
             <tr>

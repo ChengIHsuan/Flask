@@ -22,7 +22,7 @@ class Search():
             ## 驗證使用者是否輸入不存在的條件
             validate = self.cursor.execute("SELECT h.id FROM hospitals h WHERE " + sql_where).fetchall()
             if validate == []:
-                return "抱歉，找不到您要的「{}{}」相關資訊。地區".format(county, township)
+                return "抱歉，找不到您要的「{}{}」相關資訊。".format(county, township)
             else:
                 # return CheckBox().print_ckbox(sql_where)
                 return sql_where
@@ -117,10 +117,22 @@ class Search():
                     sql_where += ("h.name LIKE '%" + name + "%' OR h.abbreviation LIKE '%" + name + "%'")
                 validate = self.cursor.execute("SELECT h.id FROM hospitals h WHERE " + sql_where).fetchall()
                 if validate == []:
-                    return "抱歉，找不到您要的「{}」相關資訊。名稱".format(name)
+                    return "抱歉，找不到您要的「{}」相關資訊。".format(name)
             return sql_where
         except:
             return "抱歉，操作失敗"
+
+    def search_reviews(self, star, positive, negative):
+        sql_where = ''
+        if star != '':
+            sql_where += "fr.star >= " + star + " AND fr.star != 'N/A' AND "
+        if positive != '':
+            sql_where += "fr.positive >= " + positive + " AND fr.positive != 'N/A' AND "
+        if negative != '':
+            sql_where += "fr.negative >= " + negative+ " AND "
+        sql_where = sql_where[:-4]
+        return sql_where
+
 
     ## 查詢條件
     def search_filter(self, county, township, diseases, types, keywords, names):
@@ -162,7 +174,7 @@ class Search():
 
 
     ## 綜合搜尋
-    def search_all(self, county, township, diseases, types, keywords, names):
+    def search_all(self, county, township, diseases, types, keywords, names, star, positive, negative):
         search_filter = Search().search_filter(county, township, diseases, types, keywords, names)
         sql_where = ''
         ## 取得地區搜尋的condition
@@ -181,8 +193,10 @@ class Search():
             return render_template('searchArea.html', alert=name_condition)
         else:
             name_condition = '(' + name_condition + ')'
+        ## 取的評價結果condition
+        reviews_condition = Search().search_reviews(star, positive, negative)
 
-        conditions = [area_condition, type_condition, name_condition]
+        conditions = [area_condition, type_condition, name_condition, reviews_condition]
         ## 若沒有條件則移除
         while '()' in conditions:
             conditions.remove('()')
@@ -345,13 +359,13 @@ class Select():
             value = items[r].replace('m.m_', 'm.v_')
             value_substr += (', ' + value)
         ## 取得data分母(就醫人數)
-        sqlstr = "SELECT " + deno_substr + " FROM merge_data m JOIN hospitals h ON m.hospital_id = h.id " + sql_where
+        sqlstr = "SELECT " + deno_substr + " FROM merge_data m JOIN hospitals h ON m.hospital_id = h.id JOIN final_reviews fr ON h.id = fr.hospital_id " + sql_where
         l_deno = self.cursor.execute(sqlstr).fetchall()
         ## 取得data指標值等級
-        sqlstr = "SELECT " + level_substr + " FROM merge_data m JOIN hospitals h ON m.hospital_id = h.id " + sql_where
+        sqlstr = "SELECT " + level_substr + " FROM merge_data m JOIN hospitals h ON m.hospital_id = h.id JOIN final_reviews fr ON h.id = fr.hospital_id " + sql_where
         l_level = self.cursor.execute(sqlstr).fetchall()
         ## 取得data指標值
-        sqlstr = "SELECT " + value_substr + " FROM merge_data m JOIN hospitals h ON m.hospital_id = h.id " + sql_where
+        sqlstr = "SELECT " + value_substr + " FROM merge_data m JOIN hospitals h ON m.hospital_id = h.id JOIN final_reviews fr ON h.id = fr.hospital_id " + sql_where
         l_value = self.cursor.execute(sqlstr).fetchall()
         return Result().get_column_name(normal, items, l_deno, l_level, l_value, search_filter)
 
