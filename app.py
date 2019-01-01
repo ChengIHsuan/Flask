@@ -19,7 +19,7 @@ def shutdown_session(exception=None):
 ##在地區搜尋介面取得使用者輸入的值/search_area
 @app.route('/', methods=['GET'])
 def renderSearch():
-    return render_template('searchArea.html')
+    return render_template('hospital.html')
 
 @app.route('/search', methods=['POST'])
 def panduan():
@@ -29,39 +29,6 @@ def panduan():
             sql_where = request.form.get('sqlstr')
             search_filter = request.form.get('tmp_filter')
             return Select().select_normal(sql_where, items, search_filter)
-        # elif 'searchArea' in request.form:
-        #     #從前端searchArea.html的unputbox的name抓使用者輸入的值
-        #     county = request.form.get("county")
-        #     if county.find('台') != -1:
-        #         county = county.replace('台', '臺')
-        #     township = request.form.get("township")
-        #     return CheckBox().print_ckbox(Search().search_area(county, township))
-        # elif 'searchDisease' in request.form:
-        #     disease1 = request.form.get('disease1')
-        #     disease2 = request.form.get('disease2')
-        #     disease3 = request.form.get('disease3')
-        #     diseases = [disease1, disease2, disease3]
-        #     return CheckBox().specific_ckbox(Search().search_disease(diseases))
-        # elif 'searchType' in request.form:
-        #     types = request.values.getlist('type')
-        #     return CheckBox().print_ckbox(Search().search_type(types))
-        # elif 'searchCategory' in request.form:
-        #     keyword1 = request.form.get('keyword1')
-        #     keyword2 = request.form.get('keyword2')
-        #     keyword3 = request.form.get('keyword3')
-        #     keywords = [keyword1, keyword2, keyword3]
-        #     return CheckBox().specific_ckbox(Search().search_category(keywords))
-        # elif 'searchName' in request.form:
-        #     name1 = request.form.get('name1')
-        #     name2 = request.form.get('name2')
-        #     name3 = request.form.get('name3')
-        #     names = [name1, name2, name3]
-        #     return CheckBox().print_ckbox(Search().search_name(names))
-        # elif 'searchR' in request.form:
-        #     star = request.form.get("star")
-        #     positive = request.form.get("positive")
-        #     negative = request.form.get("negative")
-        #     return Search().search_reviews(star, positive, negative)
         elif 'searchAll' in request.form:
             ## 地區
             county = request.form.get("county")
@@ -73,9 +40,6 @@ def panduan():
             disease2 = request.form.get('disease2')
             disease3 = request.form.get('disease3')
             diseases = [disease1, disease2, disease3]
-            # for disease in diseases:
-            #     if disease == '':
-            #         disease == 0
             ## 醫院層級
             types = request.values.getlist('type')
             ## 分類主題
@@ -129,13 +93,13 @@ def renderSignup():
 ##########手機版##########
 @app.route('/phone_search', methods=['GET'])
 def renderPhoneSearch():
-    return render_template('phonesearchArea.html')
+    return render_template('phonehospital.html')
 
 @app.route('/phone_search', methods=['POST'])
 def phone_panduan():
     if request.method == 'POST':
         if 'searchArea' in request.form:
-            #從前端searchArea.html的unputbox的name抓使用者輸入的值
+            #從前端hospital.html的unputbox的name抓使用者輸入的值
             county = request.form.get("county")
             township = request.form.get("township")
             ##使用class Hospital()裡面的search_area方法
