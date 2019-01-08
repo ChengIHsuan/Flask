@@ -308,7 +308,7 @@ class Select():
         ## 取得data指標值
         sqlstr = "SELECT " + value_substr + " FROM merge_data m JOIN hospitals h ON m.hospital_id = h.id JOIN final_reviews fr ON h.id = fr.hospital_id " + sql_where
         l_value = self.cursor.execute(sqlstr).fetchall()
-        return Result().get_column_name(normal, items, l_deno, l_level, l_value, search_filter)
+        return Result().get_column_name(normal, items, l_deno, l_level, l_value, search_filter, sql_where)
 
 class Result():
 
@@ -317,7 +317,7 @@ class Result():
         self.cursor = db.cursor()
 
     ## 取得欄位名稱
-    def get_column_name(self, normal, items, l_deno, l_level, l_value, search_filter):
+    def get_column_name(self, normal, items, l_deno, l_level, l_value, search_filter, sql_where):
         ## 先取得欄位的原始名字(m.m_?)，「醫院機構資訊」為固定欄位，直接手動新增
         getColumns=['醫療機構資訊']
         for r in range(len(items)):
@@ -325,19 +325,17 @@ class Result():
         ## 建立columns[]，存入從資料庫中取得的欄位名稱(縮寫)
         columns = []
         for c in getColumns:
-            print(c)
             columns.append(self.cursor.execute("SELECT abbreviation FROM column_name WHERE name = '" + c + "'").fetchone()[0])
         ## 建立full_name[]，存入欄位名稱(縮寫)的完整名字
         full_name = ['醫療機構資訊']
-        print(columns)
         for fn in columns:
             if fn != '醫療機構資訊':
-                print(fn)
                 full_name.append(self.cursor.execute("SELECT name FROM indexes WHERE abbreviation = '" + fn + "'").fetchone()[0])
-        return Result().table(normal, columns, full_name, l_deno, l_level, l_value, search_filter)
+        indexes = columns[1:]
+        return Result().table(normal, columns, full_name, l_deno, l_level, l_value, search_filter, indexes, sql_where, items)
 
     ## 將搜尋結果寫進表格
-    def table(self, normal, columns, full_name, l_deno, l_level, l_value, search_filter):
+    def table(self, normal, columns, full_name, l_deno, l_level, l_value, search_filter, indexes, sql_where, items):
         ## 選取的指標數量，-1是因為扣掉第一欄的醫療機構資訊
         ck_len = len(columns) - 1
         ## 建立deno[]存放分母資料
@@ -367,5 +365,11 @@ class Result():
         ## 用zip()，讓多個List同時進行迭代
         z_col = zip(columns, full_name)
         z = zip(normal, deno, level, value)
+
+        item = ''
+        for r in range(len(items)):
+            item += items[r]+'//'
+        sql_where = sql_where.replace(' ', '//')
+        search_filter2 = search_filter.replace(' ', '//')
         ## render至前端HTML，ck_len為指標的長度，columns為欄位名稱，z為醫院資訊和指標值的zip
-        return render_template('searchArea.html', scroll = 'results', ck_len=ck_len, z_col=z_col, z=z, columns=columns, filter=search_filter)
+        return render_template('searchArea.html', scroll = 'results', ck_len=ck_len, z_col=z_col, z=z, columns=columns, filter=search_filter, search_filter2=search_filter2, indexes=indexes, sql_where=sql_where, item=item)

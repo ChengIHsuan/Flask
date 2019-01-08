@@ -2,6 +2,7 @@ from flask import Flask, request, render_template, flash
 from database import db_session, init_db
 from models.search import Search, Select ##import search.py裡面的class Search()
 from models.sort import Sort
+import sqlite3
 
 
 app = Flask(__name__)
