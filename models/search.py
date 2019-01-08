@@ -183,7 +183,7 @@ class Search():
         area_condition = Search().search_area(county, township)
         ## 若為錯誤訊息，以alert提示
         if area_condition.find('抱歉') != -1:
-            return render_template('hospital.html', alert=area_condition)
+            return render_template('searchArea.html', alert=area_condition)
         else:
             area_condition = '(' + area_condition + ')'
         ## 取得醫院層級condition
@@ -192,7 +192,7 @@ class Search():
         name_condition = Search().search_name(names)
         ## 若為錯誤訊息，以alert提示
         if name_condition.find('抱歉') != -1:
-            return render_template('hospital.html', alert=name_condition)
+            return render_template('searchArea.html', alert=name_condition)
         else:
             name_condition = '(' + name_condition + ')'
         ## 取得評價結果condition
@@ -212,10 +212,10 @@ class Search():
 
         disease_select = Search().search_disease(diseases)
         if disease_select.find('抱歉') != -1:
-            return render_template('hospital.html', alert=disease_select)
+            return render_template('searchArea.html', alert=disease_select)
         category_select = Search().search_category(keywords)
         if category_select.find('抱歉') != -1:
-            return render_template('hospital.html', alert=category_select)
+            return render_template('searchArea.html', alert=category_select)
         disease_indexes = disease_select.split(", ")
         category_indexes = category_select.split(", ")
         both_indexes = []
@@ -261,10 +261,10 @@ class Ckbox():
             z_ckbox = zip(ckboxVal, ckboxName)
             ## 將sql_where傳至前端暫存，value不接受空格，因此將空格以//取代
             sql_where = self.sql_where.replace(' ', '//')
-            return render_template('hospital.html', scroll='checkBox', sql_where=sql_where, z_ckbox=z_ckbox, tmp_filter=self.search_filter)
+            return render_template('searchArea.html', scroll='checkBox', sql_where=sql_where, z_ckbox=z_ckbox, tmp_filter=self.search_filter)
         except:
             flash("綜合搜尋查詢錯誤。")
-            return render_template("hospital.html")
+            return render_template("searchArea.html")
 
 class Select():
 
@@ -284,7 +284,7 @@ class Select():
         ## 若未找到任何資料，出現錯誤訊息，若有則進入else
         if normal == []:
             flash('抱歉，找不到您要的資料訊息。')
-            return render_template("hospital.html")
+            return render_template("searchArea.html")
         else:
             return Select().select_data(normal, items, sql_where, search_filter)
 
@@ -368,4 +368,4 @@ class Result():
         z_col = zip(columns, full_name)
         z = zip(normal, deno, level, value)
         ## render至前端HTML，ck_len為指標的長度，columns為欄位名稱，z為醫院資訊和指標值的zip
-        return render_template('hospital.html', scroll = 'results', ck_len=ck_len, z_col=z_col, z=z, columns=columns, filter=search_filter)
+        return render_template('searchArea.html', scroll = 'results', ck_len=ck_len, z_col=z_col, z=z, columns=columns, filter=search_filter)

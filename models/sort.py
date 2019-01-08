@@ -1,5 +1,5 @@
 import sqlite3
-from flask import Flask, request, render_template, flash
+from flask import Flask, request, render_template, flash , redirect
 
 class Sort():
 
@@ -7,93 +7,61 @@ class Sort():
         db = sqlite3.connect('voyager.db')
         self.cursor = db.cursor()
 
-    def sort_value(self, indexes):
-     #  try:
-            substr = ''
-            for index in indexes:
-                if index != "":
-                    getId = self.cursor.execute("SELECT id FROM indexes WHERE (name LIKE '%" + index + "%')")
-                    indexId = (getId.fetchone()[0])
-                    substr += ', m.m_' + str(indexId)
-
-                sqlstr = "SELECT h.name"+ substr + " FROM hospitals h JOIN merge_data m ON h.id = m.hospital_id"
-            results = self.cursor.execute(sqlstr).fetchall()  ##執行sqlstr，並列出所有結果到results[]
-            print(sqlstr)
-            print('return囉1')
-            return Sort().get_normal(results, sqlstr)
-     #  except:
-     #       flash('抱歉，找不到您要的「{}」相關資訊。'.format(index))
-     #       return render_template("sortTest.html")
-
-    def reSort(self, index1,index2,index3):
+    def reSort(self, index1, sql_where2, item, filter):
         print(index1)
-        print(index2)
-        print(index3)
-        li = index1.split("&")
-        print(1)
-        print(li)
 
+        print(5)
+        items = item.split("//")
+        del items[-1]
+        sql_where = sql_where2.replace("//", " ")
+        print(6)
+        print(sql_where)
+        search_filter = filter.replace("//", " ")
         a = []
-        a.append(li[0])
-        a.append(index2)
-        a.append(index3)
-        while '請選擇排序' in a:
-            a.remove('請選擇排序')
+        name = self.cursor.execute("select name from column_name where abbreviation = '" + index1 + "'").fetchone()[
+            0]
+        a.append(name)
         print(a)
+        for r in range(len(a)):
+            v = a[r].replace('m.m_', 'm.l_')
+            x = a[r].replace('m.m_', 'm.v_')
+            new = (" order by " + v + " DESC , " + x + " DESC")
+            print(new)
 
-        pre_sqlstr = li[1].replace("//", " ")
-        print(2)
-        print(pre_sqlstr)
-        names =[]
-        for rr in a:
-           name = self.cursor.execute("select name from column_name where abbreviation = '" + rr + "'").fetchone()[0]
-           names.append(name)
-
-        change = ""
-        for tt in range(len(names)):
-            x = names[tt].replace("m.m" , "f.v")
-            if names[tt] != names[-1]:
-              change += (x + " DESC, ")
-            else :
-              change += (x + " DESC")
-
-        print(change)
-
-        sqlstr = pre_sqlstr + " Join final_data f ON h.id = f.hospital_id order by " + change
-        print(3)
+        sqlstr = "SELECT h.abbreviation, fr.star, fr.positive,  fr.negative, h.phone, h.address, cast(fr.star as float) FROM hospitals h JOIN final_reviews fr ON h.id = fr.hospital_id join merge_data m ON h.id = m.hospital_id" + sql_where + new
         print(sqlstr)
-        results = self.cursor.execute(sqlstr).fetchall()  ##執行sqlstr，並列出所有結果到results[]
+        normal = self.cursor.execute(sqlstr).fetchall()
+        print(normal)
+        print(7)
         print('return囉2')
-        return Sort().get_normal2(results, sqlstr ,change)
+        if normal == []:
+            flash('抱歉，找不到您要的資料訊息。')
+            return render_template("searchArea.html")
+        else:
+            return Sort().select_data2(normal, items, sql_where, search_filter, new)
 
-
-    def get_normal(self, results, sqlstr):
-        ## 將condition改回
-
-        ## select醫院的基本資料：名字、分數＆星等、正向評論數、中立評論數、負向評論數、電話與地址並存入normal[]
-        sqlstr2 = "SELECT h.name, 'GOOGLE分數', '正面評論數：'||mr.better,  '負面評論數：'||mr.worse, '中立評論數：'||mr.normal, h.phone, h.address FROM hospitals h JOIN merge_reviews mr ON h.id=mr.hospital_id"
+    def select_data2(self, normal, items, sql_where, search_filter, new):
+        print()
+        deno_substr = 'm.hospital_id'
+        level_substr = 'm.hospital_id'
+        value_substr = 'm.hospital_id'
+        for r in range(len(items)):
+            deno_substr += (', ' + items[r])
+            level = items[r].replace('m.m_', 'm.l_')
+            level_substr += (', ' + level)
+            value = items[r].replace('m.m_', 'm.v_')
+            value_substr += (', ' + value)
+        ## 取得data分母(就醫人數)
+        sqlstr = "SELECT " + deno_substr + " FROM merge_data m JOIN hospitals h ON m.hospital_id = h.id JOIN final_reviews fr ON h.id = fr.hospital_id " + sql_where + new
         print(sqlstr)
-        normal = self.cursor.execute(sqlstr2).fetchall()
-        ## 若未找到任何資料，出現錯誤訊息，若有則進入else
-        if normal == []:
-            flash('抱歉，找不到您要的資料訊息。')
-            return render_template("searchArea.html")
-        else:
-            return Result().get_column_name(normal, results, sqlstr)
-
-    def get_normal2(self, results, sqlstr , change):
-        ## 將condition改回
-
-        ## select醫院的基本資料：名字、分數＆星等、正向評論數、中立評論數、負向評論數、電話與地址並存入normal[]
-        sqlstr2 = "SELECT h.name, 'GOOGLE分數', '正面評論數：'||mr.better,  '負面評論數：'||mr.worse, '中立評論數：'||mr.normal, h.phone, h.address FROM hospitals h JOIN merge_reviews mr ON h.id=mr.hospital_id  Join final_data f ON h.id = f.hospital_id order by " + change
-        print(sqlstr2)
-        normal = self.cursor.execute(sqlstr2).fetchall()
-        ## 若未找到任何資料，出現錯誤訊息，若有則進入else
-        if normal == []:
-            flash('抱歉，找不到您要的資料訊息。')
-            return render_template("searchArea.html")
-        else:
-            return Result().get_column_name(normal, results, sqlstr)
+        l_deno = self.cursor.execute(sqlstr).fetchall()
+        ## 取得data指標值等級
+        sqlstr = "SELECT " + level_substr + " FROM merge_data m JOIN hospitals h ON m.hospital_id = h.id JOIN final_reviews fr ON h.id = fr.hospital_id " + sql_where + new
+        l_level = self.cursor.execute(sqlstr).fetchall()
+        ## 取得data指標值
+        sqlstr = "SELECT " + value_substr + " FROM merge_data m JOIN hospitals h ON m.hospital_id = h.id JOIN final_reviews fr ON h.id = fr.hospital_id " + sql_where + new
+        l_value = self.cursor.execute(sqlstr).fetchall()
+        return Result().get_column_name(normal, items, l_deno, l_level, l_value, search_filter, sql_where)
 
 
 class Result():
@@ -102,41 +70,71 @@ class Result():
         db = sqlite3.connect('voyager.db')
         self.cursor = db.cursor()
 
-    def get_column_name(self,normal ,results, sqlstr ):
-        ##將二維陣列results[]轉成numpy array，並計算總資料數
-        amount = len(results)
-        ##取得sqlstr中select的欄位，並以","做分割
-        s = sqlstr.index("FROM") - 1
-        getColumns = (sqlstr[7:s]).split(', ')
-        print(1)
-        print(getColumns)
+    ## 取得欄位名稱
+    def get_column_name(self, normal, items, l_deno, l_level, l_value, search_filter, sql_where):
+        ## 先取得欄位的原始名字(m.m_?)，「醫院機構資訊」為固定欄位，直接手動新增
+        getColumns = ['醫療機構資訊']
+        for r in range(len(items)):
+            getColumns.append(items[r])
+        ## 建立columns[]，存入從資料庫中取得的欄位名稱(縮寫)
 
-        ##取得欄位名稱
         columns = []
         for c in getColumns:
             print(c)
-            col = self.cursor.execute("SELECT abbreviation FROM column_name WHERE name = '" + c + "'").fetchone()[0]
-            columns.append(col)
-        indexes = columns[1:]
+            columns.append(
+                self.cursor.execute("SELECT abbreviation FROM column_name WHERE name = '" + c + "'").fetchone()[0])
+        ## 建立full_name[]，存入欄位名稱(縮寫)的完整名字
+        full_name = ['醫療機構資訊']
         print(columns)
+        for fn in columns:
+            if fn != '醫療機構資訊':
+                print(fn)
+                full_name.append(
+                    self.cursor.execute("SELECT name FROM indexes WHERE abbreviation = '" + fn + "'").fetchone()[0])
+
+        indexes = columns[1:]
         print(indexes)
-        return Result().table(normal ,results, columns, indexes, sqlstr)
+        return Result().table(normal, columns, full_name, l_deno, l_level, l_value, search_filter, indexes, sql_where, items)
 
-    ##將搜尋結果寫進表格，需傳入(numpy array,總資料數,欄位名稱)
-
-    def table(self,normal ,results, columns, indexes, sqlstr ):
-        ##建立一個陣列，儲存整理好的資料結果
-        context = []
-        for i in range(len(results)):
-            ##建立一個dict，獎每一筆結果轉存成dict的型態
+    ## 將搜尋結果寫進表格
+    def table(self, normal, columns, full_name, l_deno, l_level, l_value, search_filter, indexes, sql_where, items):
+        ## 選取的指標數量，-1是因為扣掉第一欄的醫療機構資訊
+        ck_len = len(columns) - 1
+        ## 建立deno[]存放分母資料
+        deno = []
+        for i in range(len(l_deno)):  # ckbox[][]為Select().get_checkbox()取得的指標值
+            ## 建立一個dict，將每一筆結果轉存成dict的型態
             d = {}
-            for j in range(len(columns)):
-                d[columns[j]] = results[i][j]
-            context.append(d)
-        long = len(columns)
-     #   z = zip(normal,context)
-        sqlstr = sqlstr.replace(" ", "//")
-        z = zip(normal, context)
-        print("===")
-        print(sqlstr)
-        return render_template('sortTest.html', scroll = 'results' , context=context, columns=columns, long=long, indexes=indexes, sqlstr=sqlstr, z=z)
+            for j in range(ck_len):
+                d[columns[j]] = l_deno[i][j + 1]
+            deno.append(d)
+        ## 建立level[]存放等級資料
+        level = []
+        for i in range(len(l_level)):  # ckbox[][]為Select().get_checkbox()取得的指標值
+            ## 建立一個dict，將每一筆結果轉存成dict的型態
+            d = {}
+            for j in range(ck_len):
+                d[columns[j]] = l_level[i][j + 1]
+            level.append(d)
+        ## 建立value[]存放指標值資料
+        value = []
+        for i in range(len(l_value)):  # ckbox[][]為Select().get_checkbox()取得的指標值
+            ## 建立一個dict，將每一筆結果轉存成dict的型態
+            d = {}
+            for j in range(ck_len):
+                d[columns[j]] = l_value[i][j + 1]
+            value.append(d)
+        ## 用zip()，讓多個List同時進行迭代
+        z_col = zip(columns, full_name)
+        z = zip(normal, deno, level, value)
+        print(items)
+        item = ""
+        for r in range(len(items)):
+            item += (items[r] + "//")
+        print(item)
+        print("=====")
+        print(indexes)
+        sql_where = sql_where.replace(" ", "//")
+        search_filter2 = search_filter.replace(" ", "//")
+        ## render至前端HTML，ck_len為指標的長度，columns為欄位名稱，z為醫院資訊和指標值的zip
+        return render_template('searchArea.html', scroll='results', ck_len=ck_len, z_col=z_col, z=z, columns=columns, filter=search_filter, filter2=search_filter2, indexes=indexes,sql_where=sql_where, item=item)

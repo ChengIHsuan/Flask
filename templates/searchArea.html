@@ -146,11 +146,11 @@
     <label>請選擇星等(大於等於)</label>
     <select name="star">
         <option selected value="">請選擇星等</option>
-        <option value="1">5</option>
-        <option value="2">4(以上)</option>
+        <option value="5">5</option>
+        <option value="4">4(以上)</option>
         <option value="3">3(以上)</option>
-        <option value="4">2(以上)</option>
-        <option value="5">1(以上)</option>
+        <option value="2">2(以上)</option>
+        <option value="1">1(以上)</option>
     </select>
     <label>正面評價數(大於等於)</label>
     <input type="textbox" name="positive" placeholder="如：5(則正面評論以上)">
@@ -160,7 +160,6 @@
     <div>
         <button type="submit" name="searchAll">綜合搜尋</button>
     </div>
-
 
     <p></p>
     <div style=" display: inline-block;vertical-align: top;" id="checkBox">
@@ -173,6 +172,7 @@
 
         {% for v, n in z_ckbox %}
         <input type="checkbox" value="{{v}}" name="item" onclick="onCheckBox(this)">{{ n }}
+
         {% endfor %}
     </div>
     <input type="submit" name="choose" value="提交">
@@ -188,6 +188,18 @@
             <label>{{filter}}</label>
             <input type="hidden" name="tmp_filter" value="{{tmp_filter}}">
         </div>
+
+        <select name="index4">
+            <option selected>請選擇排序</option>
+            {% for index in indexes %}
+            <option value={{index}}>{{ index }}</option>
+            {% endfor %}
+            <input type="hidden" name="sql_where" value="{{sql_where}}">
+            <input type="hidden" name="filter2" value="{{filter2}}">
+            <input type="hidden" name="items" value="{{item}}">
+        </select>
+        <input type="submit" name="reSort" value="Sort">
+
         <table width="100%" border="1">
             <thead>
             <tr>
@@ -198,21 +210,25 @@
             </thead>
             <tbody>
             {% for n, d, l, v in z %}
-            <tr >
+            <tr>
                 <td style="background-color:rgba(254,159,150,0.8);">{{ n[0] }}</td>
                 {% for i in range(ck_len) %}
                 <td rowspan="5" style="vertical-align:middle;text-align:center">
                     {% if l[columns[i]] == 75 %}
-                    <img src="{{ url_for('static', filename='高指標.png')}}" height="50px" title="指標值：{{ v[columns[i]] }}{{ d[columns[i]] }}">
+                    <img src="{{ url_for('static', filename='高指標.png')}}" height="50px" title="{{ v[columns[i]] }}{{ d[columns[i]] }}">
+                    <div>{{ v[columns[i]] }}%<br>{{ d[columns[i]] }}</div>
                     {% endif %}
                     {% if l[columns[i]] == 50 %}
                     <img src="{{ url_for('static', filename='中指標.png')}}" height="50px" title="{{ v[columns[i]] }}{{ d[columns[i]] }}">
+                    <div>{{ v[columns[i]] }}%<br>{{ d[columns[i]] }}</div>
                     {% endif %}
                     {% if l[columns[i]] == 0 %}
                     <img src="{{ url_for('static', filename='低指標.png')}}" height="50px" title="{{ v[columns[i]] }}{{ d[columns[i]] }}">
+                    <div>{{ v[columns[i]] }}%<br>{{ d[columns[i]] }}</div>
                     {% endif %}
                     {% if l[columns[i]] == -1 %}
                     <img src="{{ url_for('static', filename='無指標.png')}}" height="50px" title="此醫療機構無此指標值">
+                    <div>此醫療機構無此指標值</div>
                     {% endif %}
                 </td>
                 {% endfor %}
