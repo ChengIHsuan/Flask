@@ -137,14 +137,17 @@ class Search():
         return sql_where
 
     ## 查詢條件
-    def search_filter(self, county, township, diseases, types, keywords, names):
+    def search_filter(self, county, township, diseases, types, keywords, names, star, positive, negative):
         search_filter = "查詢條件："
+        ## 地點搜尋
         if county+township != '':
             search_filter += (county+township) + ', '
+        ## 特疾搜尋
         while '' in diseases:
             diseases.remove('')
         for disease in diseases:
             search_filter += disease + ', '
+        ## 層級搜尋
         for type in types:
             getStr = {
                 '1': "醫學中心",
@@ -153,6 +156,7 @@ class Search():
                 '4': "診所"
             }
             search_filter += getStr.get(type) + ', '
+        ## 分類主題
         for keyword in keywords:
             getStr = {
                 '1': "應服藥物",
@@ -167,17 +171,25 @@ class Search():
                 '10': "組合分數"
             }
             search_filter += getStr.get(keyword) + ', '
+        ## 名稱搜尋
         while '' in names:
             names.remove('')
         for name in names:
             search_filter += name + ', '
+        ## 評價結果
+        if star != '':
+            search_filter += star + "星以上, "
+        if positive != '':
+            search_filter += "正面評論大於" + positive + ', '
+        if negative != '':
+            search_filter += "負面評論小於" + negative + ', '
         search_filter = search_filter[:-2]
         return search_filter
 
     ## 綜合搜尋
     def search_all(self, county, township, diseases, types, keywords, names, star, positive, negative):
         ## 取得查詢條件
-        search_filter = Search().search_filter(county, township, diseases, types, keywords, names)
+        search_filter = Search().search_filter(county, township, diseases, types, keywords, names, star, positive, negative)
         sql_where = ''
         ## 取得地區搜尋的condition
         area_condition = Search().search_area(county, township)
@@ -245,26 +257,115 @@ class Ckbox():
     def print_ckbox(self, indexes):
         try:
             ## 建立兩個list存放checkbox的value和指標名稱
-            ckboxVal = []
-            ckboxName = []
+            ckboxVal_1=[]
+            ckboxVal_2=[]
+            ckboxVal_3=[]
+            ckboxVal_4=[]
+            ckboxVal_5=[]
+            ckboxVal_6=[]
+            ckboxVal_7=[]
+            ckboxVal_8=[]
+            ckboxVal_9=[]
+            ckboxVal_10 = []
+            ckboxName_1=[]
+            ckboxName_2=[]
+            ckboxName_3=[]
+            ckboxName_4=[]
+            ckboxName_5=[]
+            ckboxName_6=[]
+            ckboxName_7=[]
+            ckboxName_8=[]
+            ckboxName_9=[]
+            ckboxName_10 = []
             ## 若條件indexes == ''表示沒搜尋特殊疾病和分類主題，直接列出所有指標
             if indexes == '':
-                indexes = self.cursor.execute("SELECT id, abbreviation FROM indexes WHERE id != 1 AND id != 4 AND id != 5").fetchall()
-                for i in range(len(indexes)):
-                    ckboxVal.append('m.m_' + str(indexes[i][0]))  ##加上'm.m_'方便之後在資料庫搜尋
-                    ckboxName.append(indexes[i][1])
+                all_indexes = self.cursor.execute("SELECT id, abbreviation, parent_id FROM indexes WHERE id != 1 AND id != 4 AND id != 5").fetchall()
+                for i in range(len(all_indexes)):
+                    if all_indexes[i][2] == 1:
+                        ckboxVal_1.append('m.m_' + str(all_indexes[i][0]))  ##加上'm.m_'方便之後在資料庫搜尋
+                        ckboxName_1.append(all_indexes[i][1])
+                    if all_indexes[i][2] == 2:
+                        ckboxVal_2.append('m.m_' + str(all_indexes[i][0]))  ##加上'm.m_'方便之後在資料庫搜尋
+                        ckboxName_2.append(all_indexes[i][1])
+                    if all_indexes[i][2] == 3:
+                        ckboxVal_3.append('m.m_' + str(all_indexes[i][0]))  ##加上'm.m_'方便之後在資料庫搜尋
+                        ckboxName_3.append(all_indexes[i][1])
+                    if all_indexes[i][2] == 4:
+                        ckboxVal_4.append('m.m_' + str(all_indexes[i][0]))  ##加上'm.m_'方便之後在資料庫搜尋
+                        ckboxName_4.append(all_indexes[i][1])
+                    if all_indexes[i][2] == 5:
+                        ckboxVal_5.append('m.m_' + str(all_indexes[i][0]))  ##加上'm.m_'方便之後在資料庫搜尋
+                        ckboxName_5.append(all_indexes[i][1])
+                    if all_indexes[i][2] == 6:
+                        ckboxVal_6.append('m.m_' + str(all_indexes[i][0]))  ##加上'm.m_'方便之後在資料庫搜尋
+                        ckboxName_6.append(all_indexes[i][1])
+                    if all_indexes[i][2] == 7:
+                        ckboxVal_7.append('m.m_' + str(all_indexes[i][0]))  ##加上'm.m_'方便之後在資料庫搜尋
+                        ckboxName_7.append(all_indexes[i][1])
+                    if all_indexes[i][2] == 8:
+                        ckboxVal_8.append('m.m_' + str(all_indexes[i][0]))  ##加上'm.m_'方便之後在資料庫搜尋
+                        ckboxName_8.append(all_indexes[i][1])
+                    if all_indexes[i][2] == 9:
+                        ckboxVal_9.append('m.m_' + str(all_indexes[i][0]))  ##加上'm.m_'方便之後在資料庫搜尋
+                        ckboxName_9.append(all_indexes[i][1])
+                    if all_indexes[i][2] == 10:
+                        ckboxVal_10.append('m.m_' + str(all_indexes[i][0]))  ##加上'm.m_'方便之後在資料庫搜尋
+                        ckboxName_10.append(all_indexes[i][1])
             else:
                 for i in range(len(indexes)):
-                    ckboxVal.append(indexes[i])
-                    ckboxName.append(self.cursor.execute("SELECT abbreviation FROM indexes WHERE id = " + indexes[i][4:]).fetchone()[0])
+                    spe_index = self.cursor.execute("SELECT abbreviation, parent_id FROM indexes WHERE id = " + indexes[i][4:]).fetchone()
+                    if spe_index[1] == 1:
+                        ckboxVal_1.append(indexes[i])
+                        ckboxName_1.append(spe_index[0])
+                    if spe_index[1] == 2:
+                        ckboxVal_2.append(indexes[i])
+                        ckboxName_2.append(spe_index[0])
+                    if spe_index[1] == 3:
+                        ckboxVal_3.append(indexes[i])
+                        ckboxName_3.append(spe_index[0])
+                    if spe_index[1] == 4:
+                        ckboxVal_4.append(indexes[i])
+                        ckboxName_4.append(spe_index[0])
+                    if spe_index[1] == 5:
+                        ckboxVal_5.append(indexes[i])
+                        ckboxName_5.append(spe_index[0])
+                    if spe_index[1] == 6:
+                        ckboxVal_6.append(indexes[i])
+                        ckboxName_6.append(spe_index[0])
+                    if spe_index[1] == 7:
+                        ckboxVal_7.append(indexes[i])
+                        ckboxName_7.append(spe_index[0])
+                    if spe_index[1] == 8:
+                        ckboxVal_8.append(indexes[i])
+                        ckboxName_8.append(spe_index[0])
+                    if spe_index[1] == 9:
+                        ckboxVal_9.append(indexes[i])
+                        ckboxName_9.append(spe_index[0])
+                    if spe_index[1] == 10:
+                        ckboxVal_10.append(indexes[i])
+                        ckboxName_10.append(spe_index[0])
             ## 用zip方法，將兩個list包在一起
-            z_ckbox = zip(ckboxVal, ckboxName)
+            z_ckbox1 = zip(ckboxVal_1, ckboxName_1)
+            z_ckbox2 = zip(ckboxVal_2, ckboxName_2)
+            z_ckbox3 = zip(ckboxVal_3, ckboxName_3)
+            z_ckbox4 = zip(ckboxVal_4, ckboxName_4)
+            z_ckbox5 = zip(ckboxVal_5, ckboxName_5)
+            z_ckbox6 = zip(ckboxVal_6, ckboxName_6)
+            z_ckbox7 = zip(ckboxVal_7, ckboxName_7)
+            z_ckbox8 = zip(ckboxVal_8, ckboxName_8)
+            z_ckbox9 = zip(ckboxVal_9, ckboxName_9)
+            z_ckbox10 = zip(ckboxVal_10, ckboxName_10)
             ## 將sql_where傳至前端暫存，value不接受空格，因此將空格以//取代
             sql_where = self.sql_where.replace(' ', '//')
-            return render_template('searchArea.html', scroll='checkBox', sql_where=sql_where, z_ckbox=z_ckbox, tmp_filter=self.search_filter)
+
+            if ckboxName_1==[] and ckboxName_2==[] and ckboxName_3==[] and ckboxName_4==[] and ckboxName_5==[] and ckboxName_6==[] and ckboxName_7==[] and ckboxName_8==[] and ckboxName_9==[] and ckboxName_10==[]:
+                flash('無相關指標。')
+                return render_template('searchArea.html', scroll='checkBox')
+            else:
+                return render_template('searchArea.html', scroll='checkBox', sql_where=sql_where, tmp_filter=self.search_filter, z_ckbox1=z_ckbox1, z_ckbox2=z_ckbox2, z_ckbox3=z_ckbox3, z_ckbox4=z_ckbox4, z_ckbox5=z_ckbox5, z_ckbox6=z_ckbox6, z_ckbox7=z_ckbox7, z_ckbox8=z_ckbox8, z_ckbox9=z_ckbox9, z_ckbox10=z_ckbox10)
         except:
-            flash("綜合搜尋查詢錯誤。")
-            return render_template("searchArea.html")
+            alert = "綜合搜尋查詢錯誤。"
+            return render_template("searchArea.html", alert=alert)
 
 class Select():
 
@@ -279,12 +380,12 @@ class Select():
         ## 將condition改回
         sql_where = sql_where.replace("//", " ")
         ## select醫院的基本資料：名字、分數＆星等、正向評論數、中立評論數、負向評論數、電話與地址並存入normal[]
-        sqlstr = "SELECT h.abbreviation, fr.star, fr.positive,  fr.negative, h.phone, h.address, cast(fr.star as float) FROM hospitals h JOIN final_reviews fr ON h.id = fr.hospital_id " + sql_where
+        sqlstr = "SELECT h.abbreviation, fr.star, fr.positive,  fr.negative, h.phone, h.address, cast(fr.star as float) FROM merge_data m JOIN hospitals h ON m.hospital_id = h.id JOIN final_reviews fr ON h.id = fr.hospital_id  " + sql_where
         normal = self.cursor.execute(sqlstr).fetchall()
         ## 若未找到任何資料，出現錯誤訊息，若有則進入else
         if normal == []:
-            flash('抱歉，找不到您要的資料訊息。')
-            return render_template("searchArea.html")
+            alert = "抱歉，找不到您要的資料訊息。"
+            return render_template("searchArea.html", alert=alert)
         else:
             return Select().select_data(normal, items, sql_where, search_filter)
 
@@ -365,7 +466,11 @@ class Result():
         ## 用zip()，讓多個List同時進行迭代
         z_col = zip(columns, full_name)
         z = zip(normal, deno, level, value)
-
+        print(len(normal))
+        print(normal[-1])
+        print(len(deno))
+        print(len(value))
+        print(len(level))
         item = ''
         for r in range(len(items)):
             item += items[r]+'//'

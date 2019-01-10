@@ -82,11 +82,7 @@
 
 </head>
 <body>
-{% for message in get_flashed_messages(with_categories=True) %}
-<div class="alert alert-light" role="alert">
-    {{ message[1] }}
-</div>
-{% endfor %}
+
 
 <form action="/search" method="post">
     <h2>測試</h2>
@@ -125,7 +121,6 @@
     <input type="checkbox" value="1" name="keyword" >應服藥物
     <input type="checkbox" value="2" name="keyword" >疾病檢查
     <input type="checkbox" value="3" name="keyword" >住院日數
-    <input type="checkbox" value="4" name="keyword" >健保費用
     <input type="checkbox" value="5" name="keyword" >再次住院
     <input type="checkbox" value="6" name="keyword" >再次急診
     <input type="checkbox" value="7" name="keyword" >手術感染
@@ -170,10 +165,62 @@
         </script>
         {% endif %}
 
-        {% for v, n in z_ckbox %}
-        <input type="checkbox" value="{{v}}" name="item" onclick="onCheckBox(this)">{{ n }}
-
+        {% for message in get_flashed_messages(with_categories=True) %}
+        <div class="alert alert-light" role="alert">
+            {{ message[1] }}
+        </div>
         {% endfor %}
+
+        <div>
+            {% for v, n in z_ckbox1 %}
+            <input type="checkbox" value="{{v}}" name="item" onclick="onCheckBox(this)">{{ n }}
+            {% endfor %}
+        </div>
+        <div>
+            {% for v, n in z_ckbox2 %}
+            <input type="checkbox" value="{{v}}" name="item" onclick="onCheckBox(this)">{{ n }}
+            {% endfor %}
+        </div>
+        <div>
+            {% for v, n in z_ckbox3 %}
+            <input type="checkbox" value="{{v}}" name="item" onclick="onCheckBox(this)">{{ n }}
+            {% endfor %}
+        </div>
+        <div>
+            {% for v, n in z_ckbox4 %}
+            <input type="checkbox" value="{{v}}" name="item" onclick="onCheckBox(this)">{{ n }}
+            {% endfor %}
+        </div>
+        <div>
+            {% for v, n in z_ckbox5 %}
+            <input type="checkbox" value="{{v}}" name="item" onclick="onCheckBox(this)">{{ n }}
+            {% endfor %}
+        </div>
+        <div>
+            {% for v, n in z_ckbox6 %}
+            <input type="checkbox" value="{{v}}" name="item" onclick="onCheckBox(this)">{{ n }}
+            {% endfor %}
+        </div>
+        <div>
+            {% for v, n in z_ckbox7 %}
+            <input type="checkbox" value="{{v}}" name="item" onclick="onCheckBox(this)">{{ n }}
+            {% endfor %}
+        </div>
+        <div>
+            {% for v, n in z_ckbox8 %}
+            <input type="checkbox" value="{{v}}" name="item" onclick="onCheckBox(this)">{{ n }}
+            {% endfor %}
+        </div>
+        <div>
+            {% for v, n in z_ckbox9 %}
+            <input type="checkbox" value="{{v}}" name="item" onclick="onCheckBox(this)">{{ n }}
+            {% endfor %}
+        </div>
+        <div>
+            {% for v, n in z_ckbox10 %}
+            <input type="checkbox" value="{{v}}" name="item" onclick="onCheckBox(this)">{{ n }}
+            {% endfor %}
+        </div>
     </div>
     <input type="submit" name="choose" value="提交">
 
