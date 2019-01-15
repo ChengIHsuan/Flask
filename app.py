@@ -21,7 +21,7 @@ def shutdown_session(exception=None):
 ##在地區搜尋介面取得使用者輸入的值/search_area
 @app.route('/', methods=['GET'])
 def renderSearch():
-    return render_template('searchArea.html')
+    return render_template('hospital.html')
 
 @app.route('/search', methods=['POST'])
 def panduan():
@@ -30,7 +30,7 @@ def panduan():
             items = request.values.getlist('item')
             sql_where = request.form.get('sqlstr')
             search_filter = request.form.get('tmp_filter')
-            return Select().select_normal(sql_where, items, search_filter)
+            return Select().add_sql_where(sql_where, items, search_filter)
         elif 'searchAll' in request.form:
             ## 地區
             county = request.form.get("county")
