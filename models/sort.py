@@ -100,4 +100,4 @@ class Result():
         sql_where = sql_where.replace(' ', '//')
         tmp_filter = search_filter.replace(' ', '//')
         ## render至前端HTML，ck_len為指標的長度，columns為欄位名稱，z為醫院資訊和指標值的zip
-        return render_template('hospital.html', scroll = 'results', ck_len=ck_len, z_col=z_col, z_data=z_data, filter=search_filter, tmp_filter=tmp_filter, indexes=indexes, sql_where=sql_where, tmp_items=tmp_items)
+        return render_template('hospital.html', scroll = 'results', ck_len=ck_len, z_col=z_col, z_data=z_data, search_filter=search_filter, tmp_filter=tmp_filter, indexes=indexes, sql_where=sql_where, tmp_items=tmp_items)

@@ -112,14 +112,14 @@ class Search():
                 names.remove('')
             ## 寫入condition字串中，對應全名或是縮寫
             for name in names:
+                validate = self.cursor.execute("SELECT h.id FROM hospitals h WHERE h.name LIKE '%" + name + "%' OR h.abbreviation LIKE '%" + name + "%'").fetchall()
+                if validate == []:
+                    return "抱歉，找不到您要的「{}」相關資訊。".format(name)
                 ## 判斷若非陣列最後一個元素則不加"OR"
                 if name != names[-1]:
                     sql_where += ("h.name LIKE '%" + name + "%' OR h.abbreviation LIKE '%" + name + "%' OR ")
                 else:
                     sql_where += ("h.name LIKE '%" + name + "%' OR h.abbreviation LIKE '%" + name + "%'")
-                validate = self.cursor.execute("SELECT h.id FROM hospitals h WHERE " + sql_where).fetchall()
-                if validate == []:
-                    return "抱歉，找不到您要的「{}」相關資訊。".format(name)
             return sql_where
         except:
             return "抱歉，操作失敗"
@@ -132,7 +132,7 @@ class Search():
         if positive != '':
             sql_where += "fr.positive >= " + positive + " AND fr.positive != 'N/A' AND "
         if negative != '':
-            sql_where += "fr.negative >= " + negative+ " AND "
+            sql_where += "fr.negative <= " + negative+ " AND "
         sql_where = sql_where[:-4]
         return sql_where
 
