@@ -34,6 +34,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     {% block scripts %}
     <script language="javascript" type="text/javascript" >
+
         $(function(){
              var ty = ["氣喘疾病","急性心肌梗塞疾病","糖尿病","人工膝關節手術","腦中風","鼻竇炎","子宮肌瘤手術","消化性潰瘍疾病"];
              $("#ty").autocomplete({
@@ -926,57 +927,7 @@ return false;
             <li class="nav-item active">
                 <a class="nav-link span" href="/">搜尋 <span class="sr-only">(current)</span></a>
             </li>
-            <!--<li class="nav-item dropdown">-->
-                <!--<a class="nav-link dropdown-toggle" href="search" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">-->
-                    <!--搜尋-->
-                <!--</a>-->
-                <!--<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink" style="text-align:center;width:500px;">-->
-                    <!--<div class="row">-->
-                        <!--<div class="col" style="width:25%;">-->
-                            <!--<a class="dropdown-item" style="background-color:#bd1d1de5;color:white;display: inline-block;vertical-align: top; ">醫院特性</a>-->
-                            <!--<h6>醫院層級</h6>-->
-                            <!--<a class="dropdown-item" href="#type">醫學中心</a>-->
-                            <!--<a class="dropdown-item" href="#type">區域醫院</a>-->
-                            <!--<a class="dropdown-item" href="#type">地區醫院</a>-->
-                            <!--<a class="dropdown-item" href="#type">診所</a>-->
-                            <!--<h6>醫院地點</h6>-->
-                            <!--<a class="dropdown-item" href="#area">縣市</a>-->
-                            <!--<a class="dropdown-item" href="#area">鄉鎮市</a>-->
-                        <!--</div>-->
 
-                        <!--<div class="col" style="width:25%">-->
-                            <!--<a class="dropdown-item" style="background-color:#bd1d1de5;color:white;display: inline-block;vertical-align: top;">疾病分類</a>-->
-                            <!--<h6>慢性疾病</h6>-->
-                            <!--<a class="dropdown-item" href="#dis">特殊疾病</a>-->
-                            <!--<a class="dropdown-item" href="#topic">分類主題</a>-->
-                            <!--<h6>急重症</h6>-->
-                            <!--<a class="dropdown-item" href="#dis">特殊疾病</a>-->
-                            <!--<a class="dropdown-item" href="#topic">分類主題</a>-->
-                            <!--<h6>手術後</h6>-->
-                            <!--<a class="dropdown-item" href="#dis">特殊疾病</a>-->
-                            <!--<a class="dropdown-item" href="#topic">分類主題</a>-->
-                            <!--<h6>一般疾病</h6>-->
-                            <!--<a class="dropdown-item" href="#dis">特殊疾病</a>-->
-                            <!--<a class="dropdown-item" href="#topic">分類主題</a>-->
-                        <!--</div>-->
-                        <!--<div class="col" style="width:25%">-->
-                            <!--<a class="dropdown-item"  style="background-color:#bd1d1de5;color:white;display: inline-block;vertical-align: top;">評價分數</a>-->
-                            <!--<h6>整體評價</h6>-->
-                            <!--<a class="dropdown-item" href="#review">星等數目</a>-->
-                            <!--<a class="dropdown-item" href="#review">評價分數</a>-->
-                            <!--<a class="dropdown-item" href="#review">正向評價次數</a>-->
-                            <!--<a class="dropdown-item" href="#review">負向評價次數</a>-->
-                        <!--</div>-->
-                        <!--<div class="col" style="width:25%">-->
-                            <!--<a class="dropdown-item"  style="background-color:#bd1d1de5;color:white;display: inline-block;vertical-align: top;">其他</a>-->
-                            <!--<h6>醫院地點</h6>-->
-                            <!--<a class="dropdown-item" href="#disease">總治療人數</a>-->
-                            <!--<a class="dropdown-item" href="#review">優秀醫院</a>-->
-                            <!--<a class="dropdown-item" href="#">建議與問題</a>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                <!--</div>-->
-            <!--</li>-->
             <header>
         <div class="menu">
             <nav class="mega-menu">
@@ -986,10 +937,10 @@ return false;
                         <ul>
                             <li class="sub-menu"><a href="#"> 醫院層級</a>
                             <ul>
-                                <li><a href="#type">醫學中心</a></li>
-                                <li><a href="#type">區域醫院</a></li>
-                                <li><a href="#type">地區醫院</a></li>
-                                <li><a href="#type">診所</a></li>
+                                <li onclick="all.type[1].checked = true"><a href="#type">醫學中心</a></li>
+                                <li onclick="all.type[2].checked = true"><a href="#type">區域醫院</a></li>
+                                <li onclick="all.type[3].checked = true"><a href="#type">地區醫院</a></li>
+                                <li onclick="all.type[4].checked = true"><a href="#type">診所</a></li>
 
                             </ul>
                               <li class="sub-menu"><a href="#">醫院地點</a>
@@ -1009,29 +960,28 @@ return false;
                       <div class="mega-menu-div">
                         <ul>
                             <li><a href="#topic">分類主題</a></li>
-                            <li class="sub-menu"><a href="#">慢性疾病</a>
+                            <li class="sub-menu">慢性疾病
                             <ul>
-                                <li><a href="#ty">糖尿病</a></li>
-                                <li><a href="#ty">洗腎</a></li>
-                                <li><a href="#ty">氣喘</a></li>
+                                <li onclick="ty.value='糖尿病'"><a href="#dis">糖尿病</a></li>
+                                <li onclick="ty.value='血液透析'"><a href="#dis">洗腎</a></li>
+                                <li onclick="ty.value='氣喘'"><a href="#dis">氣喘</a></li>
 
                             </ul>
-                                <li class="sub-menu"><a href="#">急重症</a>
+                                <li class="sub-menu">急重症
                                 <ul>
-                                    <li><a href="#ty">心肌梗塞</a></li>
-                                    <li><a href="#ty">腦中風</a></li>
+                                    <li onclick="ty.value='心肌梗塞'"><a href="#dis">心肌梗塞</a></li>
+                                    <li onclick="ty.value='腦中風'"><a href="#dis">腦中風</a></li>
+                                </ul>
+                                  <li class="sub-menu">手術後
+                                <ul>
+                                    <li onclick="ty.value='膝關節手術'"><a href="#dis">膝關節手術</a></li>
+                                    <li onclick="ty.value='子宮肌瘤手術'"><a href="#dis">子宮肌瘤手術</a></li>
 
                                 </ul>
-                                  <li class="sub-menu"><a href="#">手術後</a>
+                                  <li class="sub-menu">一般疾病
                                 <ul>
-                                    <li><a href="#ty">膝關節</a></li>
-                                    <li><a href="#ty">子宮肌瘤</a></li>
-
-                                </ul>
-                                  <li class="sub-menu"><a href="#">一般疾病</a>
-                                <ul>
-                                    <li><a href="#ty">鼻竇炎</a></li>
-                                    <li><a href="#ty">潰傷</a></li>
+                                    <li onclick="ty.value='鼻竇炎'"><a href="#dis">鼻竇炎</a></li>
+                                    <li onclick="ty.value='消化性潰瘍'"><a href="#dis">消化性潰瘍</a></li>
 
                                 </ul>
                             </li>
