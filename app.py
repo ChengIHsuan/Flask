@@ -18,6 +18,10 @@ def init():
 def shutdown_session(exception=None):
     db_session.remove()
 
+@app.route('/megamenu', methods=['GET'])
+def renderMegamenu():
+    return render_template('megamenu.html')
+
 ##在地區搜尋介面取得使用者輸入的值/search_area
 @app.route('/', methods=['GET'])
 def renderSearch():
