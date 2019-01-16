@@ -1300,7 +1300,7 @@ return false;
         </div>
         <!--指標選擇-->
         <div style="text-align:center;border: 3px solid rgba(101,129,152,0.7);border-style:dotted;margin: 20px ;" id="checkBox" >
-            <input type="hidden" name="sqlstr" value="{{sql_where}}">
+            <input type="hidden" name="tmp_sqlstr" value="{{sql_where}}">
             {% if scroll %}
             <script>
             document.location.hash = '#' + '{{ scroll }}';
@@ -1401,14 +1401,11 @@ return false;
             </div>
             <!--排序選擇-->
             <div class="form-group col-md-4 sortstyle" >
-                <select id="inputState" class="form-control " name="index4">
-                    <option selected>請選擇排序</option>
+                <select id="inputState" class="form-control " name="selected_index">
                     {% for index in indexes %}
                     <option value={{index}} >{{ index }}</option>
                     {% endfor %}
-                    <input type="hidden" name="sql_where" value="{{sql_where}}">
-                    <input type="hidden" name="filter2" value="{{filter2}}">
-                    <input type="hidden" name="items" value="{{item}}">
+
                 </select>
             </div>
             <div style="display: inline-block;vertical-align: top;">
@@ -1420,7 +1417,8 @@ return false;
 
             <!--左上角搜尋輸入的東西-->
             <div class="span" style="padding-left:2%;display: inline-block;vertical-align: top;width:48%" >
-                <label>{{filter}}</label>
+                <label>{{search_filter}}</label>
+                <input type="hidden" name="tmp_items" value="{{tmp_items}}">
                 <input type="hidden" name="tmp_filter" value="{{tmp_filter}}">
             </div>
 

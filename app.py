@@ -28,7 +28,7 @@ def panduan():
     if request.method == 'POST':
         if 'choose' in request.form:
             items = request.values.getlist('item')
-            sql_where = request.form.get('sqlstr')
+            sql_where = request.form.get('tmp_sqlstr')
             search_filter = request.form.get('tmp_filter')
             return Select().add_sql_where(sql_where, items, search_filter)
         elif 'searchAll' in request.form:
@@ -58,11 +58,11 @@ def panduan():
             return Search().search_all(county, township, diseases, types, keywords, names, star, positive, negative)
             # return Search().filter(county, township, diseases, types, keywords, names)
         elif 'reSort' in request.form:
-            index1 = request.form.get('index4')
-            item = request.form.get('items')
-            sql_where2 = request.form.get('sql_where')
-            filter = request.form.get('filter2')
-            return Sort().reSort(index1, sql_where2, item, filter)
+            selected_index = request.form.get('selected_index')
+            item = request.form.get('tmp_items')
+            sql_where = str(request.form.get('tmp_sqlstr')).replace('//', ' ')
+            search_filter = str(request.form.get('tmp_filter')).replace('//', ' ')
+            return Sort().reSort(selected_index, sql_where, item, search_filter)
 ##啟動
 if __name__ == '__main__':
     app.jinja_env.auto_reloaded = True  ##jinja2 重新讀取template

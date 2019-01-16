@@ -389,7 +389,6 @@ class Select():
                 str += '(' + item + '!= -1)'
         ## 將condition改回，並加上指標皆不為-1之條件
         sql_where = sql_where.replace("//", " ") + ' AND (' + str + ')'
-        print(sql_where)
         return Select().select_normal(sql_where, items, search_filter)
 
     ## 取得醫療機構資訊
@@ -406,9 +405,9 @@ class Select():
 
     ## 取得使用者勾選的資訊
     def select_data(self, normal, items, sql_where, search_filter):
+        value_substr = 'm.hospital_id'
         deno_substr = 'm.hospital_id'
         level_substr = 'm.hospital_id'
-        value_substr = 'm.hospital_id'
         for r in range(len(items)):
             value_substr += (', ' + items[r])
             level = items[r].replace('m.v_', 'm.l_')
@@ -453,15 +452,16 @@ class Result():
         z_col = zip(columns, full_name)
         ## 選取的指標數量，-1是因為扣掉第一欄的醫療機構資訊
         ck_len = len(columns) - 1
+        ## 取得使用者所選指標，第一個為醫療機構資訊，所以不取
         indexes = columns[1:]
         return Result().table(z_data, z_col, ck_len, search_filter, indexes, sql_where, items)
 
     ## 將搜尋結果寫進表格
     def table(self, z_data, z_col, ck_len, search_filter, indexes, sql_where, items):
-        item = ''
+        tmp_items = ''
         for r in range(len(items)):
-            item += items[r]+'//'
+            tmp_items += items[r] + '//'
         sql_where = sql_where.replace(' ', '//')
-        search_filter2 = search_filter.replace(' ', '//')
+        tmp_filter = search_filter.replace(' ', '//')
         ## render至前端HTML，ck_len為指標的長度，columns為欄位名稱，z為醫院資訊和指標值的zip
-        return render_template('hospital.html', scroll = 'results', ck_len=ck_len, z_col=z_col, z_data=z_data, filter=search_filter, search_filter2=search_filter2, indexes=indexes, sql_where=sql_where, item=item)
+        return render_template('hospital.html', scroll = 'results', ck_len=ck_len, z_col=z_col, z_data=z_data, search_filter=search_filter, tmp_filter=tmp_filter, indexes=indexes, sql_where=sql_where, tmp_items=tmp_items)
