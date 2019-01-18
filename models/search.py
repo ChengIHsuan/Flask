@@ -33,7 +33,7 @@ class Search():
     def search_disease(self, diseases):
         try:
             getStr = {
-                1: "m.v_2, m.v_3, m.v_41",
+                1: "m.v_2, m.v_3,",
                 2: "m.v_6, m.v_7, m.v_8, m.v_9, m.v_10, m.v_11",
                 3: "m.v_12, m.v_13, m.v_14, m.v_15, m.v_41",
                 4: "m.v_16, m.v_17, m.v_18",
@@ -180,9 +180,9 @@ class Search():
         if star != '':
             search_filter += star + "星以上, "
         if positive != '':
-            search_filter += "正面評論大於" + positive + ', '
+            search_filter += "正面評論數大於" + positive + ', '
         if negative != '':
-            search_filter += "負面評論小於" + negative + ', '
+            search_filter += "負面評論數小於" + negative + ', '
 
         if search_filter != "查詢條件：":
             search_filter = search_filter[:-2]

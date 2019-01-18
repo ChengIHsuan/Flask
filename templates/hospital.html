@@ -241,8 +241,93 @@
 
     {%endblock%}
     <style>
-    .note{height:100px;width:600px;background:url(static/無指標.jpg) #FEFFCF 40px 0px no-repeat;border:#EDCE7B 1px solid;}
-    .guanbi{float:right;font-size:12px;padding:6px;}
+    /*Mega Menu*/
+
+
+body{
+    margin: 0;
+    padding: 0;
+    font-size: 16px;
+
+}
+ul{
+    padding: 50;
+    margin: 0;
+    list-style: none;
+}
+a{
+    test-decoration: none;
+    color: white;
+}
+header{
+    margin: 0% auto;
+}
+.menu{
+    display: flex;
+    justify-content: center;
+    align-item: center;
+}
+.mega-menu{
+    position: relative;
+    display: inline-block;
+    font-size: 16px;
+}
+.cus-nav{
+    display: flex;
+}
+.cus-nav > li >a{
+    height: 10%;
+    padding: 0 90px;
+    color: #fff;
+    display: inline-flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+.cus-nav > li:hover{
+    background-color;
+}
+.cus-nav > li:hover a{
+    color: #e0ffff;
+}
+.cus-nav > li:hover > .mega-menu-div{
+    display: block;
+}
+.mega-menu-div{
+    top: 20px;
+    width: 100%;
+    display: none;
+    position: absolute;
+    left: 0;
+    padding: 10px;
+    box-sizing: border-box;
+    background-color: rgb(101,129,152);
+}
+.mega-menu-div ul{
+    display: inline-flex;
+    flex-direction: row;
+}
+.mega-menu-div li{
+    margin-right: 50px;
+}
+.mega-menu-div li:hover >a{
+    color: #ffe4e1;
+}
+.mega-menu-div ul ul{
+    display: flex;
+    flex-direction: column;
+}
+.mega-menu-div .sub-menu > a{
+    margin-bottom: 20px;
+    display: block;
+    font-weight: bold;
+    border-bottom: 2px solid white;
+    padding-bottom: 10px;
+    text-align:center;
+
+}
+
     /* 前言 */
     #more {display: none;}
     /* 自動完成 */
@@ -702,6 +787,7 @@
     color: #4c4c4c;
     background-color: rgb(184,206,217);
   }
+
  .headerText{
     padding:3% ;
     display: inline-block;
@@ -1002,9 +1088,94 @@ return false;
 
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav span" style="text-align:center;">
-            <li class="nav-item active">
-                <a class="nav-link span" href="/">搜尋 <span class="sr-only">(current)</span></a>
-            </li>
+            <!--<li class="nav-item active">-->
+                <!--<a class="nav-link span" href="/">搜尋 <span class="sr-only">(current)</span></a>-->
+            <!--</li>-->
+
+            <header style="text-align:left" >
+                <div class="menu">
+                    <nav class="mega-menu">
+                        <ul class="cus-nav ">
+                            <li><a href="#" >醫院特性</a>
+                                <div class="mega-menu-div">
+                                    <ul>
+                                        <li class="sub-menu"><a href="#type"> 醫院層級</a>
+                                            <ul>
+                                                <li onclick="all.type[1].checked = true"><a href="#type">醫學中心</a></li>
+                                                <li onclick="all.type[2].checked = true"><a href="#type">區域醫院</a></li>
+                                                <li onclick="all.type[3].checked = true"><a href="#type">地區醫院</a></li>
+                                                <li onclick="all.type[4].checked = true"><a href="#type">診所</a></li>
+                                            </ul>
+                                        <li class="sub-menu"><a href="#area">醫院地點</a>
+                                            <ul>
+                                                <li><a href="#area">縣市</a></li>
+                                                <li><a href="#area">鄉鎮市</a></li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li ><a href="#" id ="menu" >疾病分類</a>
+                                <div class="mega-menu-div">
+                                    <ul>
+                                        <li class="sub-menu" ><a href="#">慢性疾病</a>
+                                            <ul>
+                                                <li onclick="disease1.value='糖尿病'"><a href="#dis">糖尿病</a></li>
+                                                <li onclick="disease1.value='血液透析'"><a href="#dis">洗腎</a></li>
+                                                <li onclick="disease1.value='氣喘'"><a href="#dis">氣喘</a></li>
+
+                                            </ul>
+                                        <li class="sub-menu"><a href="#">急重症</a>
+                                            <ul>
+                                                <li onclick="disease1.value='心肌梗塞'"><a href="#dis">心肌梗塞</a></li>
+                                                <li onclick="disease1.value='腦中風'"><a href="#dis">腦中風</a></li>
+                                            </ul>
+                                        <li class="sub-menu"><a href="#">手術後</a>
+                                            <ul>
+                                                <li onclick="disease1.value='膝關節手術'"><a href="#dis">膝關節手術</a></li>
+                                                <li onclick="disease1.value='子宮肌瘤手術'"><a href="#dis">子宮肌瘤手術</a></li>
+
+                                            </ul>
+                                        <li class="sub-menu"><a href="#">一般疾病</a>
+                                            <ul>
+                                                <li onclick="disease1.value='鼻竇炎'"><a href="#dis">鼻竇炎</a></li>
+                                                <li onclick="disease1.value='消化性潰瘍'"><a href="#dis">消化性潰瘍</a></li>
+
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+
+                            <li><a href="#">評價分數</a>
+                                <div class="mega-menu-div">
+                                    <ul>
+                                        <li class="sub-menu"><a href="#">總體評價</a>
+                                            <ul>
+                                                <li><a href="#review">星等數目</a></li>
+                                                <li><a href="#review">正向評價次數</a></li>
+                                                <li><a href="#review">負向評價次數</a></li>
+
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+
+                            <li><a href="#">其他</a>
+                                <div class="mega-menu-div">
+                                    <ul>
+                                        <!--<li><a href="#disease">總治療人數</a></li>-->
+                                        <!--<li><a href="#review">優秀醫院</a></li>-->
+                                        <li><a href="#footer">建議與問題</a></li>
+                                    </ul>
+                                </div>
+                            </li>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </header>
         </ul>
     </div>
 </nav>
@@ -1536,7 +1707,7 @@ return false;
 
 <!-- footer -->
 <!-- <div style=" height:300px;background-color: #fe9696;"> -->
-<div style="margin-top:20px;" class="span">
+<div style="margin-top:20px;" class="span" id="footer">
     <div style="background-color:rgb(101,129,152);">
         <div class="footerText">
             <div style="text-align:left; color: white;padding:5%">
