@@ -33,16 +33,16 @@ class Search():
     def search_disease(self, diseases):
         try:
             getStr = {
-                1: "m.v_2, m.v_3,",
-                2: "m.v_6, m.v_7, m.v_8, m.v_9, m.v_10, m.v_11",
-                3: "m.v_12, m.v_13, m.v_14, m.v_15, m.v_41",
-                4: "m.v_16, m.v_17, m.v_18",
-                5: "m.v_19, m.v_20, m.v_21, m.v_22",
-                6: "m.v_23, m.v_24, m.v_25, m.v_26, m.v_27",
-                7: "m.v_28, m.v_29, m.v_30, m.v_31",
-                8: "m.v_32, m.v_33",
-                9: "m.v_34, m.v_35, m.v_36, m.v_37",
-                10: "m.v_38, m.v_39, m.v_40"
+                1: "m.v_2, m.v_3, m.v_42",
+                2: "m.v_6, m.v_7, m.v_8, m.v_9, m.v_10, m.v_11, m.v_43",
+                3: "m.v_12, m.v_13, m.v_14, m.v_15, m.v_41, m.v_44",
+                4: "m.v_16, m.v_17, m.v_18, m.v_45",
+                5: "m.v_19, m.v_20, m.v_21, m.v_22, m.v_46",
+                6: "m.v_23, m.v_24, m.v_25, m.v_26, m.v_27, m.v_47",
+                7: "m.v_28, m.v_29, m.v_30, m.v_31, m.v_48",
+                8: "m.v_32, m.v_33, m.v_49",
+                9: "m.v_34, m.v_35, m.v_36, m.v_37, m.v_50",
+                10: "m.v_38, m.v_39, m.v_40, m.v_51"
             }
             sub_str = ''
             while '' in diseases:
@@ -238,7 +238,7 @@ class Search():
         for index in disease_indexes:
             if index in category_indexes:
                 both_indexes.append(index)
-
+        print(disease_indexes)
         if category_select != '':   # 有分類主題
             if disease_select != '':   #有分類主題、特疾
                 return Ckbox(sql_where, search_filter).print_ckbox(both_indexes)
@@ -381,15 +381,19 @@ class Select():
     ## 將暫存在前端的condition、使用者勾選的指標寫成陣列取回
     ## 加上所選標皆不為-1之條件
     def add_sql_where(self, sql_where, items, search_filter):
-        str = ''
-        for item in items:
-            if item != items[-1]:
-                str += '(' + item + '!= -1) OR '
-            else:
-                str += '(' + item + '!= -1)'
-        ## 將condition改回，並加上指標皆不為-1之條件
-        sql_where = sql_where.replace("//", " ") + ' AND (' + str + ')'
-        return Select().select_normal(sql_where, items, search_filter)
+        try:
+            str = ''
+            for item in items:
+                if item != items[-1]:
+                    str += '(' + item + '!= -1) OR '
+                else:
+                    str += '(' + item + '!= -1)'
+            ## 將condition改回，並加上指標皆不為-1之條件
+            sql_where = sql_where.replace("//", " ") + ' AND (' + str + ')'
+            return Select().select_normal(sql_where, items, search_filter)
+        except:
+            alert = "請選擇指標。"
+            return render_template('hospital.html', alert=alert)
 
     ## 取得醫療機構資訊
     def select_normal(self, sql_where, items, search_filter):
