@@ -102,10 +102,13 @@ def postResult():
         elif 'reSort' in request.form:
             selected_index = request.form.get('selected_index')
             print(selected_index)
-            item = request.form.get('tmp_items')
+            indexes = request.form.get('tmp_indexes')
+            print(indexes)
             sql_where = str(request.form.get('tmp_sqlstr')).replace('//', ' ')
+            print(sql_where)
             search_filter = str(request.form.get('tmp_filter')).replace('//', ' ')
-            return Sort().reSort(selected_index, sql_where, item, search_filter)
+            print(search_filter)
+            return Sort().reSort(selected_index, sql_where, indexes, search_filter)
 ##啟動
 if __name__ == '__main__':
     app.jinja_env.auto_reloaded = True  ##jinja2 重新讀取template

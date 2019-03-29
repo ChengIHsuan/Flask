@@ -370,7 +370,7 @@ class Result():
         self.cursor = db.cursor()
 
     ## 取得欄位名稱
-    def get_column_name(self, indexes, z_data, search_filter, sql_where):
+    def get_column_name(self, indexes, z_data, sql_where, search_filter):
         print('column name')
         ## 先取得欄位的原始名字(m.v_?)，「醫院機構資訊」為固定欄位，直接手動新增
         getColumns=['醫療機構資訊']
@@ -394,17 +394,19 @@ class Result():
         ## 選取的指標數量，-1是因為扣掉第一欄的醫療機構資訊
         ck_len = len(columns) - 1
         ## 取得使用者所選指標，第一個為醫療機構資訊，所以不取
-        indexes = columns[1:]
-        return Result().table(z_data, z_col, ck_len, search_filter, indexes, sql_where, indexes)
+        sort_indexes = columns[1:]
+        return Result().table(z_data, z_col, ck_len, search_filter, indexes, sql_where, sort_indexes)
 
     ## 將搜尋結果寫進表格
-    def table(self, z_data, z_col, ck_len, search_filter, indexes, sql_where, items):
-        print('table')
-        tmp_items = ''
-        for r in range(len(items)):
-            tmp_items += items[r] + '//'
+    def table(self, z_data, z_col, ck_len, search_filter, indexes, sql_where, sort_indexes):
+        tmp_indexes = ''
+        for r in range(len(indexes)):
+            tmp_indexes += indexes[r] + '//'
         sql_where = sql_where.replace(' ', '//')
+        print(sql_where)
+        print('+++++++++++++++++++++')
         tmp_filter = search_filter.replace(' ', '//')
+        z_indexes = zip(indexes, sort_indexes)
         ## render至前端HTML，ck_len為指標的長度，columns為欄位名稱，z為醫院資訊和指標值的zip
         print('有喔')
-        return render_template('result.html', scroll = 'results', ck_len=ck_len, z_col=z_col, z_data=z_data, search_filter=search_filter, tmp_filter=tmp_filter, indexes=indexes, sql_where=sql_where, tmp_items=tmp_items)
+        return render_template('result.html', scroll = 'results', ck_len=ck_len, z_col=z_col, z_data=z_data, search_filter=search_filter, tmp_filter=tmp_filter, sql_where=sql_where, tmp_indexes=tmp_indexes, z_indexes=z_indexes)
