@@ -26,11 +26,15 @@ def show():
     return render_template('home.html')
 
 ##在地區搜尋介面取得使用者輸入的值/search_area
-@app.route('/search', methods=['GET'])
+@app.route('/search', methods=['GET', 'POST'])
 def renderSearch():
     return render_template('search.html')
 
-@app.route('/search', methods=['POST'])
+@app.route('/result', methods=['GET'])
+def renderResult():
+    return  render_template('result.html')
+
+@app.route('/result', methods=['POST'])
 def panduan():
     if request.method == 'POST':
         if 'btnSearch' in request.form:
@@ -60,54 +64,11 @@ def panduan():
             ## 爛番茄
             # return render_template('result.html')
             return Search().search_all(county, township, disease, types, names, star, indexes)
-
-
-@app.route('/result', methods=['GET'])
-def renderResult():
-    print('result get')
-    return  render_template('result.html')
-
-@app.route('/result', methods=['POST'])
-def postResult():
-    print('resullt post')
-    if request.method == 'POST':
-        if 'btnSearch' in request.form:
-            ## 特殊疾病
-            disease = request.form.get('disease')
-            ## 特疾病指標
-            indexes = request.values.getlist('ckIndex')
-            ## 醫療機構名稱
-            name1 = request.form.get('name1')
-            name2 = request.form.get('name2')
-            name3 = request.form.get('name3')
-            names = [name1, name2, name3]
-            ## 移除陣列中的空字串
-            while '' in names:
-                names.remove('')
-            ## 地區
-            county = request.form.get("county")
-            township = request.form.get("township")
-            if township == '鄉鎮市區不拘':
-                township = ''
-            ## 醫院層級
-            types = request.values.getlist('type')
-            ##Google星等
-            star = request.form.get("star")
-            if star == None:
-                star = ''
-            ## 爛番茄
-            # return render_template('result.html')
-            print('來喔')
-            return Search().search_all(county, township, disease, types, names, star, indexes)
         elif 'reSort' in request.form:
             selected_index = request.form.get('selected_index')
-            print(selected_index)
             indexes = request.form.get('tmp_indexes')
-            print(indexes)
             sql_where = str(request.form.get('tmp_sqlstr')).replace('//', ' ')
-            print(sql_where)
             search_filter = str(request.form.get('tmp_filter')).replace('//', ' ')
-            print(search_filter)
             return Sort().reSort(selected_index, sql_where, indexes, search_filter)
 ##啟動
 if __name__ == '__main__':

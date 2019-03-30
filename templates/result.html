@@ -25,7 +25,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
             integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
             crossorigin="anonymous"></script>
-    <link rel=stylesheet type="text/css" href="{{ url_for('static', filename='main1.3.css') }}">
+    <link rel=stylesheet type="text/css" href="{{ url_for('static', filename='main1.4.css') }}">
     <!--<link rel=stylesheet type="text/css" href="main1.3.css">-->
     <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
 
@@ -33,6 +33,14 @@
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script type="text/javascript" src="{{url_for('static', filename='js/resultJS.js')}}"></script>
+
+    <script>
+        $(function(){
+    {% if alert %}
+      alert('{{alert}}');
+    {% endif %}
+    });
+    </script>
 </head>
 
 <body class="span">
@@ -56,15 +64,15 @@
                     <li class="nav-item active">
                         <a class="nav-link" href="search">搜尋 <span class="sr-only">(current)</span></a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">聯絡我們</a>
-                    </li>
+                    <!--<li class="nav-item">-->
+                    <!--<a class="nav-link" href="#">聯絡我們</a>-->
+                    <!--</li>-->
                 </ul>
             </div>
         </nav>
         <div class="resultBg" style="display:inline-block;vertical-align: top;text-align: center;">
             <div style="text-align:center;padding-top: 10px">
-                <h5 class="resultText">搜尋條件<span><img src="static/條件下.png" height="6px"
+                <h5 class="resultText">搜尋條件<span><img src="static/條件下.png" height="5px"
                                                       style="padding-left:5px"></span></h5>
             </div>
             <div class="resultAll">
@@ -86,29 +94,6 @@
                             <option value="10">腹膜透析</option>
                         </select>
                     </div>
-
-                    <div class="col" style="margin:2px auto;color: #000000">
-                        <h6>醫療機構名稱</h6>
-                        <input type="textbox" class="form-control form-control-sm resultName" name="name1"
-                               id="name1" placeholder="醫院名稱(選填)">
-                        <input type="textbox" class="form-control form-control-sm resultName" name="name2"
-                               id="name2" placeholder="+ 醫院名稱">
-                        <input type="textbox" class="form-control form-control-sm resultName" name="name3"
-                               id="name3" placeholder="+ 醫院名稱">
-                    </div>
-                    <div class="col" style="margin:2px auto;color: #000000">
-                        <h6>星等</h6>
-                        <select class="form-control form-control-sm resultStar" id="star" name="star">
-                            <option selected value="">星等</option>
-                            <option value="5">5星</option>
-                            <option value="4">4星+</option>
-                            <option value="3">3星+</option>
-                            <option value="2">2星+</option>
-                            <option value="1">1星+</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="resultInput">
                     <div class="col" style="margin:2px auto;">
                         <h6>地區</h6>
                         <select class="form-control form-control-sm resultArea " id="county" name="county"
@@ -137,11 +122,35 @@
                             <option value="金門縣">金門縣</option>
                             <option value="連江縣">連江縣</option>
                         </select>
-                        <select class="form-control form-control-sm resultArea" id="township" name="township">
+                        <select class="form-control form-control-sm resultArea" id="township" name="township" >
                             <option selected value="">鄉鎮市區</option>
                             <option value=""></option>
                         </select>
                     </div>
+
+                    <div class="col" style="margin:2px auto;color: #000000">
+                        <h6>星等</h6>
+                        <select class="form-control form-control-sm resultStar" id="star" name="star">
+                            <option selected value="">星等</option>
+                            <option value="5">5星</option>
+                            <option value="4">4星+</option>
+                            <option value="3">3星+</option>
+                            <option value="2">2星+</option>
+                            <option value="1">1星+</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="resultInput">
+                    <div class="col" style="margin:2px auto;color: #000000">
+                        <h6>醫療機構名稱</h6>
+                        <input type="textbox" class="form-control form-control-sm resultName" name="name1"
+                               id="name1" placeholder="醫院名稱(選填)">
+                        <input type="textbox" class="form-control form-control-sm resultName" name="name2"
+                               id="name2" placeholder="+ 醫院名稱">
+                        <input type="textbox" class="form-control form-control-sm resultName" name="name3"
+                               id="name3" placeholder="+ 醫院名稱">
+                    </div>
+
 
                     <div class="col" style="margin:2px auto;">
                         <h6>醫院層級</h6>
@@ -156,13 +165,13 @@
                             <label for="t4" class="resultType"><span></span>診所</label>
                         </div>
                     </div>
-                    <div class="col" style="margin:2px auto;">
-                        <h6>爛番茄</h6>
-                        <div style="font-size: 15px">
-                            <input type="checkbox" value="1" id="to1" name="tomato" />
-                            <label for="to1" class="ckType"><span></span>我要番茄</label>
-                        </div>
-                    </div>
+                    <!--<div class="col" style="margin:2px auto;">-->
+                    <!--<h6>爛番茄</h6>-->
+                    <!--<div style="font-size: 15px">-->
+                    <!--<input type="checkbox" value="1" id="to1" name="tomato" />-->
+                    <!--<label for="to1" class="ckType"><span></span>我要番茄</label>-->
+                    <!--</div>-->
+                    <!--</div>-->
                 </div>
                 <!--清除浮動 -->
                 <div style="clear:both;"></div>
@@ -276,18 +285,18 @@
                             <label for="b3" class="ckIndex2"><span></span>貧血檢查(Hb)檢查比率</label>
                             <input type="checkbox" value="37" id="b4" name="ckIndex" onclick="onCheckBox(this)" />
                             <label for="b4" class="ckIndex2"><span></span>瘻管重建率</label>
-                            <input type="checkbox" value="5" id="b5" name="ckIndex" onclick="onCheckBox(this)" />
-                            <label for="b5" class="ckIndex2"><span></span>脫離率 (腎移植率)</label>
-                            <input type="checkbox" value="6" id="b6" name="ckIndex" onclick="onCheckBox(this)" />
-                            <label for="b6" class="ckIndex2"><span></span>B型肝炎表面抗原(HBsAg)轉陽率</label>
-                            <input type="checkbox" value="7" id="b7" name="ckIndex" onclick="onCheckBox(this)" />
-                            <label for="b7" class="ckIndex2"><span></span>C型肝炎抗體轉陽率</label>
-                            <input type="checkbox" value="8" id="b8" name="ckIndex" onclick="onCheckBox(this)" />
-                            <label for="b8" class="ckIndex2"><span></span>B肝是否設立透析專屬機器</label>
-                            <input type="checkbox" value="9" id="b9" name="ckIndex" onclick="onCheckBox(this)" />
-                            <label for="b9" class="ckIndex2"><span></span>C肝是否設立透析專屬機器</label>
-                            <input type="checkbox" value="10" id="b10" name="ckIndex" onclick="onCheckBox(this)" />
-                            <label for="b10" class="ckIndex2"><span></span>五十五歲以下透析病人移植登錄</label>
+                            <!--<input type="checkbox" value="5" id="b5" name="ckIndex" onclick="onCheckBox(this)" />-->
+                            <!--<label for="b5" class="ckIndex2"><span></span>脫離率 (腎移植率)</label>-->
+                            <!--<input type="checkbox" value="6" id="b6" name="ckIndex" onclick="onCheckBox(this)" />-->
+                            <!--<label for="b6" class="ckIndex2"><span></span>B型肝炎表面抗原(HBsAg)轉陽率</label>-->
+                            <!--<input type="checkbox" value="7" id="b7" name="ckIndex" onclick="onCheckBox(this)" />-->
+                            <!--<label for="b7" class="ckIndex2"><span></span>C型肝炎抗體轉陽率</label>-->
+                            <!--<input type="checkbox" value="8" id="b8" name="ckIndex" onclick="onCheckBox(this)" />-->
+                            <!--<label for="b8" class="ckIndex2"><span></span>B肝是否設立透析專屬機器</label>-->
+                            <!--<input type="checkbox" value="9" id="b9" name="ckIndex" onclick="onCheckBox(this)" />-->
+                            <!--<label for="b9" class="ckIndex2"><span></span>C肝是否設立透析專屬機器</label>-->
+                            <!--<input type="checkbox" value="10" id="b10" name="ckIndex" onclick="onCheckBox(this)" />-->
+                            <!--<label for="b10" class="ckIndex2"><span></span>五十五歲以下透析病人移植登錄</label>-->
                             <input type="checkbox" value="50" id="b11" name="ckIndex" onclick="onCheckBox(this)" />
                             <label for="b11" class="ckIndex2"><span></span>綜合分數</label>
                         </div>
@@ -300,18 +309,18 @@
                             <label for="kw3" class="ckIndex2"><span></span>貧血檢查(Hb)檢查比率</label>
                             <input type="checkbox" value="4" id="kw4" name="ckIndex" onclick="onCheckBox(this)" />
                             <label for="kw4" class="ckIndex2"><span></span>腹膜透析腹膜炎發生率</label>
-                            <input type="checkbox" value="5" id="kw5" name="ckIndex" onclick="onCheckBox(this)" />
-                            <label for="kw5" class="ckIndex2"><span></span>脫離率 (腎移植率)</label>
-                            <input type="checkbox" value="6" id="kw6" name="ckIndex" onclick="onCheckBox(this)" />
-                            <label for="kw6" class="ckIndex2"><span></span>B型肝炎表面抗原(HBsAg)轉陽率</label>
-                            <input type="checkbox" value="7" id="kw7" name="ckIndex" onclick="onCheckBox(this)" />
-                            <label for="kw7" class="ckIndex2"><span></span>C型肝炎抗體轉陽率</label>
-                            <input type="checkbox" value="8" id="kw8" name="ckIndex" onclick="onCheckBox(this)" />
-                            <label for="kw8" class="ckIndex2"><span></span>各院所新增透析病人之腹膜透析人數</label>
-                            <input type="checkbox" value="9" id="kw9" name="ckIndex" onclick="onCheckBox(this)" />
-                            <label for="kw9" class="ckIndex2"><span></span>各院所新增透析病人之腹膜透析占率</label>
-                            <input type="checkbox" value="10" id="kw10" name="ckIndex" onclick="onCheckBox(this)" />
-                            <label for="kw10" class="ckIndex2"><span></span>五十五歲以下透析病人移植登錄率</label>
+                            <!--<input type="checkbox" value="5" id="kw5" name="ckIndex" onclick="onCheckBox(this)" />-->
+                            <!--<label for="kw5" class="ckIndex2"><span></span>脫離率 (腎移植率)</label>-->
+                            <!--<input type="checkbox" value="6" id="kw6" name="ckIndex" onclick="onCheckBox(this)" />-->
+                            <!--<label for="kw6" class="ckIndex2"><span></span>B型肝炎表面抗原(HBsAg)轉陽率</label>-->
+                            <!--<input type="checkbox" value="7" id="kw7" name="ckIndex" onclick="onCheckBox(this)" />-->
+                            <!--<label for="kw7" class="ckIndex2"><span></span>C型肝炎抗體轉陽率</label>-->
+                            <!--<input type="checkbox" value="8" id="kw8" name="ckIndex" onclick="onCheckBox(this)" />-->
+                            <!--<label for="kw8" class="ckIndex2"><span></span>各院所新增透析病人之腹膜透析人數</label>-->
+                            <!--<input type="checkbox" value="9" id="kw9" name="ckIndex" onclick="onCheckBox(this)" />-->
+                            <!--<label for="kw9" class="ckIndex2"><span></span>各院所新增透析病人之腹膜透析占率</label>-->
+                            <!--<input type="checkbox" value="10" id="kw10" name="ckIndex" onclick="onCheckBox(this)" />-->
+                            <!--<label for="kw10" class="ckIndex2"><span></span>五十五歲以下透析病人移植登錄率</label>-->
                             <input type="checkbox" value="51" id="kw11" name="ckIndex" onclick="onCheckBox(this)" />
                             <label for="kw11" class="ckIndex2"><span></span>綜合分數</label>
                         </div>
@@ -321,12 +330,12 @@
                 <!--清除浮動 -->
                 <div style="clear:both;"></div>
                 <div style="margin:10px 0px">
-                    <div style="text-align:right;display: inline-block;vertical-align: top;">
-                        <a href="">
-                            <button type="reset" id="reset" class="btn-sm btnDelete" style="padding:8px 15px;">
-                                清除</button>
-                        </a>
-                    </div>
+                    <!--<div style="text-align:right;display: inline-block;vertical-align: top;">-->
+                    <!--<a href="">-->
+                    <!--<button type="reset" id="reset" class="btn-sm btnDelete" style="padding:8px 15px;">-->
+                    <!--清除</button>-->
+                    <!--</a>-->
+                    <!--</div>-->
 
                     <div style="text-align:left;display: inline-block;vertical-align: top;">
                         <a href="">
@@ -338,7 +347,10 @@
                 </div>
             </div>
             <script>
-
+                    //條件收合
+                    $(".resultText").click(function () {
+                        $(".resultAll").slideToggle("fast");
+                    });
             </script>
 
         </div>
@@ -369,7 +381,7 @@
                                style="background-color:rgb(101,129,152);color:white" value="排序">
                         <input type="hidden" name="tmp_indexes" value="{{tmp_indexes}}">
                         <input type="hidden" name="tmp_sqlstr" value="{{sql_where}}">
-                         <input type="hidden" name="tmp_filter" value="{{tmp_filter}}">
+                        <input type="hidden" name="tmp_filter" value="{{tmp_filter}}">
                     </div>
                 </div>
 
@@ -483,7 +495,7 @@
                         <tr title={{ n[5] }}>
                             <td>電話：{{ n[4] }}&nbsp;
                                 地址：<img src="{{ url_for('static', filename='地址圖.png')}}" height="20px"
-                                    alt="圖片替代文字" title={{ n[5] }}></td>
+                                        alt="圖片替代文字" title={{ n[5] }}></td>
                         </tr>
                         <!-- {% endfor %} -->
                         </tbody>

@@ -18,7 +18,7 @@ class Sort():
         if P_or_N == 'P':  ## 正面指標降序排列
             orderby = (" order by " + index_value + " DESC")
         elif P_or_N == 'N':  ## 負面指標升序排列
-            orderby = (" order by " + index_value + " ASC")
+            orderby = (" order by " + index_level + " DESC, " + index_value + " ASC")
         return Sort().select_normal(sql_where, indexes, search_filter, orderby)
         # except:
         #     alert = "請選擇排序指標"
@@ -44,7 +44,6 @@ class Sort():
 
     def select_normal(self, sql_where, indexes, search_filter, orderby):
         sqlstr = "SELECT h.abbreviation, cast(fr.star as float), fr.positive, fr.negative, h.phone, h.address FROM hospitals h JOIN final_reviews fr ON h.id = fr.hospital_id join merge_data m ON h.id = m.hospital_id " + sql_where + orderby
-        print(sqlstr)
         normal = self.cursor.execute(sqlstr).fetchall()
         ## 若未找到任何資料，出現錯誤訊息，若有則進入else
         if normal == []:

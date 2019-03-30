@@ -20,12 +20,12 @@ class Search():
             else:
                 return sql_where
         except:
-            return "抱歉，操作失敗"
+            return "抱歉，操作失敗。"
 
     ## 特殊疾病搜尋
     def search_disease(self, disease):
         try:
-            ## 取得各疾病指標
+            ## 取得各疾病名稱
             getStr = {
                 '1': "氣喘",
                 '2': "急性心肌梗塞",
@@ -40,7 +40,7 @@ class Search():
             }
             return getStr.get(disease)
         except:
-            return "抱歉，找不到您要的「{}」相關資訊。"
+            return "抱歉，操作失敗。"
 
     # ## 特殊疾病指標
     # def search_index(self, indexes):
@@ -49,23 +49,26 @@ class Search():
 
     ## 醫院層級搜尋
     def search_type(self, types):
-        ## 建立一個tuple，使前端取回的type值可以對應正確的醫院層級
-        getStr = {
-            '1': "醫學中心",
-            '2': "區域醫院",
-            '3': "地區醫院",
-            '4': "診所"
-        }
-        ## 建立一個SQL語法中condition的開頭字串
-        sql_where = ''
-        ## 對應正確的醫院層級後寫入condition字串中
-        for type in types:
-            ## 判斷若非陣列最後一個元素則不加"OR"
-            if type != types[-1]:
-                sql_where += "h.type = '" + getStr.get(type) + "' OR "
-            else:
-                sql_where += "h.type = '" + getStr.get(type) + "'"
-        return sql_where
+        try:
+            ## 建立一個tuple，使前端取回的type值可以對應正確的醫院層級
+            getStr = {
+                '1': "醫學中心",
+                '2': "區域醫院",
+                '3': "地區醫院",
+                '4': "診所"
+            }
+            ## 建立一個SQL語法中condition的開頭字串
+            sql_where = ''
+            ## 對應正確的醫院層級後寫入condition字串中
+            for type in types:
+                ## 判斷若非陣列最後一個元素則加"OR"
+                if type != types[-1]:
+                    sql_where += "h.type = '" + getStr.get(type) + "' OR "
+                else:
+                    sql_where += "h.type = '" + getStr.get(type) + "'"
+            return sql_where
+        except:
+            return "抱歉，操作失敗。"
 
     ## 醫院名稱搜尋
     def search_name(self, names):
@@ -74,14 +77,16 @@ class Search():
             sql_where = ''
             ## 寫入condition字串中，對應全名或是縮寫
             for name in names:
+                ## 檢查使用者輸入之名稱是否存在
                 validate = self.cursor.execute("SELECT h.id FROM hospitals h WHERE h.name LIKE '%" + name + "%' OR h.abbreviation LIKE '%" + name + "%'").fetchall()
                 if validate == []:
                     return "抱歉，找不到您要的「{}」相關資訊。".format(name)
-                ## 判斷若非陣列最後一個元素則不加"OR"
-                if name != names[-1]:
-                    sql_where += ("h.name LIKE '%" + name + "%' OR h.abbreviation LIKE '%" + name + "%' OR ")
                 else:
-                    sql_where += ("h.name LIKE '%" + name + "%' OR h.abbreviation LIKE '%" + name + "%'")
+                    ## 判斷若非陣列最後一個元素則加"OR"
+                    if name != names[-1]:
+                        sql_where += ("h.name LIKE '%" + name + "%' OR h.abbreviation LIKE '%" + name + "%' OR ")
+                    else:
+                        sql_where += ("h.name LIKE '%" + name + "%' OR h.abbreviation LIKE '%" + name + "%'")
             return sql_where
         except:
             return "抱歉，操作失敗"
@@ -117,7 +122,6 @@ class Search():
             '9': "血液透析",
             '10': "腹膜透析"
         }
-        print()
         search_filter += diseaseStr.get(disease) + ', '
         ## 層級搜尋
         for type in types:
@@ -145,7 +149,6 @@ class Search():
     def search_all(self, county, township, disease, types, names, star, indexes):
         ## 取得查詢條件
         search_filter = Search().search_filter(county, township, disease, types, names, star)
-        print(search_filter)
         ##########
         sql_where = ''
         ## 取得地區的condition
@@ -311,7 +314,6 @@ class Select():
     ## 將暫存在前端的condition、使用者勾選的指標寫成陣列取回
     ## 加上所選標皆不為-1之條件
     def add_sql_where(self, indexes, sql_where, search_filter):
-        print('add')
         try:
             str = ''
             for index in indexes:
@@ -321,7 +323,6 @@ class Select():
                     str += '(m.v_' + index + ' != -1)'
             ## 將condition改回，並加上指標皆不為-1之條件
             sql_where += ' AND (' + str + ')'
-            print(sql_where)
             return Select().select_normal(indexes, sql_where, search_filter)
         except:
             alert = "請選擇指標。"
@@ -329,7 +330,6 @@ class Select():
 
     ## 取得醫療機構資訊
     def select_normal(self, indexes, sql_where, search_filter):
-        print('select normal')
         ## select醫療機構資訊'：名稱、分數＆星等、正向評論數、負向評論數、電話與地址並存入normal[]
         sqlstr = "SELECT h.abbreviation, cast(fr.star as float), fr.positive,  fr.negative, h.phone, h.address FROM merge_data m JOIN hospitals h ON m.hospital_id = h.id JOIN final_reviews fr ON h.id = fr.hospital_id  " + sql_where
         normal = self.cursor.execute(sqlstr).fetchall()  ## normal = [ (名稱, GOOGLE星等, 正向評論數, 負向評論數, 電話, 地址), ......]
@@ -342,7 +342,6 @@ class Select():
 
     ## 取得使用者勾選的資訊
     def select_data(self, normal, indexes, sql_where, search_filter):
-        print('select data')
         value_substr = 'm.hospital_id'
         deno_substr = 'm.hospital_id'
         level_substr = 'm.hospital_id'
@@ -371,29 +370,26 @@ class Result():
 
     ## 取得欄位名稱
     def get_column_name(self, indexes, z_data, sql_where, search_filter):
-        print('column name')
         ## 先取得欄位的原始名字(m.v_?)，「醫院機構資訊」為固定欄位，直接手動新增
         getColumns=['醫療機構資訊']
         for r in range(len(indexes)):
             getColumns.append(indexes[r])
-        print(getColumns)
         ## 建立columns[]，存入從資料庫中取得的欄位名稱(縮寫)
         columns = []
         for c in getColumns:
             columns.append(self.cursor.execute("SELECT abbreviation FROM column_name WHERE name = '" + str(c) + "'").fetchone()[0])
-            print(columns)
-        print(columns)
+
         ## 建立full_name[]，存入欄位名稱(縮寫)的完整名字
         full_name = ['醫療機構資訊']
         for fn in columns:
             if fn != '醫療機構資訊':
                 full_name.append(self.cursor.execute("SELECT name FROM indexes WHERE abbreviation = '" + fn + "'").fetchone()[0])
-        print(full_name)
+
         ## 將欄位名稱、欄位詳細說明包裝成zip
         z_col = zip(columns, full_name)
         ## 選取的指標數量，-1是因為扣掉第一欄的醫療機構資訊
         ck_len = len(columns) - 1
-        ## 取得使用者所選指標，第一個為醫療機構資訊，所以不取
+        ## 取得使用者所選指標將放進排序選單中，第一個為醫療機構資訊，所以不取
         sort_indexes = columns[1:]
         return Result().table(z_data, z_col, ck_len, search_filter, indexes, sql_where, sort_indexes)
 
@@ -403,10 +399,7 @@ class Result():
         for r in range(len(indexes)):
             tmp_indexes += indexes[r] + '//'
         sql_where = sql_where.replace(' ', '//')
-        print(sql_where)
-        print('+++++++++++++++++++++')
         tmp_filter = search_filter.replace(' ', '//')
         z_indexes = zip(indexes, sort_indexes)
         ## render至前端HTML，ck_len為指標的長度，columns為欄位名稱，z為醫院資訊和指標值的zip
-        print('有喔')
         return render_template('result.html', scroll = 'results', ck_len=ck_len, z_col=z_col, z_data=z_data, search_filter=search_filter, tmp_filter=tmp_filter, sql_where=sql_where, tmp_indexes=tmp_indexes, z_indexes=z_indexes)
