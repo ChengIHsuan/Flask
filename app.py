@@ -17,12 +17,8 @@ def init():
 def shutdown_session(exception=None):
     db_session.remove()
 
-@app.route('/', methods=['GET'])
+@app.route('/', methods=['GET', 'POST'])
 def renderHome():
-    return render_template('home.html')
-
-@app.route('/', methods=['POST'])
-def show():
     return render_template('home.html')
 
 ##在地區搜尋介面取得使用者輸入的值/search_area
@@ -30,12 +26,13 @@ def show():
 def renderSearch():
     return render_template('search.html')
 
-@app.route('/result', methods=['GET'])
-def renderResult():
-    return  render_template('result.html')
+@app.route('/diseaseResult', methods=['GET'])
+def renderDisease():
+    return  render_template('diseaseResult.html')
 
-@app.route('/result', methods=['POST'])
+@app.route('/diseaseResult', methods=['POST'])
 def panduan():
+    print('d post')
     if request.method == 'POST':
         if 'btnSearch' in request.form:
             ## 特殊疾病
@@ -62,7 +59,7 @@ def panduan():
             if star == None:
                 star = ''
             ## 爛番茄
-            # return render_template('result.html')
+            # return render_template('diseaseResult.html')
             return Search().search_all(county, township, disease, types, names, star, indexes)
         elif 'reSort' in request.form:
             selected_index = request.form.get('selected_index')
@@ -70,6 +67,17 @@ def panduan():
             sql_where = str(request.form.get('tmp_sqlstr')).replace('//', ' ')
             search_filter = str(request.form.get('tmp_filter')).replace('//', ' ')
             return Sort().reSort(selected_index, sql_where, indexes, search_filter)
+
+@app.route('/subjResult', methods=['GET'])
+def renderSubj():
+    return render_template('subjResult.html')
+
+@app.route('/subjResult', methods=['POST'])
+def panduan2():
+    if request.method == 'POST':
+        if 'btnSearchB' in request.form:
+            print('yoyoyo')
+            return 'subj post'
 ##啟動
 if __name__ == '__main__':
     app.jinja_env.auto_reloaded = True  ##jinja2 重新讀取template

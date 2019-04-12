@@ -292,7 +292,7 @@ class Result():
             tmp_filter = search_filter.replace(' ', '//')
             z_indexes = zip(indexes, sort_indexes)
             ## render至前端HTML，ck_len為指標的長度，columns為欄位名稱，z為醫院資訊和指標值的zip
-            return render_template('result.html', scroll = 'results', ck_len=ck_len, z_col=z_col, z_data=z_data, search_filter=search_filter, tmp_filter=tmp_filter, sql_where=sql_where, tmp_indexes=tmp_indexes, z_indexes=z_indexes)
+            return render_template('diseaseResult.html', ck_len=ck_len, z_col=z_col, z_data=z_data, search_filter=search_filter, tmp_filter=tmp_filter, sql_where=sql_where, tmp_indexes=tmp_indexes, z_indexes=z_indexes)
         except BaseException as e:
             print('table Exception' + e)
             return render_template('search.html')
