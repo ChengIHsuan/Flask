@@ -826,33 +826,36 @@
                             <div class="col" style="margin:2% auto;color: #000000">
                                 <span class="searchItem">科別*</span><span style="font-size:14px">&nbsp; (必選)</span>
                                 <select style="margin:2% auto;" class="form-control form-control-sm inputS" id="branch"
-                                    name="" onchange="indexSelectBranch()">
-                                    <option selected value="0">*選擇科別(必選)</option>
-                                    <option value="1">內科</option>
-                                    <option value="2">外科</option>
-                                    <option value="3">小兒科</option>
-                                    <option value="4">婦產科</option>
-                                    <option value="5">眼科</option>
-                                    <option value="6">牙科</option>
-                                    <option value="7">復健科</option>
-                                    <option value="8">皮膚科</option>
+                                    name="depart" onchange="indexSelectBranch()">
+                                    <option selected value="">*選擇科別(必選)</option>
+                                    <option value="1">家醫科</option>
+                                    <option value="2">內科</option>
+                                    <option value="3">外科</option>
+                                    <option value="4">小兒科</option>
+                                    <option value="5">婦產科</option>
+                                    <option value="6">骨科</option>
+                                    <option value="7">神經外科</option>
+                                    <option value="8">泌尿科</option>
                                 </select>
                             </div>
                             <div class="col" style="margin:2% auto;color: #000000">
                                 <span class="searchItem">主觀指標</span><span style="font-size:14px">&nbsp; (必選)</span>
                                 <select style="margin:2% auto;" class="form-control form-control-sm inputS" id="indexB"
-                                    name="" onchange="indexSelectBranch()">
-                                    <option selected value="0">*選擇指標(必選)</option>
-                                    <option value="1">環境</option>
-                                    <option value="2">情緒</option>
-                                    <option value="3">醫師</option>
-                                    <option value="4">病患</option>
-                                    <option value="5">機器</option>
+                                    name="subjective" onchange="indexSelectBranch()">
+                                    <option selected value="">*選擇指標(必選)</option>
+                                    <option value="1">統計數據</option>
+                                    <option value="2">醫病關係</option>
+                                    <option value="3">事後處理</option>
+                                    <option value="4">行政項目</option>
+                                    <option value="5">專業人員與器材</option>
+                                    <option value="6">檢查及藥物和轉診</option>
+                                    <option value="7">不良事件</option>
+                                    <option value="8">其他註解</option>
                                 </select>
                             </div>
                             <div class="col" style="margin:2% auto;">
                                 <h6>地區</h6>
-                                <select class="form-control form-control-sm inputArea " id="county2" name="county2"
+                                <select class="form-control form-control-sm inputArea " id="county2" name="depart_county"
                                     onChange="renew2(this.selectedIndex);">
                                     <option selected value="">選擇縣市</option>
                                     <option value="基隆市">基隆市</option>
@@ -878,7 +881,7 @@
                                     <option value="金門縣">金門縣</option>
                                     <option value="連江縣">連江縣</option>
                                 </select>
-                                <select class="form-control form-control-sm inputArea" id="township2" name="township2">
+                                <select class="form-control form-control-sm inputArea" id="township2" name="depart_township">
                                     <option selected value="">鄉鎮市區</option>
                                     <option value=""></option>
                                 </select>
@@ -886,13 +889,13 @@
                             <div class="col" style="margin:2% auto;">
                                 <h6>醫院層級</h6>
                                 <div style="font-size: 15px">
-                                    <input type="checkbox" value="1" id="tb1" name="type" />
+                                    <input type="checkbox" value="1" id="tb1" name="depart_type" />
                                     <label for="tb1" class="ckType"><span></span>醫學中心</label>
-                                    <input type="checkbox" value="2" id="tb2" name="type" />
+                                    <input type="checkbox" value="2" id="tb2" name="depart_type" />
                                     <label for="tb2" class="ckType"><span></span>區域醫院</label>
-                                    <input type="checkbox" value="3" id="tb3" name="type" />
+                                    <input type="checkbox" value="3" id="tb3" name="depart_type" />
                                     <label for="tb3" class="ckType"><span></span>地區醫院</label>
-                                    <input type="checkbox" value="4" id="tb4" name="type" />
+                                    <input type="checkbox" value="4" id="tb4" name="depart_type" />
                                     <label for="tb4"><span></span>診所</label>
                                 </div>
                             </div>
@@ -908,11 +911,11 @@
                                 <div class="col" style="margin:2% auto;color: #000000">
                                     <h6>醫療機構名稱</h6>
                                     <input type="textbox" class="form-control form-control-sm inputName name"
-                                        name="name1" placeholder="醫院名稱(選填)">
+                                        name="depart_name1" placeholder="醫院名稱(選填)">
                                     <input type="textbox" class="form-control form-control-sm inputName name"
-                                        name="name2" placeholder="+ 醫院名稱">
+                                        name="depart_name2" placeholder="+ 醫院名稱">
                                     <input type="textbox" class="form-control form-control-sm inputName name"
-                                        name="name3" placeholder="+ 醫院名稱">
+                                        name="depart_name3" placeholder="+ 醫院名稱">
                                 </div>
                             </div>
 
@@ -920,7 +923,7 @@
                                 <!--<a href="result">-->
 
                                 <button type="submit" id="btnSearchB" class="btn-sm btnStart" style="padding:8px 15px;"
-                                    name="btnSearchB" title="搜尋" disabled onclick="subj()">
+                                    name="btnSearchDepart" title="搜尋" disabled onclick="subj()">
                                     <img src="static/search.png" style="width:17px;padding-right:5px">搜尋
                                 </button>
                                 <!--</a>-->

@@ -75,9 +75,24 @@ def renderSubj():
 @app.route('/subjResult', methods=['POST'])
 def panduan2():
     if request.method == 'POST':
-        if 'btnSearchB' in request.form:
-            print('yoyoyo')
-            return 'subj post'
+        if 'btnSearchDepart' in request.form:
+            ## 科別
+            depart = request.form.get('depart')
+            ## 主觀指標
+            subjective = request.form.get('subjective')
+            ## 地區
+            county = request.form.get('depart_county')
+            township = request.form.get("depart_township")
+            if township == '鄉鎮市區不拘':
+                township = ''
+            ## 醫院層級
+            types = request.values.getlist('depart_type')
+            ## 醫療機構名稱
+            name1 = request.form.get('depart_name1')
+            name2 = request.form.get('depart_name2')
+            name3 = request.form.get('depart_name3')
+            names = [name1, name2, name3]
+            return "{}//{}//{}//{}".format(depart, subjective, county, township)
 ##啟動
 if __name__ == '__main__':
     app.jinja_env.auto_reloaded = True  ##jinja2 重新讀取template
