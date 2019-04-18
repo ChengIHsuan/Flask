@@ -9,21 +9,22 @@ class Search():
 
     ##科別
     def search_depart(self, depart):
-        sql_where = "depart_id = {}".format(depart)
+        sql_where = "s.depart_id = {}".format(depart)
         return sql_where
 
     ##主觀指標
     def search_subjective(self, subjective):
         getStr = {
-            '1': "s_101, s_102, s_104, s_129",
-            '2': "s_106, s_113, s_114, s_117, s_118, s_120, s_124, s_125",
-            '3': "s_115, s_121, s_122, s_123",
-            '4': "s_103, s_105, s_107",
-            '5': "s_108, s_119",
-            '6': "s_109, s_110, s_111, s_112, s_116",
-            '7': "s_126, s_128",
-            '8': "s_127, s_130",
+            '1': "統計數據",
+            '2': "醫病關係",
+            '3': "事後處理",
+            '4': "行政項目",
+            '5': "專業人員與器材",
+            '6': "檢查及藥物和轉診",
+            '7': "不良事件",
+            '8': "其他註解"
         }
+
         return getStr.get(subjective)
 
 
@@ -144,9 +145,9 @@ class Search():
             ## 地點搜尋
             if county + township != '':
                 search_filter += (county + township) + ', '
-                ## 名稱搜尋
-                for name in names:
-                    search_filter += name + ', '
+            ## 名稱搜尋
+            for name in names:
+                search_filter += name + ', '
             ## 層級搜尋
             for type in types:
                 getStr = {
@@ -159,6 +160,9 @@ class Search():
             ## 評價結果
             if star != '':
                 search_filter += star + "星以上, "
+            ## 科別
+
+
 
             ## 判斷是否有查詢條件
             ## 因為每個條件皆是以", "做結尾，因此不取查詢條件最後兩個位子

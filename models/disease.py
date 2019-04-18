@@ -1,7 +1,8 @@
 import sqlite3
 from flask import Flask, request, render_template, flash, redirect
+from models.search import Search
 
-class Search():
+class Disease():
 
     def __init__(self):
         db = sqlite3.connect('voyager.db')

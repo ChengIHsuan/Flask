@@ -26,7 +26,7 @@
         integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
         crossorigin="anonymous"></script>
     <link rel=stylesheet type="text/css" href="{{ url_for('static', filename='main1.4.css') }}">
-    <!--<link rel=stylesheet type="text/css" href="hos.css">-->
+    <!-- <link rel=stylesheet type="text/css" href="hos.css"> -->
     <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
 
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
@@ -36,19 +36,19 @@
     <script type="text/javascript" src="{{url_for('static', filename='js/searchJS.js')}}"></script>
     <script>
 
-        function obj(){
-            myForm.action="/diseaseResult";
+        function obj() {
+            myForm.action = "/diseaseResult";
         }
 
-        function subj(){
-            myForm.action="/subjResult";
+        function subj() {
+            myForm.action = "/subjResult";
         }
 
-        // $(function () {
-        //     {% if alert %}
-        //     alert('{{alert}}');
-        //     {% endif %}
-        // });
+        $(function () {
+              {% if alert %}
+             alert('{{alert}}');
+              {% endif %}
+          });
 
 
         // 指標說明滾動
@@ -144,9 +144,9 @@
                             <li class="nav-item active">
                                 <a class="nav-link" href="search">搜尋 <span class="sr-only">(current)</span></a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">聯絡我們</a>
-                            </li>
+                            <!--<li class="nav-item">-->
+                            <!--<a class="nav-link" href="#">聯絡我們</a>-->
+                            <!--</li>-->
                         </ul>
                     </div>
                 </nav>
@@ -161,7 +161,7 @@
                     <div id="tabs-nav">
                         <a href="#tab0" class="tabs-menu tabs-menu-active">找醫療機構</a>
                         <a href="#tab1" class="tabs-menu">找科別</a>
-                        <a href="#tab2" class="tabs-menu">找醫師</a>
+                        <!--<a href="#tab2" class="tabs-menu">找醫師</a>-->
                     </div>
 
                     <div class="tabs-container">
@@ -485,17 +485,17 @@
                                         }
                                     }
 
-                                    $(function () {
-                                        $("#btnSearch").click(function () {
-                                            window.history.pushState(null, null, '?page=1');
-                                            for (i = 0; i < ckIndex.length; i++) {
-                                                if (ckIndex[i].checked) {
-                                                    flag++;
-                                                }
+                                    // $(function () {
+                                    //     $("#btnSearch").click(function () {
+                                    //         window.history.pushState(null, null, '?page=1');
+                                    //         for (i = 0; i < ckIndex.length; i++) {
+                                    //             if (ckIndex[i].checked) {
+                                    //                 flag++;
+                                    //             }
 
-                                            }
-                                        });
-                                    });
+                                    //         }
+                                    //     });
+                                    // });
                                 </script>
                                 <div class="col" style="margin:2% auto;font-size: 15px;">
                                     <span class="searchItem">疾病指標*</span><span style="font-size:14px">&nbsp;
@@ -769,7 +769,7 @@
                                     <p class="moreSearch" style="font-size:14px;">進階搜尋</p>
                                 </div>
 
-                                <div class="explain" id="explain" style="padding:0px 12px;">
+                                <div class="explain" style="padding:0px 12px;">
                                     <p style="font-size:14px;">搜尋說明<img src="static/指標說明.png" height="20px">
                                     </p>
                                 </div>
@@ -826,23 +826,59 @@
                             <div class="col" style="margin:2% auto;color: #000000">
                                 <span class="searchItem">科別*</span><span style="font-size:14px">&nbsp; (必選)</span>
                                 <select style="margin:2% auto;" class="form-control form-control-sm inputS" id="branch"
-                                    name="depart" onchange="indexSelectBranch()">
-                                    <option selected value="">*選擇科別(必選)</option>
-                                    <option value="1">家醫科</option>
-                                    <option value="2">內科</option>
-                                    <option value="3">外科</option>
-                                    <option value="4">小兒科</option>
-                                    <option value="5">婦產科</option>
-                                    <option value="6">骨科</option>
-                                    <option value="7">神經外科</option>
-                                    <option value="8">泌尿科</option>
+                                    name="depart">
+                                    <!-- <option selected value="0">*選擇科別(必選)</option> -->
+                                    <option selected value="1">家醫科</option>
+                                <option value="2">內科</option>
+                                <option value="3">外科</option>
+                                <option value="4">小兒科</option>
+                                <option value="5">婦產科</option>
+                                <option value="6">骨科</option>
+                                <option value="7">神經外科</option>
+                                <option value="8">泌尿科</option>
+                                <option value="9">耳鼻喉科</option>
+                                <option value="10">眼科</option>
+                                <option value="11">皮膚科</option>
+                                <option value="12">神經科</option>
+                                <option value="13">精神科</option>
+                                <option value="14">復健科</option>
+                                <option value="15">整形外科</option>
+                                <option value="16">急診醫學科</option>
+                                <option value="17">職業醫學科</option>
+                                <option value="18">牙科</option>
+                                <option value="19">復健牙科</option>
+                                <option value="20">牙髓病科</option>
+                                <option value="21">牙周病科</option>
+                                <option value="22">補綴牙科</option>
+                                <option value="23">齒顎矯正科</option>
+                                <option value="24">兒童牙科</option>
+                                <option value="25">口腔顎面外科</option>
+                                <option value="26">口腔診斷科</option>
+                                <option value="27">口腔病理科</option>
+                                <option value="28">中醫科</option>
+                                <option value="29">中醫內科</option>
+                                <option value="30">中醫外科</option>
+                                <option value="31">中醫眼科</option>
+                                <option value="32">中醫兒科</option>
+                                <option value="33">中醫婦科</option>
+                                <option value="34">中醫傷科</option>
+                                <option value="35">中醫針灸科</option>
+                                <option value="36">中醫痣科</option>
+                                <option value="37">中醫一般診療不分科</option>
+                                <option value="38">麻醉科</option>
+                                <option value="39">放射線科</option>
+                                <option value="40">病理科</option>
+                                <option value="41">核醫科</option>
+                                <option value="42">結核科</option>
+                                <option value="43">洗腎科</option>
+
                                 </select>
                             </div>
-                            <div class="col" style="margin:2% auto;color: #000000">
+                            <!-- <div class="col" style="margin:2% auto;color: #000000">
                                 <span class="searchItem">主觀指標</span><span style="font-size:14px">&nbsp; (必選)</span>
-                                <select style="margin:2% auto;" class="form-control form-control-sm inputS" id="indexB"
+                                <select style="margin:2% auto;" class="form-control form-control-sm inputS" id=""
                                     name="subjective" onchange="indexSelectBranch()">
-                                    <option selected value="">*選擇指標(必選)</option>
+                                    <option selected value="0">*選擇指標(必選)</option>
                                     <option value="1">統計數據</option>
                                     <option value="2">醫病關係</option>
                                     <option value="3">事後處理</option>
@@ -852,11 +888,42 @@
                                     <option value="7">不良事件</option>
                                     <option value="8">其他註解</option>
                                 </select>
+                            </div> -->
+                            <div class="col" style="margin:2% auto;font-size: 15px;">
+                                <span class="searchItem">主觀指標*</span><span style="font-size:14px">&nbsp;
+                                    (必選)</span>
+
+                                <div id="indexB" style="margin:2% auto">
+                                    <input type="checkbox" value="1" id="is1" name="subjective"
+                                        onclick="onCheckBoxSub(this)" />
+                                    <label for="is1" class="ckIndex2"><span></span>統計數據</label>
+                                    <input type="checkbox" value="2" id="is2" name="subjective"
+                                        onclick="onCheckBoxSub(this)" />
+                                    <label for="is2" class="ckIndex2"><span></span>醫病關係</label>
+                                    <input type="checkbox" value="3" id="is3" name="subjective"
+                                        onclick="onCheckBoxSub(this)" />
+                                    <label for="is3" class="ckIndex2"><span></span>事後處理</label>
+                                    <input type="checkbox" value="4" id="is4" name="subjective"
+                                        onclick="onCheckBoxSub(this)" />
+                                    <label for="is4" class="ckIndex2"><span></span>行政項目</label>
+                                    <input type="checkbox" value="5" id="is5" name="subjective"
+                                        onclick="onCheckBoxSub(this)" />
+                                    <label for="is5" class="ckIndex2"><span></span>專業人員與器材</label>
+                                    <input type="checkbox" value="6" id="is6" name="subjective"
+                                        onclick="onCheckBoxSub(this)" />
+                                    <label for="is6" class="ckIndex2"><span></span>檢查及藥物和轉診</label>
+                                    <input type="checkbox" value="7" id="is7" name="subjective"
+                                        onclick="onCheckBoxSub(this)" />
+                                    <label for="is7" class="ckIndex2"><span></span>不良事件</label>
+                                    <input type="checkbox" value="8" id="is8" name="subjective"
+                                        onclick="onCheckBoxSub(this)" />
+                                    <label for="is8" class="ckIndex2"><span></span>其他註解</label>
+                                </div>
                             </div>
                             <div class="col" style="margin:2% auto;">
                                 <h6>地區</h6>
-                                <select class="form-control form-control-sm inputArea " id="county2" name="depart_county"
-                                    onChange="renew2(this.selectedIndex);">
+                                <select class="form-control form-control-sm inputArea " id="county2"
+                                    name="depart_county" onChange="renew2(this.selectedIndex);">
                                     <option selected value="">選擇縣市</option>
                                     <option value="基隆市">基隆市</option>
                                     <option value="臺北市">臺北市</option>
@@ -881,7 +948,8 @@
                                     <option value="金門縣">金門縣</option>
                                     <option value="連江縣">連江縣</option>
                                 </select>
-                                <select class="form-control form-control-sm inputArea" id="township2" name="depart_township">
+                                <select class="form-control form-control-sm inputArea" id="township2"
+                                    name="depart_township">
                                     <option selected value="">鄉鎮市區</option>
                                     <option value=""></option>
                                 </select>
@@ -903,11 +971,11 @@
                                 <p class="moreSearch" style="font-size:14px;">進階搜尋</p>
                             </div>
 
-                            <div class="explain" id="explain" style="padding:0px 12px;">
-                                <p style="font-size:14px;">搜尋說明<img src="static/指標說明.png" height="20px">
-                                </p>
-                            </div>
-                            <div class="branchMore" style="display:none" id="resultIndex" name="resultIndex">
+                            <!--<div class="explain" id="explain" style="padding:0px 12px;">-->
+                            <!--<p style="font-size:14px;">搜尋說明<img src="static/指標說明.png" height="20px">-->
+                            <!--</p>-->
+                            <!--</div>-->
+                            <div class="branchMore" style="display:none" id="" name="resultIndex">
                                 <div class="col" style="margin:2% auto;color: #000000">
                                     <h6>醫療機構名稱</h6>
                                     <input type="textbox" class="form-control form-control-sm inputName name"
@@ -933,12 +1001,19 @@
                                 $(".moreB").click(function () {
                                     $(".branchMore").slideToggle("fast");
                                 });
-                                function indexSelectBranch() {
-                                    var branch = document.getElementById("branch").value;
-                                    var indexB = document.getElementById("indexB").value;
-                                    if(branch == "0"|| indexB == "0"){
+                                //必選指標
+                                var sub = 0;
+                                var itemsSub = document.getElementsByName("subjective");
+                                function onCheckBoxSub(checkbox) {
+                                    if (checkbox.checked) {
+                                        sub++;
+                                    }
+                                    else {
+                                        sub--;
+                                    }
+                                    if (sub <= 0) {
                                         $('#btnSearchB').attr('disabled', true);
-                                    }else{
+                                    } else {
                                         $('#btnSearchB').attr('disabled', false);
                                     }
                                 }
@@ -948,10 +1023,12 @@
                         <div id="tab2" class="tabs-panel">
                             Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque
                             laudantium, totam
-                            rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae
+                            rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae
+                            vitae
                             dicta
                             sunt
-                            explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed
+                            explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit,
+                            sed
                             quia
 
                         </div>
@@ -983,7 +1060,8 @@
                         <img class="card-img-top imgM" src="static/nameM.png" alt="醫療機構名稱" title="醫療機構名稱">
                         <div class="card-body">
                             <h5 class="card-title" style="text-align: center;font-weight:bold ">醫療機構名稱</h5>
-                            <p class="card-text" style="text-align:left;">目前醫療機構有7000多家可供查詢，輸入關鍵字再選擇即可，一次最多可同時查詢3家醫院。
+                            <p class="card-text" style="text-align:left;">
+                                目前醫療機構有7000多家可供查詢，輸入關鍵字再選擇即可，一次最多可同時查詢3家醫院。
                             </p>
                         </div>
                     </div>
@@ -991,7 +1069,8 @@
                         <img class="card-img-top imgM" src="static/areaM.png" alt="地點查詢" title="地點查詢">
                         <div class="card-body">
                             <h5 class="card-title" style="text-align: center;font-weight:bold ">地點查詢</h5>
-                            <p class="card-text" style="text-align:left;">可依您地點需求做查詢，如欲查詢"新北市新莊區"，選擇"新北市"後，再選擇"新莊區"即可。
+                            <p class="card-text" style="text-align:left;">
+                                可依您地點需求做查詢，如欲查詢"新北市新莊區"，選擇"新北市"後，再選擇"新莊區"即可。
                             </p>
                         </div>
                     </div>
@@ -999,7 +1078,8 @@
                         <img class="card-img-top imgM" src="static/typeM.png" alt="層級查詢" title="層級查詢">
                         <div class="card-body">
                             <h5 class="card-title" style="text-align: center;font-weight:bold ">層級查詢</h5>
-                            <p class="card-text" style="text-align:left;">全台醫療機構分為：醫學中心、地區醫院、區域醫院、診所，依您所需可供選擇，無選擇為全選。
+                            <p class="card-text" style="text-align:left;">
+                                全台醫療機構分為：醫學中心、地區醫院、區域醫院、診所，依您所需可供選擇，無選擇為全選。
                             </p>
                         </div>
                     </div>
@@ -1040,7 +1120,8 @@
                 </div>
                 <hr>
                 <div style="padding:1% 5%">
-                    <p style="text-align:center;font-size:12px;"> 本網站版權屬於 輔仁大學醫療評價計畫團隊所有，未經本站同意，請勿擅用圖案。<br>Copyright ©
+                    <p style="text-align:center;font-size:12px;"> 本網站版權屬於 輔仁大學醫療評價計畫團隊所有，未經本站同意，請勿擅用圖案。<br>Copyright
+                        ©
                         2019
                         - FJU
                         Physician/Hospital Rating Website Team All Rights Reserved</p>

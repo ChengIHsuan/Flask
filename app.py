@@ -1,7 +1,10 @@
 from flask import Flask, request, render_template, flash
 from database import db_session, init_db
-from models.search import Search, Select ##import search.py裡面的class Search()
+from models.search import Search ##import search.py裡面的class Search()
 from models.sort import Sort
+from models.disease import Disease
+from models.subj import Subj
+
 import sqlite3
 
 app = Flask(__name__)
@@ -32,7 +35,6 @@ def renderDisease():
 
 @app.route('/diseaseResult', methods=['POST'])
 def panduan():
-    print('d post')
     if request.method == 'POST':
         if 'btnSearch' in request.form:
             ## 特殊疾病
@@ -44,6 +46,8 @@ def panduan():
             name2 = request.form.get('name2')
             name3 = request.form.get('name3')
             names = [name1, name2, name3]
+            while '' in names:
+                names.remove('')
             ## 移除陣列中的空字串
             while '' in names:
                 names.remove('')
@@ -60,7 +64,7 @@ def panduan():
                 star = ''
             ## 爛番茄
             # return render_template('diseaseResult.html')
-            return Search().search_all(county, township, disease, types, names, star, indexes)
+            return Disease().search_all(county, township, disease, types, names, star, indexes)
         elif 'reSort' in request.form:
             selected_index = request.form.get('selected_index')
             indexes = request.form.get('tmp_indexes')
@@ -75,11 +79,12 @@ def renderSubj():
 @app.route('/subjResult', methods=['POST'])
 def panduan2():
     if request.method == 'POST':
+        print('hi')
         if 'btnSearchDepart' in request.form:
             ## 科別
             depart = request.form.get('depart')
             ## 主觀指標
-            subjective = request.form.get('subjective')
+            subjective = request.values.getlist('subjective')
             ## 地區
             county = request.form.get('depart_county')
             township = request.form.get("depart_township")
@@ -92,7 +97,13 @@ def panduan2():
             name2 = request.form.get('depart_name2')
             name3 = request.form.get('depart_name3')
             names = [name1, name2, name3]
-            return "{}//{}//{}//{}".format(depart, subjective, county, township)
+            while '' in names:
+                names.remove('')
+            # return "{}//{}//{}//{}".format(depart, subjective, county, township)
+            print(depart)
+            print(subjective)
+            print('+++++++')
+            return Subj().search_subj(depart, subjective, county, township, types, names)
 ##啟動
 if __name__ == '__main__':
     app.jinja_env.auto_reloaded = True  ##jinja2 重新讀取template
