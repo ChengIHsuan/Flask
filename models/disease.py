@@ -89,7 +89,7 @@ class Select():
             for r in range(len(indexes)):
                 value_substr += (', ' + 'm.v_' + indexes[r])
                 level_substr += (', ' + 'm.l_' + indexes[r])
-                deno_substr += (', ' + 'm.m_' + indexes[r])
+                deno_substr += (', ' + 'm.d_' + indexes[r])
             ## 取得data指標值
             sqlstr = "SELECT " + value_substr + " FROM merge_data m JOIN hospitals h ON m.hospital_id = h.id JOIN final_reviews fr ON h.id = fr.hospital_id " + sql_where
             l_value = self.cursor.execute(sqlstr).fetchall()  ## l_value = [(hospital_id, 指標1之指標值, 指標2之指標值, 指標3之指標值, ......), ......]

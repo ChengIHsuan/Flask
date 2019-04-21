@@ -59,7 +59,7 @@ class Sort():
         for r in range(len(indexes)):
             value_substr += (', ' + 'm.v_' + indexes[r])
             level_substr += (', ' + 'm.l_' + indexes[r])
-            deno_substr += (', ' + 'm.m_' + indexes[r])
+            deno_substr += (', ' + 'm.d_' + indexes[r])
         ## 取得data指標值
         sqlstr = "SELECT " + value_substr + " FROM merge_data m JOIN hospitals h ON m.hospital_id = h.id JOIN final_reviews fr ON h.id = fr.hospital_id " + sql_where + orderby
         l_value = self.cursor.execute(sqlstr).fetchall()
@@ -81,7 +81,7 @@ class Result():
 
     ## 取得欄位名稱
     def get_column_name(self, indexes, search_filter, sql_where, z_data):
-        ## 先取得欄位的原始名字(m.m_?)，「醫院機構資訊」為固定欄位，直接手動新增
+        ## 先取得欄位的原始名字(m.d.?)，「醫院機構資訊」為固定欄位，直接手動新增
         getColumns = ['醫療機構資訊']
         for r in range(len(indexes)):
             getColumns.append(indexes[r])
