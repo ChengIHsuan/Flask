@@ -32,7 +32,7 @@
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <script type="text/javascript" src="{{url_for('static', filename='js/resultJS.js')}}"></script>
+    <script type="text/javascript" src="{{url_for('static', filename='js/diseaseResultJS.js')}}"></script>
 
     <script>
         $(function(){
@@ -75,6 +75,20 @@
                 <h5 class="resultText">搜尋條件<span><img src="static/條件下.png" height="5px"
                                                       style="padding-left:5px"></span></h5>
             </div>
+
+            <script>
+            window.onload=function aaaa(){
+                {% if diss %}
+                document.myForm.disease.options[2].selected = true;
+                indexSelect()
+                <!--document.myForm.county.options[1].selected = true;-->
+                <!--renew(1)-->
+                document.myForm.name1.value = 'aaa'
+                document.myForm.t1.checked = true
+                {% endif %}
+            }
+            </script>
+
             <div class="resultAll">
                 <div class="resultInput">
                     <div class="col" style="margin:2px auto;color: #000000">
@@ -98,33 +112,33 @@
                         <h6>地區</h6>
                         <select class="form-control form-control-sm resultArea " id="county" name="county"
                                 onChange="renew(this.selectedIndex);">
-                            <option selected value="">選擇縣市</option>
-                            <option value="基隆市">基隆市</option>
-                            <option value="臺北市">臺北市</option>
-                            <option value="新北市">新北市</option>
-                            <option value="桃園市">桃園市</option>
-                            <option value="新竹縣">新竹縣</option>
-                            <option value="新竹市">新竹市</option>
-                            <option value="苗栗縣">苗栗縣</option>
-                            <option value="臺中市">臺中市</option>
-                            <option value="彰化縣">彰化縣</option>
-                            <option value="南投縣">南投縣</option>
-                            <option value="雲林縣">雲林縣</option>
-                            <option value="嘉義市">嘉義市</option>
-                            <option value="嘉義縣">嘉義縣</option>
-                            <option value="臺南市">臺南市</option>
-                            <option value="高雄市">高雄市</option>
-                            <option value="屏東縣">屏東縣</option>
-                            <option value="臺東縣">臺東縣</option>
-                            <option value="花蓮縣">花蓮縣</option>
-                            <option value="宜蘭縣">宜蘭縣</option>
-                            <option value="澎湖縣">澎湖縣</option>
-                            <option value="金門縣">金門縣</option>
-                            <option value="連江縣">連江縣</option>
+                            <option selected value="0">選擇縣市</option>
+                            <option value="1">基隆市</option>
+                            <option value="2">臺北市</option>
+                            <option value="3">新北市</option>
+                            <option value="4">桃園市</option>
+                            <option value="5">新竹縣</option>
+                            <option value="6">新竹市</option>
+                            <option value="7">苗栗縣</option>
+                            <option value="8">臺中市</option>
+                            <option value="9">彰化縣</option>
+                            <option value="10">南投縣</option>
+                            <option value="11">雲林縣</option>
+                            <option value="12">嘉義市</option>
+                            <option value="13">嘉義縣</option>
+                            <option value="14">臺南市</option>
+                            <option value="15">高雄市</option>
+                            <option value="16">屏東縣</option>
+                            <option value="17">臺東縣</option>
+                            <option value="18">花蓮縣</option>
+                            <option value="19">宜蘭縣</option>
+                            <option value="20">澎湖縣</option>
+                            <option value="21">金門縣</option>
+                            <option value="22">連江縣</option>
                         </select>
                         <select class="form-control form-control-sm resultArea" id="township" name="township" >
                             <option selected value="">鄉鎮市區</option>
-                            <option value=""></option>
+                                    <option value=""></option>
                         </select>
                     </div>
 
@@ -150,7 +164,6 @@
                         <input type="textbox" class="form-control form-control-sm resultName" name="name3"
                                id="name3" placeholder="+ 醫院名稱">
                     </div>
-
 
                     <div class="col" style="margin:2px auto;">
                         <h6>醫院層級</h6>
@@ -285,18 +298,18 @@
                             <label for="b3" class="ckIndex2"><span></span>貧血檢查(Hb)檢查比率</label>
                             <input type="checkbox" value="37" id="b4" name="ckIndex" onclick="onCheckBox(this)" />
                             <label for="b4" class="ckIndex2"><span></span>瘻管重建率</label>
-                            <!--<input type="checkbox" value="5" id="b5" name="ckIndex" onclick="onCheckBox(this)" />-->
-                            <!--<label for="b5" class="ckIndex2"><span></span>脫離率 (腎移植率)</label>-->
-                            <!--<input type="checkbox" value="6" id="b6" name="ckIndex" onclick="onCheckBox(this)" />-->
-                            <!--<label for="b6" class="ckIndex2"><span></span>B型肝炎表面抗原(HBsAg)轉陽率</label>-->
-                            <!--<input type="checkbox" value="7" id="b7" name="ckIndex" onclick="onCheckBox(this)" />-->
-                            <!--<label for="b7" class="ckIndex2"><span></span>C型肝炎抗體轉陽率</label>-->
-                            <!--<input type="checkbox" value="8" id="b8" name="ckIndex" onclick="onCheckBox(this)" />-->
-                            <!--<label for="b8" class="ckIndex2"><span></span>B肝是否設立透析專屬機器</label>-->
-                            <!--<input type="checkbox" value="9" id="b9" name="ckIndex" onclick="onCheckBox(this)" />-->
-                            <!--<label for="b9" class="ckIndex2"><span></span>C肝是否設立透析專屬機器</label>-->
-                            <!--<input type="checkbox" value="10" id="b10" name="ckIndex" onclick="onCheckBox(this)" />-->
-                            <!--<label for="b10" class="ckIndex2"><span></span>五十五歲以下透析病人移植登錄</label>-->
+                            <input type="checkbox" value="52" id="b5" name="ckIndex" onclick="onCheckBox(this)" />
+                            <label for="b5" class="ckIndex2"><span></span>脫離率 (腎移植率)</label>
+                            <input type="checkbox" value="53" id="b6" name="ckIndex" onclick="onCheckBox(this)" />
+                            <label for="b6" class="ckIndex2"><span></span>B型肝炎表面抗原(HBsAg)轉陽率</label>
+                            <input type="checkbox" value="54" id="b7" name="ckIndex" onclick="onCheckBox(this)" />
+                            <label for="b7" class="ckIndex2"><span></span>C型肝炎抗體轉陽率</label>
+                            <input type="checkbox" value="55" id="b8" name="ckIndex" onclick="onCheckBox(this)" />
+                            <label for="b8" class="ckIndex2"><span></span>B肝是否設立透析專屬機器</label>
+                            <input type="checkbox" value="56" id="b9" name="ckIndex" onclick="onCheckBox(this)" />
+                            <label for="b9" class="ckIndex2"><span></span>C肝是否設立透析專屬機器</label>
+                            <input type="checkbox" value="57" id="b10" name="ckIndex" onclick="onCheckBox(this)" />
+                            <label for="b10" class="ckIndex2"><span></span>五十五歲以下透析病人移植登錄</label>
                             <input type="checkbox" value="50" id="b11" name="ckIndex" onclick="onCheckBox(this)" />
                             <label for="b11" class="ckIndex2"><span></span>綜合分數</label>
                         </div>
@@ -307,20 +320,16 @@
                             <label for="kw2" class="ckIndex2"><span></span>效率(Weekly Kt_V)檢查比率</label>
                             <input type="checkbox" value="40" id="kw3" name="ckIndex" onclick="onCheckBox(this)" />
                             <label for="kw3" class="ckIndex2"><span></span>貧血檢查(Hb)檢查比率</label>
-                            <!--<input type="checkbox" value="4" id="kw4" name="ckIndex" onclick="onCheckBox(this)" />-->
-                            <!--<label for="kw4" class="ckIndex2"><span></span>腹膜透析腹膜炎發生率</label>-->
-                            <!--<input type="checkbox" value="5" id="kw5" name="ckIndex" onclick="onCheckBox(this)" />-->
-                            <!--<label for="kw5" class="ckIndex2"><span></span>脫離率 (腎移植率)</label>-->
-                            <!--<input type="checkbox" value="6" id="kw6" name="ckIndex" onclick="onCheckBox(this)" />-->
-                            <!--<label for="kw6" class="ckIndex2"><span></span>B型肝炎表面抗原(HBsAg)轉陽率</label>-->
-                            <!--<input type="checkbox" value="7" id="kw7" name="ckIndex" onclick="onCheckBox(this)" />-->
-                            <!--<label for="kw7" class="ckIndex2"><span></span>C型肝炎抗體轉陽率</label>-->
-                            <!--<input type="checkbox" value="8" id="kw8" name="ckIndex" onclick="onCheckBox(this)" />-->
-                            <!--<label for="kw8" class="ckIndex2"><span></span>各院所新增透析病人之腹膜透析人數</label>-->
-                            <!--<input type="checkbox" value="9" id="kw9" name="ckIndex" onclick="onCheckBox(this)" />-->
-                            <!--<label for="kw9" class="ckIndex2"><span></span>各院所新增透析病人之腹膜透析占率</label>-->
-                            <!--<input type="checkbox" value="10" id="kw10" name="ckIndex" onclick="onCheckBox(this)" />-->
-                            <!--<label for="kw10" class="ckIndex2"><span></span>五十五歲以下透析病人移植登錄率</label>-->
+                            <input type="checkbox" value="58" id="kw4" name="ckIndex" onclick="onCheckBox(this)" />
+                            <label for="kw4" class="ckIndex2"><span></span>腹膜透析腹膜炎發生率</label>
+                            <input type="checkbox" value="59" id="kw5" name="ckIndex" onclick="onCheckBox(this)" />
+                            <label for="kw5" class="ckIndex2"><span></span>脫離率 (腎移植率)</label>
+                            <input type="checkbox" value="60" id="kw6" name="ckIndex" onclick="onCheckBox(this)" />
+                            <label for="kw6" class="ckIndex2"><span></span>B型肝炎表面抗原(HBsAg)轉陽率</label>
+                            <input type="checkbox" value="61" id="kw7" name="ckIndex" onclick="onCheckBox(this)" />
+                            <label for="kw7" class="ckIndex2"><span></span>C型肝炎抗體轉陽率</label>
+                            <input type="checkbox" value="64" id="kw10" name="ckIndex" onclick="onCheckBox(this)" />
+                            <label for="kw10" class="ckIndex2"><span></span>五十五歲以下透析病人移植登錄率</label>
                             <input type="checkbox" value="51" id="kw11" name="ckIndex" onclick="onCheckBox(this)" />
                             <label for="kw11" class="ckIndex2"><span></span>綜合分數</label>
                         </div>

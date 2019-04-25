@@ -52,10 +52,8 @@ def panduan():
             while '' in names:
                 names.remove('')
             ## 地區
-            county = request.form.get("county")
+            county = request.form.get('county')
             township = request.form.get("township")
-            if township == '鄉鎮市區不拘':
-                township = ''
             ## 醫院層級
             types = request.values.getlist('type')
             ##Google星等
@@ -69,8 +67,7 @@ def panduan():
             selected_index = request.form.get('selected_index')
             indexes = request.form.get('tmp_indexes')
             sql_where = str(request.form.get('tmp_sqlstr')).replace('//', ' ')
-            search_filter = str(request.form.get('tmp_filter')).replace('//', ' ')
-            return Sort().reSort(selected_index, sql_where, indexes, search_filter)
+            return Sort().reSort(selected_index, sql_where, indexes)
 
 @app.route('/subjResult', methods=['GET'])
 def renderSubj():

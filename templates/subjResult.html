@@ -73,7 +73,7 @@
         department[22] = ["選擇鄉鎮市區", "南竿鄉", "北竿鄉", "東引鄉", "莒光鄉"];
         function renew(index) {
             for (var i = 0; i < department[index].length; i++)
-                document.myForm.township.options[i] = new Option(department[index][i], department[index][i]);	// 設定新選項
+                document.myForm.township.options[i] = new Option(department[index][i], i);	// 設定新選項
             document.myForm.township.length = department[index].length;	// 刪除多餘的選項
         }
 

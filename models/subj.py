@@ -32,8 +32,7 @@ class Subj():
             sql_where = 'WHERE ' + sql_where
         print(sql_where)
         # indexes = Search().search_subjective(subjective)
-        search_filter = ' '
-        return Select().select_normal(subjective, sql_where, search_filter)
+        return Select().select_normal(subjective, sql_where)
 
 
 class Select():
@@ -43,7 +42,7 @@ class Select():
         self.cursor = db.cursor()
 
     ## 取得醫療機構資訊
-    def select_normal(self, indexes, sql_where, search_filter):
+    def select_normal(self, indexes, sql_where):
         try:
             ## select醫療機構資訊'：名稱、分數＆星等、正向評論數、負向評論數、電話與地址並存入normal[]
             sqlstr = "SELECT h.abbreviation, cast(fr.star as float), s.reviews, h.phone, h.address FROM  hospitals h  JOIN final_reviews fr ON h.id = fr.hospital_id  JOIN tmp_subj2 s ON h.id = s.hospital_id " + sql_where
@@ -54,13 +53,13 @@ class Select():
                 alert = "抱歉，找不到您要的資料訊息。"
                 return render_template("search.html", alert=alert)
             else:
-                return Select().select_data(normal, indexes, sql_where, search_filter)
+                return Select().select_data(normal, indexes, sql_where)
         except BaseException as e:
             print('select_normal Exception' + e)
             return render_template('search.html')
 
     ## 取得使用者勾選的資訊
-    def select_data(self, normal, indexes, sql_where, search_filter):
+    def select_data(self, normal, indexes, sql_where):
         # try:
             print('select data')
             substr = 's.hospital_id'
@@ -74,7 +73,7 @@ class Select():
             print(value)
             ## 將醫療機構資訊、指標值、就醫人數、指標值等級包裝成zip
             z_data = zip(normal, value)
-            return Result().get_column_name(indexes, z_data, sql_where, search_filter)
+            return Result().get_column_name(indexes, z_data, sql_where)
         # except BaseException as e:
         #     print('select_data Exception' + e)
         #     return render_template('search.html')
@@ -86,7 +85,7 @@ class Result():
         self.cursor = db.cursor()
 
     ## 取得欄位名稱
-    def get_column_name(self, indexes, z_data, sql_where, search_filter):
+    def get_column_name(self, indexes, z_data, sql_where):
         try:
             print('column name')
             ## 先取得欄位的原始名字(m.v_?)，「醫院機構資訊」為固定欄位，直接手動新增
@@ -106,24 +105,23 @@ class Result():
             ck_len = len(columns) - 1
             ## 取得使用者所選指標將放進排序選單中，第一個為醫療機構資訊，所以不取
             sort_indexes = columns[1:]
-            return Result().table(z_data, z_col, ck_len, search_filter, indexes, sql_where, sort_indexes)
+            return Result().table(z_data, z_col, ck_len, indexes, sql_where, sort_indexes)
         except BaseException as e:
             print('get_column_name Exception' + e)
             return render_template('search.html')
 
     ## 將搜尋結果寫進表格
-    def table(self, z_data, z_col, ck_len, search_filter, indexes, sql_where, sort_indexes):
+    def table(self, z_data, z_col, ck_len, indexes, sql_where, sort_indexes):
         try:
             print('table')
             tmp_indexes = ''
             for r in range(len(indexes)):
                 tmp_indexes += indexes[r] + '//'
             sql_where = sql_where.replace(' ', '//')
-            tmp_filter = search_filter.replace(' ', '//')
             z_indexes = zip(indexes, sort_indexes)
             print('go')
             ## render至前端HTML，ck_len為指標的長度，columns為欄位名稱，z為醫院資訊和指標值的zip
-            return render_template('subjResult.html', ck_len=ck_len, z_col=z_col, z_data=z_data, search_filter=search_filter, tmp_filter=tmp_filter, sql_where=sql_where, tmp_indexes=tmp_indexes, z_indexes=z_indexes)
+            return render_template('subjResult.html', ck_len=ck_len, z_col=z_col, z_data=z_data, sql_where=sql_where, tmp_indexes=tmp_indexes, z_indexes=z_indexes)
         except BaseException as e:
             print('table Exception' + e)
             return render_template('search.html')
