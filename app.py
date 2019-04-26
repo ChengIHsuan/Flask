@@ -46,11 +46,6 @@ def panduan():
             name2 = request.form.get('name2')
             name3 = request.form.get('name3')
             names = [name1, name2, name3]
-            while '' in names:
-                names.remove('')
-            ## 移除陣列中的空字串
-            while '' in names:
-                names.remove('')
             ## 地區
             county = request.form.get('county')
             township = request.form.get("township")
@@ -62,7 +57,7 @@ def panduan():
                 star = ''
             ## 爛番茄
             # return render_template('diseaseResult.html')
-            return Disease().search_all(county, township, disease, types, names, star, indexes)
+            return Disease().search_all(disease, county, township, types, names, star, indexes)
         elif 'reSort' in request.form:
             selected_index = request.form.get('selected_index')
             indexes = request.form.get('tmp_indexes')

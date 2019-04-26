@@ -120,6 +120,11 @@ class Search():
     ## 醫院名稱
     def search_name(self, names):
         try:
+            while '' in names:
+                names.remove('')
+            ## 移除陣列中的空字串
+            while '' in names:
+                names.remove('')
             ## 建立一個SQL語法中condition的開頭字串
             sql_where = ''
             ## 寫入condition字串中，對應全名或是縮寫
@@ -148,7 +153,25 @@ class Search():
         except:
             return "抱歉，操作失敗。[S]"
 
-    # def disease_condition(self, disease, county, township, star, names, types):
+    def reserved(self, disease, county, township, names, types, star):
+        while township=='':
+            township = 0
+        reserved = [disease, county, township]
+        for name in names:
+            reserved.append(name)
+        for i in range(4):
+            reserved.append('false')
+        print(reserved)
+        print(types)
+        for type in types:
+            i = int(type)+5
+            reserved[i] = 'true'
+            print(reserved[i])
+            print('ssss')
+
+        print(reserved)
+
+        return reserved
 
     # 查詢條件
     # def search_filter(self, county, township, disease, types, names, star):

@@ -78,13 +78,19 @@
 
             <script>
             window.onload=function aaaa(){
-                {% if diss %}
-                document.myForm.disease.options[2].selected = true;
-                indexSelect()
-                <!--document.myForm.county.options[1].selected = true;-->
-                <!--renew(1)-->
-                document.myForm.name1.value = 'aaa'
-                document.myForm.t1.checked = true
+                {% if reserved %}
+                    document.myForm.disease.options[{{reserved[0]}}].selected = true;
+                    indexSelect()
+                    document.myForm.county.options[{{reserved[1]}}].selected = true;
+                    renew({{reserved[1]}})
+                    document.myForm.township.options[{{reserved[2]}}].selected = true;
+                    document.myForm.name1.value = '{{reserved[3]}}'
+                    document.myForm.name2.value = '{{reserved[4]}}'
+                    document.myForm.name3.value = '{{reserved[5]}}'
+                    document.myForm.t1.checked = {{reserved[6]}}
+                    document.myForm.t2.checked = {{reserved[7]}}
+                    document.myForm.t3.checked = {{reserved[8]}}
+                    document.myForm.t4.checked = {{reserved[9]}}
                 {% endif %}
             }
             </script>
@@ -137,8 +143,7 @@
                             <option value="22">連江縣</option>
                         </select>
                         <select class="form-control form-control-sm resultArea" id="township" name="township" >
-                            <option selected value="">鄉鎮市區</option>
-                                    <option value=""></option>
+                            <option selected value="0">鄉鎮市區</option>
                         </select>
                     </div>
 
