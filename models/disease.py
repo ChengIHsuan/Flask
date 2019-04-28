@@ -11,7 +11,7 @@ class Disease():
     ## 綜合搜尋
     def search_all(self, disease, county, township, types, names, star, indexes):
         try:
-            reserved = Search().reserved(disease, county, township, names, types, star)
+            reserved = Search().disease_reserved(disease, county, township, names, types, star)
 
             sql_where = ''
             ## 取得地區、名稱、層級、星等的condition

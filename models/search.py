@@ -28,9 +28,6 @@ class Search():
     ## 地區搜尋
     def search_area(self, county, township):
         try:
-            print(county)
-            print(township)
-            print('[][][][][][]')
             areaStr = {
                 '0': ["", ""],
                 '1': ["", "安樂區", "信義區", "中正區", "暖暖區", "仁愛區", "七堵區", "中山區", "基隆市"],
@@ -57,12 +54,9 @@ class Search():
                 '22': ["", "南竿鄉", "北竿鄉", "東引鄉", "莒光鄉", "連江縣"]
             }
             if county != '0':
-                print('aaaaaaaaa')
                 area = (areaStr.get(str(county))[-1]) + (areaStr.get(str(county))[int(township)])
-                print(area)
             else:
                 area = ''
-            print(area)
             ## 依照使用者在前端輸入的條件寫成SQL字串中的condition
             sql_where = "h.area LIKE '%" + area + "%'"
             ## 驗證使用者是否輸入不存在的條件
@@ -153,70 +147,38 @@ class Search():
         except:
             return "抱歉，操作失敗。[S]"
 
-    def reserved(self, disease, county, township, names, types, star):
-        while township=='':
-            township = 0
-        reserved = [disease, county, township]
+    ## 疾病保留條件
+    def disease_reserved(self, disease, county, township, names, types, star):
+        disease_reserved = [disease, county, township]
         for name in names:
-            reserved.append(name)
-        for i in range(4):
-            reserved.append('false')
+            disease_reserved.append(name)
+        for f in range(4):
+            disease_reserved.append('false')
         for type in types:
             i = int(type)+5
-            reserved[i] = 'true'
-        reserved.append(star)
-        return reserved
+            disease_reserved[i] = 'true'
+        while star == '':
+            star = 0
+        disease_reserved.append(star)
+        print(disease_reserved)
+        return disease_reserved
 
-    # 查詢條件
-    # def search_filter(self, county, township, disease, types, names, star):
-    #     try:
-    #         search_filter = "查詢條件："
-    #
-    #         ## 特疾搜尋
-    #         diseaseStr = {
-    #             '1': "氣喘",
-    #             '2': "急性心肌梗塞",
-    #             '3': "糖尿病",
-    #             '4': "人工膝關節手術",
-    #             '5': "腦中風",
-    #             '6': "鼻竇炎",
-    #             '7': "子宮肌瘤手術",
-    #             '8': "消化性潰瘍",
-    #             '9': "血液透析",
-    #             '10': "腹膜透析"
-    #         }
-    #         search_filter += diseaseStr.get(disease) + ', '
-    #         ## 地點搜尋
-    #         if county + township != '':
-    #             search_filter += (county + township) + ', '
-    #         ## 名稱搜尋
-    #         for name in names:
-    #             search_filter += name + ', '
-    #         ## 層級搜尋
-    #         for type in types:
-    #             getStr = {
-    #                 '1': "醫學中心",
-    #                 '2': "區域醫院",
-    #                 '3': "地區醫院",
-    #                 '4': "診所"
-    #             }
-    #             search_filter += getStr.get(type) + ', '
-    #         ## 評價結果
-    #         if star != '':
-    #             search_filter += star + "星以上, "
-    #         ## 科別
-    #         departStr = {
-    #
-    #         }
-    #
-    #
-    #         ## 判斷是否有查詢條件
-    #         ## 因為每個條件皆是以", "做結尾，因此不取查詢條件最後兩個位子
-    #         if search_filter != "查詢條件：":
-    #             search_filter = search_filter[:-2]
-    #         else:
-    #             search_filter = "無查詢條件。"
-    #         return search_filter
-    #     except:
-    #         return "抱歉，操作失敗。[F]"
+    # ## 科別保留條件
+    def subj_reserved(self, depart, subjectives, county, township, types, names):
+        subj_reserved = [depart, county, township]
+        for f in range(8):  # 共有8個主觀指標
+            subj_reserved.append('flase')
+        for subjective in subjectives:
+            i = (int(subjective) + 2)  # 陣列3~10位置存放主觀指標
+            subj_reserved[i] = 'true'
+        for f in range(4):  # 共有4個醫療層級
+            subj_reserved.append('false')
+        for type in types:
+            i = (int(type) + 10)  # 陣列11~14位置存放醫療層級
+            subj_reserved[i] = 'true'
+        for name in names:
+            subj_reserved.append(name)
+        print(subj_reserved)
+        print('======')
+        return subj_reserved
 

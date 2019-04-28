@@ -73,8 +73,8 @@ department[21] = ["鄉鎮市區不拘", "金湖鎮", "金寧鎮", "金城鎮", "
 department[22] = ["鄉鎮市區不拘", "南竿鄉", "北竿鄉", "東引鄉", "莒光鄉"];
 function renew(index) {
     for (var i = 0; i < department[index].length; i++)
-        document.myForm.township.options[i] = new Option(department[index][i], i);   // 設定新選項
-    document.myForm.township.length = department[index].length; // 刪除多餘的選項
+        document.myForm.township2.options[i] = new Option(department[index][i], i);   // 設定新選項
+    document.myForm.township2.length = department[index].length; // 刪除多餘的選項
         }
 
 
@@ -178,6 +178,33 @@ function renew(index) {
                 </ul>
             </div>
         </nav>
+
+        <script>
+            window.onload=function aaaa(){
+                {% if reserved %}
+                    document.myForm.depart.options[{{reserved[0]}}].selected = true;
+                    document.myForm.county.options[{{reserved[1]}}].selected = true;
+                    renew({{reserved[1]}})
+                    document.myForm.township.options[{{reserved[2]}}].selected = true;
+                    document.myForm.is1.checked = {{reserved[3]}}
+                    document.myForm.is2.checked = {{reserved[4]}}
+                    document.myForm.is3.checked = {{reserved[5]}}
+                    document.myForm.is4.checked = {{reserved[6]}}
+                    document.myForm.is5.checked = {{reserved[7]}}
+                    document.myForm.is6.checked = {{reserved[8]}}
+                    document.myForm.is7.checked = {{reserved[9]}}
+                    document.myForm.is8.checked = {{reserved[10]}}
+                    document.myForm.t1.checked = {{reserved[11]}}
+                    document.myForm.t2.checked = {{reserved[12]}}
+                    document.myForm.t3.checked = {{reserved[13]}}
+                    document.myForm.t4.checked = {{reserved[14]}}
+                    document.myForm.name1.value = '{{reserved[15]}}'
+                    document.myForm.name2.value = '{{reserved[16]}}'
+                    document.myForm.name3.value = '{{reserved[17]}}'
+                {% endif %}
+            }
+        </script>
+
         <div class="resultBg" style="display:inline-block;vertical-align: top;text-align: center;">
             <div style="text-align:center;padding-top: 10px">
                 <h5 class="resultText">搜尋條件<span><img src="static/條件下.png" height="6px"
@@ -189,8 +216,8 @@ function renew(index) {
                         <span class="searchItem">科別*</span><span style="font-size:14px">&nbsp; (必選)</span>
                         <select style="margin:2px auto;" class="form-control form-control-sm inputS" id="branch"
                                 name="depart">
-
-                            <option selected value="1">家醫科</option>
+                            <option selected value="0">請選擇科別</option>
+                            <option value="1">家醫科</option>
                             <option value="2">內科</option>
                             <option value="3">外科</option>
                             <option value="4">小兒科</option>
@@ -272,44 +299,44 @@ function renew(index) {
                         <h6>地區</h6>
                         <select class="form-control form-control-sm resultArea " id="county" name="depart_county"
                                 onChange="renew(this.selectedIndex);">
-                            <option selected value="">選擇縣市</option>
-                            <option value="">基隆市</option>
-                            <option value="">台北市</option>
-                            <option value="">新北市</option>
-                            <option value="">桃園市</option>
-                            <option value="">新竹縣</option>
-                            <option value="">新竹市</option>
-                            <option value="">苗栗縣</option>
-                            <option value="">臺中市</option>
-                            <option value="">彰化縣</option>
-                            <option value="">南投縣</option>
-                            <option value="">雲林縣</option>
-                            <option value="">嘉義市</option>
-                            <option value="">嘉義縣</option>
-                            <option value="">臺南市</option>
-                            <option value="">高雄市</option>
-                            <option value="">屏東縣</option>
-                            <option value="">臺東縣</option>
-                            <option value="">花蓮縣</option>
-                            <option value="">宜蘭縣</option>
-                            <option value="">澎湖縣</option>
-                            <option value="">金門縣</option>
-                            <option value="">連江縣</option>
+                            <option selected value="0">選擇縣市</option>
+                            <option value="1">基隆市</option>
+                            <option value="2">臺北市</option>
+                            <option value="3">新北市</option>
+                            <option value="4">桃園市</option>
+                            <option value="5">新竹縣</option>
+                            <option value="6">新竹市</option>
+                            <option value="7">苗栗縣</option>
+                            <option value="8">臺中市</option>
+                            <option value="9">彰化縣</option>
+                            <option value="10">南投縣</option>
+                            <option value="11">雲林縣</option>
+                            <option value="12">嘉義市</option>
+                            <option value="13">嘉義縣</option>
+                            <option value="14">臺南市</option>
+                            <option value="15">高雄市</option>
+                            <option value="16">屏東縣</option>
+                            <option value="17">臺東縣</option>
+                            <option value="18">花蓮縣</option>
+                            <option value="19">宜蘭縣</option>
+                            <option value="20">澎湖縣</option>
+                            <option value="21">金門縣</option>
+                            <option value="22">連江縣</option>
                         </select>
                         <select class="form-control form-control-sm resultArea" id="township"
                                 name="depart_township">
-                            <option selected value="">鄉鎮市區</option>
+                            <option selected value="0">鄉鎮市區</option>
                             <option value=""></option>
                         </select>
                     </div>
                     <div class="col" style="margin:2px auto;color: #000000">
                         <h6>醫療機構名稱</h6>
                         <input type="textbox" class="form-control form-control-sm resultName name"
-                               name="depart_name1" placeholder="醫院名稱(選填)">
+                               name="depart_name1" id="name1" placeholder="醫院名稱(選填)">
                         <input type="textbox" class="form-control form-control-sm resultName name"
-                               name="depart_name2" placeholder="+ 醫院名稱">
+                               name="depart_name2" id="name2" placeholder="+ 醫院名稱">
                         <input type="textbox" class="form-control form-control-sm resultName name"
-                               name="depart_name3" placeholder="+ 醫院名稱">
+                               name="depart_name3" id="name3" placeholder="+ 醫院名稱">
                     </div>
 
 

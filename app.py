@@ -48,6 +48,7 @@ def panduan():
             ## 地區
             county = request.form.get('county')
             township = request.form.get("township")
+            print(township)
             ## 醫院層級
             types = request.values.getlist('type')
             ##Google星等
@@ -75,12 +76,13 @@ def panduan2():
             ## 科別
             depart = request.form.get('depart')
             ## 主觀指標
-            subjective = request.values.getlist('subjective')
+            subjectives = request.values.getlist('subjective')
             ## 地區
             county = request.form.get('depart_county')
             township = request.form.get("depart_township")
-            if township == '鄉鎮市區不拘':
-                township = ''
+            print(county)
+            print(township)
+            print('===========sss')
             ## 醫院層級
             types = request.values.getlist('depart_type')
             ## 醫療機構名稱
@@ -91,10 +93,7 @@ def panduan2():
             while '' in names:
                 names.remove('')
             # return "{}//{}//{}//{}".format(depart, subjective, county, township)
-            print(depart)
-            print(subjective)
-            print('+++++++')
-            return Subj().search_subj(depart, subjective, county, township, types, names)
+            return Subj().search_subj(depart, subjectives, county, township, types, names)
 ##啟動
 if __name__ == '__main__':
     app.jinja_env.auto_reloaded = True  ##jinja2 重新讀取template
