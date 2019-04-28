@@ -1,6 +1,5 @@
 from flask import Flask, request, render_template, flash
 from database import db_session, init_db
-from models.search import Search ##import search.py裡面的class Search()
 from models.sort import Sort
 from models.disease import Disease
 from models.subj import Subj

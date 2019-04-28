@@ -161,16 +161,10 @@ class Search():
             reserved.append(name)
         for i in range(4):
             reserved.append('false')
-        print(reserved)
-        print(types)
         for type in types:
             i = int(type)+5
             reserved[i] = 'true'
-            print(reserved[i])
-            print('ssss')
-
-        print(reserved)
-
+        reserved.append(star)
         return reserved
 
     # 查詢條件

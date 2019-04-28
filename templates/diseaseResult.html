@@ -91,6 +91,7 @@
                     document.myForm.t2.checked = {{reserved[7]}}
                     document.myForm.t3.checked = {{reserved[8]}}
                     document.myForm.t4.checked = {{reserved[9]}}
+                    document.myForm.star.options[{{reserved[10]}}].selected = true;
                 {% endif %}
             }
             </script>
@@ -151,11 +152,15 @@
                         <h6>星等</h6>
                         <select class="form-control form-control-sm resultStar" id="star" name="star">
                             <option selected value="">星等</option>
-                            <option value="5">5星</option>
-                            <option value="4">4星+</option>
-                            <option value="3">3星+</option>
-                            <option value="2">2星+</option>
                             <option value="1">1星+</option>
+                            <option value="2">2星+</option>
+                            <option value="3">3星+</option>
+                            <option value="4">4星+</option>
+                            <option value="5">5星</option>
+
+
+
+
                         </select>
                     </div>
                 </div>
