@@ -120,17 +120,19 @@ class Result():
                 getColumns.append(indexes[r])
             ## 建立columns[]，存入從資料庫中取得的欄位名稱(縮寫)
             columns = []
+            PorN = []
             for c in getColumns:
                 columns.append(self.cursor.execute("SELECT abbreviation FROM column_name WHERE name = '" + str(c) + "'").fetchone()[0])
-
+                PorN.append(self.cursor.execute("SELECT PorN FROM column_name WHERE name = '" + str(c) + "'").fetchone()[0])
             ## 建立full_name[]，存入欄位名稱(縮寫)的完整名字
             full_name = ['醫療機構資訊']
             for fn in columns:
                 if fn != '醫療機構資訊':
                     full_name.append(self.cursor.execute("SELECT name FROM indexes WHERE abbreviation = '" + fn + "'").fetchone()[0])
-
+            print('=========')
+            print(PorN)
             ## 將欄位名稱、欄位詳細說明包裝成zip
-            z_col = zip(columns, full_name)
+            z_col = zip(columns, PorN, full_name)
             ## 選取的指標數量，-1是因為扣掉第一欄的醫療機構資訊
             ck_len = len(columns) - 1
             ## 取得使用者所選指標將放進排序選單中，第一個為醫療機構資訊，所以不取

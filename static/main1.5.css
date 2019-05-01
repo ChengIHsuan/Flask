@@ -41,29 +41,34 @@
     vertical-align: top;
     width: 70%;
 }
-.introMore{
+
+.introMore {
     text-decoration: underline;
     padding-left: 3px;
     display: none;
 }
-.introText{
+
+.introText {
     display: block;
 }
+
+/* 搜尋鈕 */
 
 .btnStart {
     cursor: pointer;
     color: #ffffff;
     /* font-weight: bold; */
     background-color: #5b7488;
-    
     border: 1px solid #5b7488;
     border-radius: 5%;
     padding: 10px 30px;
 }
-.btnStart:disabled{
+
+.btnStart:disabled {
     background-color: #949494;
     border: 1px solid #949494;
 }
+
 button:disabled:hover {
     cursor: not-allowed;
     background-color: #949494;
@@ -76,10 +81,47 @@ button:disabled:hover {
     border: 1px solid #4a6375;
 }
 
-.btnDelete {
+/* 主觀指標搜尋鈕 */
+
+.btnSubject {
+    cursor: pointer;
+    color: rgb(219, 66, 91);
+    background-color: rgba(255, 143, 162, 0);
+    border: 1px solid rgb(219, 66, 91);
+    border-radius: 1%;
+    padding: 10px 30px;
+}
+
+.btnSubject:hover {
+    background-color: rgba(219, 66, 91, 0.1);
+}
+
+/* 客觀指標搜尋鈕 */
+
+.btnObject {
+    cursor: pointer;
+    color: #5b7488;
+    background-color: rgba(0, 112, 192, 0);
+    border: 1px solid rgb(91, 116, 136);
+    border-radius: 1%;
+    padding: 10px 30px;
+    margin-top: 5px;
+}
+
+.btnObject:hover {
+    background-color: rgba(0, 112, 192, 0.1);
+}
+
+/* 主客觀鈕位置 */
+
+.subOb {
+    float: right;
+    margin-top: 10px;
+}
+
+/* .btnDelete {
     cursor: pointer;
     color: #ffffff;
-    /* font-weight: bold; */
     background-color: rgb(94, 94, 94);
     border: 1px solid rgba(0, 0, 0, 0);
     border-radius: 5%;
@@ -90,7 +132,7 @@ button:disabled:hover {
     color: #ffffff;
     background-color: rgb(66, 66, 66);
     border: 1px solid rgba(66, 66, 66, 1);
-}
+} */
 
 .cardInfo {
     margin: 2% 5% 5% 5%;
@@ -164,7 +206,8 @@ button:disabled:hover {
     vertical-align: top;
     width: 50%;
 }
-.logo{
+
+.logo {
     display: inline-block;
     vertical-align: middle;
     width: 30%;
@@ -195,7 +238,7 @@ a.tabs-menu {
     font-size: 18px;
     color: rgb(0, 0, 0);
     padding: 15px 20px;
-    text-shadow:2px 2px 2px rgb(255, 255, 255);
+    text-shadow: 2px 2px 2px rgb(255, 255, 255);
     font-weight: bold;
     text-decoration: none;
     border: solid 0px rgba(255, 255, 255, 0.85);
@@ -291,10 +334,11 @@ h6 {
     font-weight: bold;
     color: #11273a;
 }
-.searchItem{
+
+.searchItem {
     font-weight: bold;
     color: #11273a;
-    font-size:16px;
+    font-size: 16px;
 }
 
 .ckType {
@@ -314,6 +358,7 @@ h6 {
     width: 33%;
     vertical-align: top;
 }
+
 .ckIndex:hover {
     cursor: pointer;
 }
@@ -324,6 +369,13 @@ h6 {
     vertical-align: top;
     font-size: 13px;
 }
+
+.ckIndex3 {
+    width: 24%;
+    vertical-align: top;
+    font-size: 13px;
+}
+
 .ckIndex2:hover {
     cursor: pointer;
 }
@@ -353,22 +405,33 @@ h6 {
     margin: 0% 0%;
     width: 100%;
 }
-.resultText{
+
+.resultText {
     cursor: pointer;
     margin: 0% auto;
     width: 25%;
-    text-decoration:underline;
+    text-decoration: underline;
     padding-bottom: 10px;
     font-weight: bold;
     color: #11273a;
 }
-.resultAll{
+
+.resultAll {
     /* padding-top: 2%; */
 }
+
 .resultInput {
     display: inline-block;
     vertical-align: top;
     width: 40%;
+    text-align: left;
+    margin: 0% auto;
+}
+
+.resultInputSub {
+    display: inline-block;
+    vertical-align: top;
+    width: 80%;
     text-align: left;
     margin: 0% auto;
 }
@@ -402,6 +465,7 @@ h6 {
     margin: 0% 0% 1%;
     width: 48%;
 }
+
 .resultType {
     width: 23%;
     cursor: pointer;
@@ -435,7 +499,13 @@ h6 {
     vertical-align: middle;
     width: 40%;
     text-align: left;
-    padding-left: 1%;
+    margin: 5px 2%;
+}
+
+.sortName {
+    vertical-align: middle;
+    float: right;
+    width: 40%;
 }
 
 .sortImg {
@@ -447,6 +517,28 @@ h6 {
 
 .sortBtn {
     float: left;
+}
+
+/* 評論數樣式 */
+
+/* 手機版 */
+
+.commentPh {
+    font-size: 15px;
+    color: #5a5a5a;
+    display: none;
+}
+
+/* 電腦版 */
+
+.comment {
+    font-size: 15px;
+    float: right;
+    color: #5a5a5a;
+}
+
+.breadcrumb-item {
+    color: #4a6375;
 }
 
 /* 多選樣式 */
@@ -462,7 +554,6 @@ input[type="checkbox"]+label span {
     margin: -2px 5px 0px 0px;
     vertical-align: middle;
     background: url(https://pbs.twimg.com/media/D2gljjIU8AAmmoY.png) left top no-repeat;
-    
     cursor: pointer;
     border: 1px solid #1f1e1e48;
 }
@@ -470,7 +561,8 @@ input[type="checkbox"]+label span {
 input[type="checkbox"]:checked+label span {
     background: url(https://pbs.twimg.com/media/D2gljjIU8AAmmoY.png) -19px top no-repeat;
 }
-input[type="checkbox"]:disabled+label span{
+
+input[type="checkbox"]:disabled+label span {
     cursor: not-allowed;
 }
 
@@ -495,9 +587,11 @@ input[type="radio"]+label span {
 input[type="radio"]:checked+label span {
     background: url(https://pbs.twimg.com/media/D2gllW1UwAIEotU.png) -19px top no-repeat;
 }
+
 /* 回到頁首 */
+
 .back-to-top {
-    display:none;
+    display: none;
     position: fixed;
     bottom: 2em;
     right: 0px;
@@ -506,16 +600,17 @@ input[type="radio"]:checked+label span {
     background-color: rgba(235, 235, 235, 0.80);
     font-size: 16px;
     padding: 1em;
-    text-align:center;
+    text-align: center;
 }
 
 .back-to-top:hover {
     background-color: rgba(135, 135, 135, 0.50);
-    text-decoration:none;
-    color:#ffffff;
+    text-decoration: none;
+    color: #ffffff;
 }
 
 /* 分頁 */
+
 .page {
     text-align: left;
 }
@@ -541,8 +636,50 @@ input[type="radio"]:checked+label span {
     color: #ffffff;
 }
 
-.tableWidth{
+.tableWidth {}
+
+.tableHosName {
+    padding-left: 10px;
+    float: left;
+    text-align: left;
+    width: 79%;
 }
+
+.thead {
+    background-color: rgba(184, 206, 217, 1);
+    vertical-align: middle;
+    width: 280px;
+}
+
+/* 麵包屑 */
+
+ul.breadcrumb {
+    background-color: rgba(184, 206, 217, 0);
+    padding: 0px 0px;
+    list-style: none;
+}
+
+ul.breadcrumb li {
+    display: inline;
+    font-size: 15px;
+}
+
+ul.breadcrumb li+li:before {
+    padding: 8px;
+    color: black;
+    content: "/\00a0";
+}
+
+ul.breadcrumb li a {
+    color: #000000;
+    text-decoration: none;
+}
+
+ul.breadcrumb li a:hover {
+
+    text-decoration: underline;
+}
+
 /* loader */
 
 #loader {
@@ -753,6 +890,9 @@ input[type="radio"]:checked+label span {
     .resultType {
         width: 45%;
     }
+    .tableHosName {
+        width: 70%;
+    }
 }
 
 @media (max-width: 991px) {
@@ -809,6 +949,9 @@ input[type="radio"]:checked+label span {
     .sortBtn {
         width: 70%;
     }
+    .tableHosName {
+        width: 65%;
+    }
 }
 
 @media (max-width: 769px) {
@@ -827,7 +970,13 @@ input[type="radio"]:checked+label span {
         width: 80%;
     }
     .sort {
-        width: 100%;
+        width: 80%;
+    }
+    .sortName {
+        width: 60%;
+    }
+    .tableHosName {
+        width: 95%;
     }
 }
 
@@ -910,17 +1059,23 @@ input[type="radio"]:checked+label span {
     .ckIndex {
         width: 100%;
     }
-    .resultAll{
+    .resultAll {
         display: none;
     }
-    .introMore{
+    .introMore {
         display: inline;
     }
-    .introText{
+    .introText {
         display: none;
     }
-    .ckIndex2{
+    .ckIndex2 {
         width: 99%;
+    }
+    .comment {
+        display: none;
+    }
+    .commentPh {
+        display: inline;
     }
 }
 
