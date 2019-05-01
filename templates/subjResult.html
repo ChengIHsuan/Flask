@@ -73,8 +73,8 @@ department[21] = ["鄉鎮市區不拘", "金湖鎮", "金寧鎮", "金城鎮", "
 department[22] = ["鄉鎮市區不拘", "南竿鄉", "北竿鄉", "東引鄉", "莒光鄉"];
 function renew(index) {
     for (var i = 0; i < department[index].length; i++)
-        document.myForm.township2.options[i] = new Option(department[index][i], i);   // 設定新選項
-    document.myForm.township2.length = department[index].length; // 刪除多餘的選項
+        document.myForm.township.options[i] = new Option(department[index][i], i);   // 設定新選項
+    document.myForm.township.length = department[index].length; // 刪除多餘的選項
         }
 
 
@@ -186,21 +186,13 @@ function renew(index) {
                     document.myForm.county.options[{{reserved[1]}}].selected = true;
                     renew({{reserved[1]}})
                     document.myForm.township.options[{{reserved[2]}}].selected = true;
-                    document.myForm.is1.checked = {{reserved[3]}}
-                    document.myForm.is2.checked = {{reserved[4]}}
-                    document.myForm.is3.checked = {{reserved[5]}}
-                    document.myForm.is4.checked = {{reserved[6]}}
-                    document.myForm.is5.checked = {{reserved[7]}}
-                    document.myForm.is6.checked = {{reserved[8]}}
-                    document.myForm.is7.checked = {{reserved[9]}}
-                    document.myForm.is8.checked = {{reserved[10]}}
-                    document.myForm.t1.checked = {{reserved[11]}}
-                    document.myForm.t2.checked = {{reserved[12]}}
-                    document.myForm.t3.checked = {{reserved[13]}}
-                    document.myForm.t4.checked = {{reserved[14]}}
-                    document.myForm.name1.value = '{{reserved[15]}}'
-                    document.myForm.name2.value = '{{reserved[16]}}'
-                    document.myForm.name3.value = '{{reserved[17]}}'
+                    document.myForm.t1.checked = {{reserved[3]}}
+                    document.myForm.t2.checked = {{reserved[4]}}
+                    document.myForm.t3.checked = {{reserved[5]}}
+                    document.myForm.t4.checked = {{reserved[6]}}
+                    document.myForm.name1.value = '{{reserved[7]}}'
+                    document.myForm.name2.value = '{{reserved[8]}}'
+                    document.myForm.name3.value = '{{reserved[9]}}'
                 {% endif %}
             }
         </script>

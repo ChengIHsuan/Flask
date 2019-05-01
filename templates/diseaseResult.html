@@ -77,7 +77,7 @@
             </div>
 
             <script>
-            window.onload=function aaaa(){
+            $(document).ready(function() {
                 {% if reserved %}
                     document.myForm.disease.options[{{reserved[0]}}].selected = true;
                     indexSelect()
@@ -93,7 +93,7 @@
                     document.myForm.t4.checked = {{reserved[9]}}
                     document.myForm.star.options[{{reserved[10]}}].selected = true;
                 {% endif %}
-            }
+            });
             </script>
 
             <div class="resultAll">
@@ -396,11 +396,14 @@
                         </select>
                     </div>
                     <div style="display: inline-block;vertical-align: bottom;">
-                        <input type="submit" name="reSort" class="btn span"
-                               style="background-color:rgb(101,129,152);color:white" value="排序">
+                        <!--<input type="submit" name="reSort" class="btn span" id="reSort"-->
+                               <!--style="background-color:rgb(101,129,152);color:white" value="排序">-->
+                        <button id="reSort" type="submit" class="btn span"
+                                style="background-color:rgb(101,129,152);color:white" name="reSort">排序</button>
                         <input type="hidden" name="tmp_indexes" value="{{tmp_indexes}}">
                         <input type="hidden" name="tmp_sqlstr" value="{{sql_where}}">
                         <input type="hidden" name="tmp_filter" value="{{tmp_filter}}">
+                        <input type="hidden" name="tmp_reserved" value="{{reserved}}">
                     </div>
                 </div>
 
@@ -447,10 +450,10 @@
                             <!-- {% for i in range(ck_len) %} -->
                             <td rowspan="4"
                                 style="vertical-align:middle;text-align:center;font-size:14px;width:250px">
-                                <!-- {% if l[i+1] == 101%} -->
+                                <!-- {% if l[i+1] == 102%} -->
                                 <img src="{{ url_for('static', filename='指標是.png')}}" height="60px">
                                 <div style="">{{ d[i+1] }}</div>
-                                <!-- {% endif %} --><!-- {% if l[i+1] == 102 %} -->
+                                <!-- {% endif %} --><!-- {% if l[i+1] == 101 %} -->
                                 <img src="{{ url_for('static', filename='指標否.png')}}" height="60px">
                                 <div style="">{{ d[i+1] }}</div>
                                 <!-- {% endif %} -->

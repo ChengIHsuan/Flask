@@ -166,15 +166,10 @@ class Search():
     # ## 科別保留條件
     def subj_reserved(self, depart, subjectives, county, township, types, names):
         subj_reserved = [depart, county, township]
-        for f in range(8):  # 共有8個主觀指標
-            subj_reserved.append('flase')
-        for subjective in subjectives:
-            i = (int(subjective) + 2)  # 陣列3~10位置存放主觀指標
-            subj_reserved[i] = 'true'
         for f in range(4):  # 共有4個醫療層級
             subj_reserved.append('false')
         for type in types:
-            i = (int(type) + 10)  # 陣列11~14位置存放醫療層級
+            i = (int(type) + 2)  # 陣列3~6位置存放醫療層級
             subj_reserved[i] = 'true'
         for name in names:
             subj_reserved.append(name)

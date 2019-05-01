@@ -62,7 +62,8 @@ def panduan():
             selected_index = request.form.get('selected_index')
             indexes = request.form.get('tmp_indexes')
             sql_where = str(request.form.get('tmp_sqlstr')).replace('//', ' ')
-            return Sort().reSort(selected_index, sql_where, indexes)
+            reserved = request.form.get('tmp_reserved')
+            return Sort().reSort(selected_index, sql_where, indexes, reserved)
 
 @app.route('/subjResult', methods=['GET'])
 def renderSubj():
