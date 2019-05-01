@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="zn-Hant-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>醫療機構評價網站</title>
+    <link rel="shortcut icon" href="static/favicon.ico">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <!-- jQuery v1.9.1 -->
+    <script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <!-- Chosen v1.8.2 -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.2/chosen.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.2/chosen.jquery.min.js"></script>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+        crossorigin="anonymous"></script>
+     <link rel=stylesheet type="text/css" href="{{ url_for('static', filename='main1.5.css') }}">
+    <!--<link rel=stylesheet type="text/css" href="hos.css">-->
+    <!--<script rel=stylesheet type="text/javascript" src="search.js"></script>-->
+    <script type="text/javascript" src="{{url_for('static', filename='js/search.js')}}"></script>
+    <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+
+
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+
+    <script>
+    //     $(function(){
+    // {% if alert %}
+    //   alert('{{alert}}');
+    // {% endif %}
+    // });
+    </script>
+</head>
+
+<body class="span">
+    <!--回首頁浮動按鈕-->
+    <a href="#top" class="back-to-top" style="z-index:101">回到頁首</a>
+
+    <form name="myForm" action="/diseaseResult" method="post" runat="server" autocomplete="on">
+        <div class="container-fiuld">
+            <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #658198;text-align: center">
+                <a class="navbar-brand" href="#"><img src="https://pbs.twimg.com/media/DrvK7_5UcAARp62.png" class=""
+                        style="width:70px"></a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/">首頁</a>
+                        </li>
+                        <li class="nav-item active">
+                            <a class="nav-link" href="search">搜尋 <span class="sr-only">(current)</span></a>
+                        </li>
+                        <!--<li class="nav-item">-->
+                        <!--<a class="nav-link" href="#">聯絡我們</a>-->
+                        <!--</li>-->
+                    </ul>
+                </div>
+            </nav>
+
+
+
+            <div class="resultBg" style="display:inline-block;vertical-align: top;text-align: center;">
+
+
+
+                <div style="width:80%;margin:1% auto">
+                    <!-- 麵包屑 -->
+                    <ul class="breadcrumb">
+                        <li><a href="#">首頁</a></li>
+                        <li><a href="#">找醫療機構</a></li>
+                        <li style="color:rgba(0, 0, 0, 0.5)">國泰醫院總院</li>
+                    </ul>
+                    <img style="float: left" src="https://picsum.photos/200/150/?image=2">
+                    <div class="tableHosName">
+                        <p style="font-size:23px;margin: 0px">國泰醫院總院</p>
+
+                        <span style="font-size:15px;color: #5a5a5a">醫學中心</span>
+                        <img style="vertical-align: sub;margin:0px 2px" src="static/5星.png" height="20em">
+
+                        <span class="commentPh"><br>
+                            總評論數
+                            <span style="font-size:15px;font-weight: bold;color: #000000">&nbsp;61&nbsp;</span>
+                            筆
+                        </span>
+                        <span class="comment">
+                            總評論數
+                            <span style="font-size:15px;font-weight: bold;color: #000000">&nbsp;61&nbsp;</span>
+                            筆
+                        </span>
+                        <hr style="margin:5px 0px">
+                        <div style="margin:0px 0px 5px 0px;float: left;">
+                            <img style="vertical-align: sub;margin:15px 5px 0px" src="static/address.png" height="20em">
+                            <!-- 地址 -->
+                            <span style="font-size:15px;color: #5a5a5a;">臺北市仁愛路四段280號</span>
+                            <div style="height:5px"></div>
+                            <img style="vertical-align: sub;margin:0px 5px" src="static/phone.png" height="20em">
+                            <!-- 電話 -->
+                            <span style="font-size:15px;color: #5a5a5a">(02)2708-2121</span>
+                        </div>
+                        <!-- 主觀指標鈕 -->
+                        <div class="subOb">
+                            <div style="float:right;">
+                                <a href="">
+                                    <button id="btnSearch" type="submit" class="btn-sm btnSubject"
+                                        style="padding:5px 15px;" name=""><img src="static/subSearch.png"
+                                            style="width:17px;padding-right:5px;">
+                                        主觀指標</button>
+                                </a>
+                            </div>
+                            <br>
+                            <!-- 客觀指標鈕 -->
+                            <div style="float:right;">
+                                <a href="">
+                                    <button id="btnSearch" type="submit" class="btn-sm btnObject"
+                                        style="padding:5px 15px;" name=""><img src="static/obSearch.png"
+                                            style="width:17px;padding-right:5px;">
+                                        客觀指標</button>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div style="text-align:center;padding-top: 10px">
+                    <h5 class="resultText">主觀指標查詢<span><img src="static/條件下.png" height="5px"
+                                style="padding-left:5px"></span></h5>
+                </div>
+                <div class="resultAll">
+
+                    <div class="resultInputSub">
+                        <div class="col" style="margin:2% auto;font-size: 15px;">
+                            <span class="searchItem">主觀指標</span><span style="font-size:15px;color: #da2222">
+                                *&nbsp;(必選)</span>
+
+                            <div id="indexB" style="margin:2% auto">
+                                <input type="checkbox" value="1" id="is1" name="subjective"
+                                    onclick="onCheckBoxSub(this)" />
+                                <label for="is1" class="ckIndex3"><span></span>統計數據</label>
+                                <input type="checkbox" value="2" id="is2" name="subjective"
+                                    onclick="onCheckBoxSub(this)" />
+                                <label for="is2" class="ckIndex3"><span></span>醫病關係</label>
+                                <input type="checkbox" value="3" id="is3" name="subjective"
+                                    onclick="onCheckBoxSub(this)" />
+                                <label for="is3" class="ckIndex3"><span></span>事後處理</label>
+                                <input type="checkbox" value="4" id="is4" name="subjective"
+                                    onclick="onCheckBoxSub(this)" />
+                                <label for="is4" class="ckIndex3"><span></span>行政項目</label>
+                                <input type="checkbox" value="5" id="is5" name="subjective"
+                                    onclick="onCheckBoxSub(this)" />
+                                <label for="is5" class="ckIndex3"><span></span>專業人員與器材</label>
+                                <input type="checkbox" value="6" id="is6" name="subjective"
+                                    onclick="onCheckBoxSub(this)" />
+                                <label for="is6" class="ckIndex3"><span></span>檢查及藥物和轉診</label>
+                                <input type="checkbox" value="7" id="is7" name="subjective"
+                                    onclick="onCheckBoxSub(this)" />
+                                <label for="is7" class="ckIndex3"><span></span>不良事件</label>
+                                <input type="checkbox" value="8" id="is8" name="subjective"
+                                    onclick="onCheckBoxSub(this)" />
+                                <label for="is8" class="ckIndex3"><span></span>其他註解</label>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!--清除浮動 -->
+                    <div style="clear:both;"></div>
+                    <div style="margin:10px 0px">
+                        <div style="text-align:left;display: inline-block;vertical-align: top;">
+                            <a href="">
+                                <button id="btnSearchSub" type="submit" class="btn-sm btnStart"
+                                    style="padding:8px 15px;" disabled name=""><img src="static/search.png"
+                                        style="width:17px;padding-right:5px;">
+                                    搜尋</button>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <script>
+                    //條件收合
+                    $(".resultText").click(function () {
+                        $(".resultAll").slideToggle("fast");
+                    });
+                </script>
+            </div>
+            <!-- 結果 -->
+            <div id="results" style="text-align: left;">
+                <!-- {% if scroll %} -->
+                <script>
+                    document.location.hash = '#' + '{{ scroll }}';
+                </script>
+                <!-- {% endif %} -->
+
+                <div class="" style="margin:15px;text-align: center">
+                    <h3>各科別指標分數</h3>
+                </div>
+
+
+                <!-- 表格 -->
+                <div style="background-color:rgba(184,206,217,0.5);margin:10px 2%;">
+
+                    <div style="margin:0px auto;" class="tableWidth">
+
+                        <table class="table table-hover"
+                            style="border:5px rgba(255, 255, 255, 0.8) solid;text-align:left; " rules="all">
+                            <thead style="text-align:center;margin:0px auto;" id="thead">
+                                <tr>
+
+                                    <th class="thead" valign="center">國泰醫院總院</th>
+                                    <th class="thead" valign="center">統計數據</th>
+                                    <th class="thead" valign="center">統計數據</th>
+                                    <th class="thead" valign="center">統計數據</th>
+
+                                </tr>
+                            </thead>
+                            <tbody style="font-size:17px;text-align:center;margin:0px auto;">
+
+                                <tr>
+                                    <td>
+                                        家醫科
+                                    </td>
+                                    <td>
+                                        100
+                                    </td>
+                                    <td>
+                                        100
+                                    </td>
+                                    <td>
+                                        100
+                                    </td>
+                                </tr>
+                                <tr>
+
+                                    <td>
+                                        內科
+                                    </td>
+                                    <td>
+                                        100
+                                    </td>
+                                    <td>
+                                        100
+                                    </td>
+                                    <td>
+                                        100
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </form>
+
+
+
+    <!-- footer -->
+    <div style="margin-top:40px;" class="span" id="footer">
+        <div style="background-color:rgb(101,129,152);">
+            <div class="footerText">
+                <div style="text-align:left; color: white;padding:5%">
+                    <ul style="list-style-position: outside;margin:0">
+                        <li style="font-weight:bold;">輔仁大學醫療評價計畫團隊介紹：</li>
+                        <h6>
+                            - 商研所: 李天行 教授<br>
+                            - 公衛系: 陳宗泰 副教授<br>
+                            - 資工系: 徐嘉連 副教授<br>
+                            - 應美系: 陳力豪 副教授<br>
+                            - 醫資學程: 程伊萱、林昱彤、蔡亞立、王嘉琳、胡瀚文 同學
+                        </h6>
+                        <li style="font-weight:bold;">給予我們任何<a href="https://goo.gl/forms/0M3BmbWXczWYmD9X2"
+                                target="_blank" style="color:	pink;"><u>意見</u></a></li>
+
+                        <!-- Start of CuterCounter Code -->
+                        <li style="font-weight:bold;">您是第&nbsp;<a
+                                href="http://www.cutercounter.com/traditional-chinese-n/" target="_blank"><img
+                                    src="http://www.cutercounter.com/hit.php?id=gvundckd&nd=6&style=51"
+                                    alt="網頁計數器"></a>&nbsp;位訪客</li>
+                        <!-- End of CuterCounter Code -->
+                    </ul>
+                </div>
+            </div>
+            <div class="footerImg">
+                <div class="span" style="vertical-align:middle;text-align:center;">
+                    <img src="static/聯絡3.0.png" style="width:60%;margin:10%">
+
+                </div>
+            </div>
+            <hr>
+            <div style="padding:1% 5%">
+                <p style="text-align:center;font-size:12px;"> 本網站版權屬於 輔仁大學醫療評價計畫團隊所有，未經本站同意，請勿擅用圖案。<br>Copyright ©
+                    2019
+                    - FJU
+                    Physician/Hospital Rating Website Team All Rights Reserved</p>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
