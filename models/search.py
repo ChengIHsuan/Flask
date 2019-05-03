@@ -147,33 +147,49 @@ class Search():
         except:
             return "抱歉，操作失敗。[S]"
 
-    ## 疾病保留條件
-    def disease_reserved(self, disease, county, township, names, types, star):
-        disease_reserved = [disease, county, township]
+
+    ## 醫療機構保留條件
+    def hosp_reserved(self, county, township, names, types, star):
+        reserved = [county, township]
         for name in names:
-            disease_reserved.append(name)
+            reserved.append(name)
         for f in range(4):
-            disease_reserved.append('false')
+            reserved.append('false')
         for type in types:
-            i = int(type)+5
-            disease_reserved[i] = 'true'
+            i = int(type)+4
+            reserved[i] = 'true'
         while star == '':
             star = 0
-        disease_reserved.append(star)
-        print(disease_reserved)
-        return disease_reserved
+        reserved.append(star)
+        return reserved
+
+    ## 疾病保留條件
+    def disease_reserved(self, disease, county, township, names, types, star):
+        reserved = [disease, county, township]
+        for name in names:
+            reserved.append(name)
+        for f in range(4):
+            reserved.append('false')
+        for type in types:
+            i = int(type)+5
+            reserved[i] = 'true'
+        while star == '':
+            star = 0
+        reserved.append(star)
+        print(reserved)
+        return reserved
 
     # ## 科別保留條件
     def subj_reserved(self, depart, subjectives, county, township, types, names):
-        subj_reserved = [depart, county, township]
+        reserved = [depart, county, township]
         for f in range(4):  # 共有4個醫療層級
-            subj_reserved.append('false')
+            reserved.append('false')
         for type in types:
             i = (int(type) + 2)  # 陣列3~6位置存放醫療層級
-            subj_reserved[i] = 'true'
+            reserved[i] = 'true'
         for name in names:
-            subj_reserved.append(name)
-        print(subj_reserved)
+            reserved.append(name)
+        print(reserved)
         print('======')
-        return subj_reserved
+        return reserved
 

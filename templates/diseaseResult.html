@@ -32,15 +32,13 @@
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <script type="text/javascript" src="{{url_for('static', filename='js/diseaseResultJS.js')}}"></script>
+    <script type="text/javascript" src="{{url_for('static', filename='js/searchJS1.14.js')}}"></script>
 
-    <script>
-        $(function(){
     {% if alert %}
+    <script>
       alert('{{alert}}');
-    {% endif %}
-    });
     </script>
+    {% endif %}
 </head>
 
 <body class="span">
@@ -71,25 +69,25 @@
             </div>
         </nav>
         <div class="resultBg" style="display:inline-block;vertical-align: top;text-align: center;">
-                <!-- 麵包屑 -->
-                <ul class="breadcrumb" style="padding:1% 15px;width: 80%;margin: auto;text-align: center">
-                    <li><a href="#">首頁</a></li>
-                    <li><a href="#">找特殊疾病</a></li>
-                    <li id="bread" style="color:rgba(0, 0, 0, 0.5)">氣喘</li>
-                </ul>
-                <div style="text-align:center;padding-top: 10px">
-                    <h5 class="resultText">搜尋條件<span><img src="static/條件下.png" height="5px"
-                                style="padding-left:5px"></span></h5>
-                </div>
+            <!-- 麵包屑 -->
+            <ul class="breadcrumb" style="padding:1% 15px;width: 80%;margin: auto;text-align: center">
+                <li><a href="#">首頁</a></li>
+                <li><a href="#">找特殊疾病</a></li>
+                <li id="bread" style="color:rgba(0, 0, 0, 0.5)">氣喘</li>
+            </ul>
+            <div style="text-align:center;padding-top: 10px">
+                <h5 class="resultText">搜尋條件<span><img src="static/條件下.png" height="5px"
+                                                      style="padding-left:5px"></span></h5>
+            </div>
 
             <script>
             $(document).ready(function() {
                 {% if reserved %}
                     document.myForm.disease.options[{{reserved[0]}}].selected = true;
                     indexSelect()
-                    document.myForm.county.options[{{reserved[1]}}].selected = true;
-                    renew({{reserved[1]}})
-                    document.myForm.township.options[{{reserved[2]}}].selected = true;
+                    document.myForm.diseaseCounty.options[{{reserved[1]}}].selected = true;
+                    diseaseRenew({{reserved[1]}})
+                    document.myForm.diseaseTownship.options[{{reserved[2]}}].selected = true;
                     document.myForm.name1.value = '{{reserved[3]}}'
                     document.myForm.name2.value = '{{reserved[4]}}'
                     document.myForm.name3.value = '{{reserved[5]}}'
@@ -103,13 +101,13 @@
             </script>
 
             <div class="resultAll">
-                    <div class="resultInput">
-                        <div class="col" style="margin:2px auto;color: #000000">
-                            <span class="searchItem">特殊疾病</span><span style="font-size:15px;color: #da2222">
+                <div class="resultInput">
+                    <div class="col" style="margin:2px auto;color: #000000">
+                        <span class="searchItem">特殊疾病</span><span style="font-size:15px;color: #da2222">
                                 *&nbsp;(必選)</span>
-                            <select class="form-control form-control-sm resultS" id="disease" name="disease"
+                        <select class="form-control form-control-sm resultS" id="disease" name="disease"
                                 onchange="indexSelect();">
-                                <option selected value="no">*選擇疾病(必選)</option>
+                            <option selected value="no">*選擇疾病(必選)</option>
                             <option value="1">氣喘</option>
                             <option value="2">急性心肌梗塞</option>
                             <option value="3">糖尿病</option>
@@ -124,8 +122,8 @@
                     </div>
                     <div class="col" style="margin:2px auto;">
                         <h6>地區</h6>
-                        <select class="form-control form-control-sm resultArea " id="county" name="county"
-                                onChange="renew(this.selectedIndex);">
+                        <select class="form-control form-control-sm resultArea " id="diseaseCounty" name="diseaseCounty"
+                                onChange="diseaseRenew(this.selectedIndex);">
                             <option selected value="0">選擇縣市</option>
                             <option value="1">基隆市</option>
                             <option value="2">臺北市</option>
@@ -150,14 +148,14 @@
                             <option value="21">金門縣</option>
                             <option value="22">連江縣</option>
                         </select>
-                        <select class="form-control form-control-sm resultArea" id="township" name="township" >
+                        <select class="form-control form-control-sm resultArea" id="diseaseTownship" name="diseaseTownship" >
                             <option selected value="0">鄉鎮市區</option>
                         </select>
                     </div>
 
                     <div class="col" style="margin:2px auto;color: #000000">
                         <h6>星等</h6>
-                        <select class="form-control form-control-sm resultStar" id="star" name="star">
+                        <select class="form-control form-control-sm resultStar" id="star" name="diseaseStar">
                             <option selected value="">星等</option>
                             <option value="1">1星+</option>
                             <option value="2">2星+</option>
@@ -172,29 +170,29 @@
                     </div>
                 </div>
                 <div class="resultInput">
-                        <div class="col" style="margin:2px auto;color: #000000">
-                            <span class="searchItem">醫療機構名稱</span><span style="font-size:14px;color: #000000">
+                    <div class="col" style="margin:2px auto;color: #000000">
+                        <span class="searchItem">醫療機構名稱</span><span style="font-size:14px;color: #000000">
                                 &nbsp;(至多可選擇3個)</span>
-                            <div></div>
-                        <input type="textbox" class="form-control form-control-sm resultName" name="name1"
+                        <div></div>
+                        <input type="textbox" class="form-control form-control-sm resultName" name="diseaseName1"
                                id="name1" placeholder="醫院名稱(選填)">
-                        <input type="textbox" class="form-control form-control-sm resultName" name="name2"
+                        <input type="textbox" class="form-control form-control-sm resultName" name="diseaseName2"
                                id="name2" placeholder="+ 醫院名稱">
-                        <input type="textbox" class="form-control form-control-sm resultName" name="name3"
+                        <input type="textbox" class="form-control form-control-sm resultName" name="diseaseName3"
                                id="name3" placeholder="+ 醫院名稱">
                     </div>
 
                     <div class="col" style="margin:2px auto;">
-                            <span class="searchItem">醫院層級</span><span style="font-size:14px;color: #000000">
+                        <span class="searchItem">醫院層級</span><span style="font-size:14px;color: #000000">
                                 &nbsp;(不選視為全選)</span>
-                            <div style="font-size: 15px">
-                            <input type="checkbox" value="1" id="t1" name="type" />
+                        <div style="font-size: 15px">
+                            <input type="checkbox" value="1" id="t1" name="diseaseType" />
                             <label for="t1" class="resultType"><span></span>醫學中心</label>
-                            <input type="checkbox" value="2" id="t2" name="type" />
+                            <input type="checkbox" value="2" id="t2" name="diseaseType" />
                             <label for="t2" class="resultType"><span></span>區域醫院</label>
-                            <input type="checkbox" value="3" id="t3" name="type" />
+                            <input type="checkbox" value="3" id="t3" name="diseaseType" />
                             <label for="t3" class="resultType"><span></span>地區醫院</label>
-                            <input type="checkbox" value="4" id="t4" name="type" />
+                            <input type="checkbox" value="4" id="t4" name="diseaseType" />
                             <label for="t4" class="resultType"><span></span>診所</label>
                         </div>
                     </div>
@@ -207,15 +205,15 @@
                     <!--</div>-->
                 </div>
                 <!--清除浮動 -->
-                    <div style="clear:both;"></div>
+                <div style="clear:both;"></div>
 
-                    <div class="resultIndex" id="resultIndex" name="resultIndex" style="display:block;margin: 0px auto">
-                        <div class="col" style="margin:2px auto;">
-                            <span class="searchItem">疾病指標</span><span style="font-size:15px;color:  #da2222">
+                <div class="resultIndex" id="resultIndex" name="resultIndex" style="display:block;margin: 0px auto">
+                    <div class="col" style="margin:2px auto;">
+                        <span class="searchItem">疾病指標</span><span style="font-size:15px;color:  #da2222">
                                 *&nbsp;(必選1~5個)</span>
-                            <div id="no" style="font-size: 15px;display: block">
-                                *請選擇疾病*
-                            </div>
+                        <div id="no" style="font-size: 15px;display: block">
+                            *請選擇疾病*
+                        </div>
                         <div id="asthma" style="margin:2% auto;display: none">
                             <input type="checkbox" value="42" id="s3" name="ckIndex" onclick="onCheckBox(this)" />
                             <label for="s3" class="ckIndex2"><span></span>綜合分數</label>
@@ -368,19 +366,19 @@
                     </div>
                 </div>
                 <!--清除浮動 -->
-                    <div style="clear:both;"></div>
-                    <div style="margin:10px 0px">
-                        <div style="text-align:left;display: inline-block;vertical-align: top;">
-                            <a href="">
-                                <button id="btnSearch" type="submit" class="btn-sm btnStart" disabled
-                                    style="padding:8px 15px;" name="btnSearch"><img src="static/search.png"
-                                        style="width:17px;padding-right:5px;">
-                                    搜尋</button>
-                            </a>
-                        </div>
+                <div style="clear:both;"></div>
+                <div style="margin:10px 0px">
+                    <div style="text-align:left;display: inline-block;vertical-align: top;">
+                        <a href="">
+                            <button id="btnSearch" type="submit" class="btn-sm btnStart" disabled
+                                    style="padding:8px 15px;" name="btnSearchDisease"><img src="static/search.png"
+                                                                                           style="width:17px;padding-right:5px;">
+                                搜尋</button>
+                        </a>
                     </div>
                 </div>
-                <script>
+            </div>
+            <script>
                     //條件收合
                     $(".resultText").click(function () {
                         $(".resultAll").slideToggle("fast");
@@ -392,10 +390,10 @@
         <!-- 結果 -->
         <div id="results" style="text-align: left;">
             {% if scroll %}
-                <script>
+            <script>
                 document.location.hash = '#' + '{{ scroll }}';
                  </script>
-                {% endif %}
+            {% endif %}
 
             <div class="" style="margin:10px;text-align: center">
                 <h3>醫療機構評價分數</h3>
@@ -412,7 +410,7 @@
                     </div>
                     <div style="display: inline-block;vertical-align: bottom;">
                         <!--<input type="submit" name="reSort" class="btn span" id="reSort"-->
-                               <!--style="background-color:rgb(101,129,152);color:white" value="排序">-->
+                        <!--style="background-color:rgb(101,129,152);color:white" value="排序">-->
                         <button id="reSort" type="submit" class="btn span"
                                 style="background-color:rgb(101,129,152);color:white" name="reSort">排序</button>
                         <input type="hidden" name="tmp_indexes" value="{{tmp_indexes}}">
@@ -423,18 +421,18 @@
                 </div>
 
                 <div style="display: inline-block;vertical-align: middle;margin:5px 2%;">
-                        <div class="percentSize">
-                            <img src="static/+1.1.png" style="vertical-align: sub;" height="20px"
-                                title="正向指標">&nbsp;正向指標&nbsp;
-                            <img src="static/-.png" style="vertical-align: sub;" height="20px"
-                                title="負向指標">&nbsp;負向指標&nbsp;
-                            <img src="static/高指標.png" height="20px" title="高指標">&nbsp;百分等級大於75&nbsp;
-                            <img src="static/中指標2.0.png" height="20px" title="中指標">&nbsp;百分等級50~75&nbsp;
-                            <img src="static/低指標2.0.png" height="20px" title="低指標">&nbsp;百分等級小於50&nbsp;
-                            <img src="static/無指標.png" height="20px" title="無指標">&nbsp;無資料
-                        </div>
+                    <div class="percentSize">
+                        <img src="static/+1.1.png" style="vertical-align: sub;" height="20px"
+                             title="正向指標">&nbsp;正向指標&nbsp;
+                        <img src="static/-.png" style="vertical-align: sub;" height="20px"
+                             title="負向指標">&nbsp;負向指標&nbsp;
+                        <img src="static/高指標.png" height="20px" title="高指標">&nbsp;百分等級大於75&nbsp;
+                        <img src="static/中指標2.0.png" height="20px" title="中指標">&nbsp;百分等級50~75&nbsp;
+                        <img src="static/低指標2.0.png" height="20px" title="低指標">&nbsp;百分等級小於50&nbsp;
+                        <img src="static/無指標.png" height="20px" title="無指標">&nbsp;無資料
                     </div>
                 </div>
+            </div>
             <!--清除浮動 -->
             <div style="clear:both;"></div>
 
@@ -596,7 +594,7 @@
         </div>
         <div class="footerImg">
             <div class="span" style="vertical-align:middle;text-align:center;">
-                <img src="static/聯絡3.0.png" style="width:60%;margin:10%">
+                <img src="static/聯絡4.0.png" style="width:60%;margin:10%">
 
             </div>
         </div>

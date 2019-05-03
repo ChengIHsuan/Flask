@@ -10,6 +10,7 @@ class Disease():
 
     ## 綜合搜尋
     def search_all(self, disease, county, township, types, names, star, indexes):
+        print('search_all')
         try:
             reserved = Search().disease_reserved(disease, county, township, names, types, star)
 
@@ -21,6 +22,7 @@ class Disease():
             reviews_condition = Search().search_star(star)
 
             conditions = [area_condition, name_condition, type_condition, reviews_condition]
+            print(conditions)
             ## 若沒有條件則移除
             while '' in conditions:
                 conditions.remove('')
@@ -36,6 +38,7 @@ class Disease():
                         sql_where += condition
             if sql_where != '':
                 sql_where = 'WHERE ' + sql_where
+
             return Select().add_sql_where(indexes, sql_where, reserved)
         except BaseException as e:
             print('search_all Exception' + e)
@@ -49,6 +52,7 @@ class Select():
 
     ## 加上所選標皆不為-1之條件
     def add_sql_where(self, indexes, sql_where, reserved):
+        print('add_sql_where')
         try:
             str = ''
             for index in indexes:
@@ -65,10 +69,12 @@ class Select():
 
     ## 取得醫療機構資訊
     def select_normal(self, indexes, sql_where, reserved):
+        print('select_normal')
         try:
             ## select醫療機構資訊'：名稱、分數＆星等、正向評論數、負向評論數、電話與地址並存入normal[]
             sqlstr = "SELECT h.abbreviation, cast(fr.star as float), fr.positive,  fr.negative, h.phone, h.address FROM merge_data m JOIN hospitals h ON m.hospital_id = h.id JOIN final_reviews fr ON h.id = fr.hospital_id  " + sql_where
             normal = self.cursor.execute(sqlstr).fetchall()  ## normal = [ (名稱, GOOGLE星等, 正向評論數, 負向評論數, 電話, 地址), ......]
+            print(normal)
             ## 若未找到任何資料，出現錯誤訊息，若有則進入else
             if normal == []:
                 alert = "抱歉，找不到您要的資料訊息。"
@@ -81,6 +87,7 @@ class Select():
 
     ## 取得使用者勾選的資訊
     def select_data(self, normal, indexes, sql_where, reserved):
+        print('select_data')
         try:
             value_substr = 'm.hospital_id'
             deno_substr = 'm.hospital_id'
@@ -113,6 +120,7 @@ class Result():
 
     ## 取得欄位名稱
     def get_column_name(self, indexes, z_data, sql_where, reserved):
+        print('get_column_name')
         try:
             ## 先取得欄位的原始名字(m.v_?)，「醫院機構資訊」為固定欄位，直接手動新增
             getColumns=['醫療機構資訊']
@@ -144,6 +152,7 @@ class Result():
 
     ## 將搜尋結果寫進表格
     def table(self, z_data, z_col, ck_len, indexes, sql_where, sort_indexes, reserved):
+        print('table')
         try:
             tmp_indexes = ''
             for r in range(len(indexes)):

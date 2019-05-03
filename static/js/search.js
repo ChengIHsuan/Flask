@@ -9,6 +9,7 @@ $(document).ready(function () {
 });
 
 // 搜尋頁籤
+// 搜尋頁籤
 $(function () {
     $("#tabs-nav a").click(function () {
         $("#tabs-nav a").removeClass("tabs-menu-active");
@@ -19,6 +20,7 @@ $(function () {
         return false;
     });
 });
+
 
 //縣市連動
 department = new Array();
