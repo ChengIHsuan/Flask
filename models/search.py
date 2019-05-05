@@ -18,19 +18,19 @@ class Search():
         sql_where = "s.depart_id = {}".format(depart)
         return sql_where
 
-    ## 主觀指標
-    def search_subjective(self, subjective):
-        getStr = {
-            '1': "統計數據",
-            '2': "醫病關係",
-            '3': "事後處理",
-            '4': "行政項目",
-            '5': "專業人員與器材",
-            '6': "檢查及藥物和轉診",
-            '7': "不良事件",
-            '8': "其他註解"
-        }
-        return getStr.get(subjective)
+    # ## 主觀指標
+    # def search_subjective(self, subjective):
+    #     getStr = {
+    #         '1': "統計數據",
+    #         '2': "醫病關係",
+    #         '3': "事後處理",
+    #         '4': "行政項目",
+    #         '5': "專業人員與器材",
+    #         '6': "檢查及藥物和轉診",
+    #         '7': "不良事件",
+    #         '8': "其他註解"
+    #     }
+    #     return getStr.get(subjective)
 
     ## 地區搜尋
     def search_area(self, county, township):
@@ -60,18 +60,13 @@ class Search():
                 '21': ["", "金湖鎮", "金寧鎮", "金城鎮", "烈嶼鄉", "金沙鎮", "金門縣"],
                 '22': ["", "南竿鄉", "北竿鄉", "東引鄉", "莒光鄉", "連江縣"]
             }
-            if county != '0':
+            if county != '0':  #使用者有選縣市#
                 area = (areaStr.get(str(county))[-1]) + (areaStr.get(str(county))[int(township)])
             else:
                 area = ''
             ## 依照使用者在前端輸入的條件寫成SQL字串中的condition
             sql_where = "h.area LIKE '%" + area + "%'"
-            ## 驗證使用者是否輸入不存在的條件
-            validate = self.cursor.execute("SELECT h.id FROM hospitals h WHERE " + sql_where).fetchall()
-            if validate == []:
-                return "抱歉，找不到您要的「{}」相關資訊。".format(area)
-            else:
-                return sql_where
+            return sql_where
         except:
             return "抱歉，操作失敗。[A]"
 
@@ -98,7 +93,7 @@ class Search():
     ## 醫院層級
     def search_type(self, types):
         try:
-            ## 建立一個tuple，使前端取回的type值可以對應正確的醫院層級
+            ## 建立一個tuple，使前端取回的type值可以對應正確的醫療層級
             getStr = {
                 '1': "醫學中心",
                 '2': "區域醫院",
@@ -121,9 +116,7 @@ class Search():
     ## 醫院名稱
     def search_name(self, names):
         try:
-            while '' in names:
-                names.remove('')
-            ## 移除陣列中的空字串
+            ## 移除陣列中的空字串，即使用者未輸入之txtbox
             while '' in names:
                 names.remove('')
             ## 建立一個SQL語法中condition的開頭字串
@@ -131,7 +124,7 @@ class Search():
             ## 寫入condition字串中，對應全名或是縮寫
             for name in names:
                 ## 檢查使用者輸入之名稱是否存在
-                validate = self.cursor.execute("SELECT h.id FROM hospitals h WHERE h.name LIKE '%" + name + "%' OR h.abbreviation LIKE '%" + name + "%'").fetchall()
+                validate = self.cursor.execute("SELECT h.id FROM hospitals h WHERE h.name LIKE '%{}%' OR h.abbreviation LIKE '%{}%'".format(name, name)).fetchall()
                 if validate == []:
                     return "抱歉，找不到您要的「{}」相關資訊。".format(name)
                 else:
@@ -156,46 +149,50 @@ class Search():
 
     ## 醫療機構保留條件
     def hosp_reserved(self, county, township, names, types, star):
+        ## reserved = [縣市, 鄉鎮市區, 名稱1, 名稱2, 名稱3, 醫學中心, 區域醫院, 地區醫院, 診所, 星等]
         reserved = [county, township]
         for name in names:
             reserved.append(name)
-        for f in range(4):
+        ## 醫療層級預設皆為false，若使用者有勾選擇改為true
+        for f in range(4):  #共有4個醫療層級#
             reserved.append('false')
         for type in types:
-            i = int(type)+4
+            i = (int(type) + 4)  #層級value為1~4，對應保留條件陣列中5~8位置#
             reserved[i] = 'true'
-        while star == '':
+        while star == '':  #即使用者沒有選擇星等#
             star = 0
         reserved.append(star)
         return reserved
 
     ## 疾病保留條件
     def disease_reserved(self, disease, county, township, names, types, star):
+        ## reserved = [特殊疾病, 縣市, 鄉鎮市區, 名稱1, 名稱2, 名稱3, 醫學中心, 區域醫院, 地區醫院, 診所, 星等]
         reserved = [disease, county, township]
         for name in names:
             reserved.append(name)
-        for f in range(4):
+        ## 醫療層級預設皆為false，若使用者有勾選擇改為true
+        for f in range(4):  #共有4個醫療層級#
             reserved.append('false')
         for type in types:
-            i = int(type)+5
+            i = (int(type) + 5)  #層級value為1~4，對應保留條件陣列中6~9位置#
             reserved[i] = 'true'
-        while star == '':
+        while star == '':  #即使用者沒有選擇星等#
             star = 0
         reserved.append(star)
-        print(reserved)
         return reserved
 
     ## 科別保留條件
-    def subj_reserved(self, depart, subjectives, county, township, types, names):
+    def subj_reserved(self, depart, county, township, types, names):
+        ## reserved = [科別, 縣市, 鄉鎮市區, 醫學中心, 區域醫院, 地區醫院, 診所, 名稱1, 名稱2, 名稱3,]
         reserved = [depart, county, township]
-        for f in range(4):  # 共有4個醫療層級
+        ## 醫療層級預設皆為false，若使用者有勾選擇改為true
+        for f in range(4):  #共有4個醫療層級#
             reserved.append('false')
         for type in types:
-            i = (int(type) + 2)  # 陣列3~6位置存放醫療層級
+            i = (int(type) + 2)  #層級value為1~4，對應保留條件陣列中3~6位置#
             reserved[i] = 'true'
+            print(names)
         for name in names:
             reserved.append(name)
-        print(reserved)
-        print('======')
         return reserved
 

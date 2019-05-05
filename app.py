@@ -82,9 +82,6 @@ def panduanSubj():
             ## 地區
             county = request.form.get('departCounty')
             township = request.form.get("departTownship")
-            print(county)
-            print(township)
-            print('===========sss')
             ## 醫院層級
             types = request.values.getlist('departType')
             ## 醫療機構名稱
@@ -92,8 +89,6 @@ def panduanSubj():
             name2 = request.form.get('departName2')
             name3 = request.form.get('departName3')
             names = [name1, name2, name3]
-            while '' in names:
-                names.remove('')
             # return "{}//{}//{}//{}".format(depart, subjective, county, township)
             return Subj().search_subj(depart, subjectives, county, township, types, names)
 
@@ -108,7 +103,6 @@ def panduanHosp():
             ## 地區
             county = request.form.get('hospCounty')
             township = request.form.get("hospTownship")
-            print(township)
             ## 醫療機構名稱
             name1 = request.form.get('hospName1')
             name2 = request.form.get('hospName2')

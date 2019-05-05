@@ -9,73 +9,76 @@ class Hosp():
         self.cursor = db.cursor()
 
     def search_obj(self, hospital_id, indexes):
-        normal = Search().search_hosp(hospital_id)
+        try:
+            normal = Search().search_hosp(hospital_id)
 
-        value_substr = ''
-        deno_substr = ''
-        level_substr = ''
-        for index in indexes:
-            value_substr += ('m.v_' + index + ', ')
-            deno_substr += ('m.d_' + index + ', ')
-            level_substr += ('m.l_' +index + ', ')
-        value_substr = value_substr[:-2]
-        deno_substr = deno_substr[:-2]
-        level_substr = level_substr[:-2]
-        l_value = self.cursor.execute("SELECT {} FROM merge_data m WHERE m.hospital_id = {}".format(value_substr, hospital_id)).fetchone()
-        l_deno = self.cursor.execute("SELECT {} FROM merge_data m WHERE m.hospital_id = {}".format(deno_substr, hospital_id)).fetchone()
-        l_level = self.cursor.execute("SELECT {} FROM merge_data m WHERE m.hospital_id = {}".format(level_substr, hospital_id)).fetchone()
-        print(l_value)
-        z_data = zip(l_value, l_deno, l_level)
+            value_substr = ''
+            deno_substr = ''
+            level_substr = ''
+            for index in indexes:
+                value_substr += ('m.v_' + index + ', ')
+                deno_substr += ('m.d_' + index + ', ')
+                level_substr += ('m.l_' +index + ', ')
+            value_substr = value_substr[:-2]
+            deno_substr = deno_substr[:-2]
+            level_substr = level_substr[:-2]
+            l_value = self.cursor.execute("SELECT {} FROM merge_data m WHERE m.hospital_id = {}".format(value_substr, hospital_id)).fetchone()
+            l_deno = self.cursor.execute("SELECT {} FROM merge_data m WHERE m.hospital_id = {}".format(deno_substr, hospital_id)).fetchone()
+            l_level = self.cursor.execute("SELECT {} FROM merge_data m WHERE m.hospital_id = {}".format(level_substr, hospital_id)).fetchone()
+            print(l_value)
+            z_data = zip(l_value, l_deno, l_level)
 
-        columns = []
-        for i in indexes:
-            columns.append(self.cursor.execute("SELECT abbreviation, PorN, chi_name FROM column_name WHERE name = '{}' ".format(i)).fetchall()[0])
-        print(columns)
+            columns = []
+            for i in indexes:
+                columns.append(self.cursor.execute("SELECT abbreviation, PorN, chi_name FROM column_name WHERE name = '{}' ".format(i)).fetchall()[0])
+            print(columns)
 
-        col_len = len(columns)
-        print(col_len)
-        return render_template('hospObjResult.html', scroll='indexes', normal=normal, z_data=z_data, columns=columns, col_len=col_len)
+            col_len = len(columns)
+            print(col_len)
+            return render_template('hospObjResult.html', scroll='indexes', normal=normal, z_data=z_data, columns=columns, col_len=col_len)
+        except:
+            alert = "抱歉，找不到您要的資料訊息。"
+            normal = Search().search_hosp(hospital_id)
+            return render_template('hospObjResult.html', normal=normal, alert=alert)
 
 
     def search_subj(self, hospital_id, subjectives):
-        normal = Search().search_hosp(hospital_id)
-        substr = 'depart_id'
-        for subjective in subjectives:
-            substr += (', subj_' + subjective)
-        sqlstr = "SELECT {} FROM tmp_subj2 WHERE hospital_id = {}".format(substr, hospital_id)
-        subj_data = self.cursor.execute(sqlstr).fetchall()
-        del subj_data[-1]
-        print(subj_data)
-        depart = []
-        for i in subj_data:
-            print(i[0])
-            depart.append(self.cursor.execute("SELECT name FROM depart WHERE id = {}".format(i[0])).fetchone()[0])
-            print(depart)
-            print('=====')
-        z_data = zip(depart, subj_data)
+        try:
+            normal = Search().search_hosp(hospital_id)
+            substr = 'depart_id'
+            for subjective in subjectives:
+                substr += (', subj_' + subjective)
+            sqlstr = "SELECT {} FROM tmp_subj2 WHERE hospital_id = {}".format(substr, hospital_id)
+            subj_data = self.cursor.execute(sqlstr).fetchall()
+            del subj_data[-1]
+            print(subj_data)
+            depart = []
+            for i in subj_data:
+                depart.append(self.cursor.execute("SELECT name FROM depart WHERE id = {}".format(i[0])).fetchone()[0])
+            z_data = zip(depart, subj_data)
 
-        columns = ['科別']
-        for s in subjectives:
-            columns.append(self.cursor.execute("SELECT abbreviation FROM column_name WHERE name = '{}' ".format('s'+s)).fetchone()[0])
-        print(columns)
+            columns = ['科別']
+            for s in subjectives:
+                columns.append(self.cursor.execute("SELECT abbreviation FROM column_name WHERE name = '{}' ".format('s'+s)).fetchone()[0])
 
-        col_len = len(columns)-1
-        print(col_len)
-        return render_template('hospSubjResult.html', scroll='results', normal=normal, z_data=z_data, columns=columns, col_len=col_len)
+            col_len = len(columns)-1
+            return render_template('hospSubjResult.html', scroll='results', normal=normal, z_data=z_data, columns=columns, col_len=col_len)
+        except:
+            alert = "抱歉，找不到您要的資料訊息。"
+            normal = Search().search_hosp(hospital_id)
+            return render_template('hospSubjResult.html', normal=normal, alert=alert)
 
     def search_hosp(self, county, township, names, types, star):
         try:
             reserved = Search().hosp_reserved(county, township, names, types, star)
-            print(reserved)
             sql_where = ''
             ## 取得地區、名稱、層級、星等的condition
             area_condition = Search().search_area(county, township)
             name_condition = Search().search_name(names)
             type_condition = Search().search_type(types)
             reviews_condition = Search().search_star(star)
-
             conditions = [area_condition, name_condition, type_condition, reviews_condition]
-            print(conditions)
+
             ## 若沒有條件則移除
             while '' in conditions:
                 conditions.remove('')

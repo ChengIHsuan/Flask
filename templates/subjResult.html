@@ -91,7 +91,7 @@
         </nav>
 
         <script>
-            window.onload=function aaaa(){
+            $(document).ready(function() {
                 {% if reserved %}
                     document.myForm.depart.options[{{reserved[0]}}].selected = true;
                     document.myForm.county.options[{{reserved[1]}}].selected = true;
@@ -105,10 +105,15 @@
                     document.myForm.name2.value = '{{reserved[8]}}'
                     document.myForm.name3.value = '{{reserved[9]}}'
                 {% endif %}
-            }
+            });
         </script>
-
         <div class="resultBg" style="display:inline-block;vertical-align: top;text-align: center;">
+            <!-- 麵包屑 -->
+                <ul class="breadcrumb" style="padding:1% 15px;width: 80%;margin: auto;text-align: center">
+                    <li><a href="/">首頁</a></li>
+                    <li><a href="search">找科別</a></li>
+                    <li style="color:rgba(0, 0, 0, 0.5)">{{ reserved[10] }}</li>
+                </ul>
             <div style="text-align:center;padding-top: 10px">
                 <h5 class="resultText">搜尋條件<span><img src="static/條件下.png" height="6px"
                                                       style="padding-left:5px"></span></h5>
@@ -306,7 +311,7 @@
                 {% endif %} -->
 
             <div class="" style="margin:10px;text-align: center">
-                <h3>醫療機構評價分數</h3>
+                <h3>【{{reserved[10]}}】主觀指標分數</h3>
             </div>
             <!--<div style="display: inline-block;vertical-align: top;width: 96%;text-align: left">-->
             <!--&lt;!&ndash;排序選擇&ndash;&gt;-->

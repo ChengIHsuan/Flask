@@ -38,13 +38,11 @@
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
 
+    {% if alert %}
     <script>
-    //     $(function(){
-    // {% if alert %}
-    //   alert('{{alert}}');
-    // {% endif %}
-    // });
+      alert('{{alert}}');
     </script>
+    {% endif %}
 </head>
 
 <body class="span">
