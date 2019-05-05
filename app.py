@@ -4,6 +4,7 @@ from models.sort import Sort
 from models.disease import Disease
 from models.subj import Subj
 from models.hospital import Hosp
+from models.search import Search
 
 import sqlite3
 
@@ -49,7 +50,6 @@ def panduanDisease():
             ## 地區
             county = request.form.get('diseaseCounty')
             township = request.form.get("diseaseTownship")
-            print(township)
             ## 醫院層級
             types = request.values.getlist('diseaseType')
             ##Google星等
@@ -58,7 +58,6 @@ def panduanDisease():
                 star = ''
             ## 爛番茄
             # return render_template('diseaseResult.html')
-            print('app.py')
             return Disease().search_all(disease, county, township, types, names, star, indexes)
         elif 'reSort' in request.form:
             selected_index = request.form.get('selected_index')
@@ -121,16 +120,25 @@ def panduanHosp():
             star = request.form.get("hospStar")
             if star == None:
                 star = ''
-            print("btnSearchHosp按")
-            return Hosp().search_all(county, township, names, types, star)
+            return Hosp().search_hosp(county, township, names, types, star)
 
 @app.route('/hospObjResult', methods=['GET'])
 def renderHospObj():
     return render_template('hospObjResult.html')
 
 @app.route('/hospObjResult', methods=['POST'])
-def renderHospObjj():
-    return render_template('hospObjResult.html')
+def panduanHospObj():
+    if request.method == 'POST':
+        for id in range(8071):
+            if ('btnObj'+str(id)) in request.form:
+                normal = Search().search_hosp(id)
+                return render_template('hospObjResult.html', normal=normal)
+            if ('btnSubj'+str(id)) in request.form:
+                normal = Search().search_hosp(id)
+                return render_template('hospSubjResult.html', normal=normal)
+            if ('btnSearch'+str(id)) in request.form:
+                indexes = request.values.getlist('ckIndex')
+                return Hosp().search_obj(id, indexes)
 
 @app.route('/hospSubjResult', methods=['GET'])
 def renderHospSubj():
@@ -138,10 +146,18 @@ def renderHospSubj():
     return render_template('hospSubjResult.html')
 
 @app.route('/hospSubjResult', methods=['POST'])
-def renderHospSubjj():
+def panduanHospSubj():
     if request.method == 'POST':
-        if 'btnSubj' in request.form:
-            return render_template('hospSubjResult.html')
+        for id in range(8071):
+            if ('btnSubj'+str(id)) in request.form:
+                normal = Search().search_hosp(id)
+                return render_template('hospSubjResult.html', normal=normal)
+            if ('btnObj'+str(id)) in request.form:
+                normal = Search().search_hosp(id)
+                return render_template('hospObjResult.html', normal=normal)
+            if ('btnSearch'+str(id)) in request.form:
+                subjectives = request.values.getlist('subjective')
+                return Hosp().search_subj(id, subjectives)
 
 ##啟動
 if __name__ == '__main__':

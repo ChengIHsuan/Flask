@@ -636,6 +636,34 @@ input[type="radio"]:checked+label span {
     color: #ffffff;
 }
 
+/* loading樣式 */
+
+.loadDiv {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    top: 0;
+    background-color: #f3f8ff8f;
+    filter: alpha(opacity=80);
+    z-index: 10000;
+}
+
+.load {
+    font-size: 20px;
+    position: absolute;
+    cursor: wait;
+    width: auto;
+    height: 57px;
+    line-height: 57px;
+    padding-left: 25px;
+    padding-right: 25px;
+    /* background: rgb(255, 255, 255) ; */
+    /* border: 2px solid rgba(184, 206, 217, 1); */
+    color: #5a5a5a;
+    font-family: Microsoft JhengHei;
+    font-weight: bold;
+}
+
 .tableWidth {}
 
 .tableHosName {
@@ -676,8 +704,18 @@ ul.breadcrumb li a {
 }
 
 ul.breadcrumb li a:hover {
-
     text-decoration: underline;
+}
+
+/* 地址連結 */
+
+.map {
+    color: #5a5a5a;
+}
+
+.map:hover {
+    text-decoration:underline;
+    color: #608097;
 }
 
 /* loader */

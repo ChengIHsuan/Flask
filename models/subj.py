@@ -66,12 +66,9 @@ class Select():
             substr = 's.hospital_id'
             for r in range(len(indexes)):
                 substr += (', ' + 's.subj_' + indexes[r])
-            print(substr)
             ## 取得data指標值
             sqlstr = "SELECT " + substr + " FROM tmp_subj2 s JOIN hospitals h ON s.hospital_id = h.id " + sql_where
-            print(sqlstr)
             value = self.cursor.execute(sqlstr).fetchall()  ## value = [(hospital_id, 指標1之指標值, 指標2之指標值, 指標3之指標值, ......), ......]
-            print(value)
             ## 將醫療機構資訊、指標值、就醫人數、指標值等級包裝成zip
             z_data = zip(normal, value)
             return Result().get_column_name(indexes, z_data, sql_where, reserved)

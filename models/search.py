@@ -6,6 +6,13 @@ class Search():
         db = sqlite3.connect('voyager.db')
         self.cursor = db.cursor()
 
+    ## 醫療機構
+    def search_hosp(self, hospital_id):
+        sqlstr = "SELECT h.id, h.abbreviation, h.type, cast(fr.star as float), fr.reviews, h.address, h.phone FROM hospitals h JOIN final_reviews fr ON h.id = fr.hospital_id WHERE h.id={}".format(
+            hospital_id)
+        normal = self.cursor.execute(sqlstr).fetchone()
+        return normal
+
     ## 科別
     def search_depart(self, depart):
         sql_where = "s.depart_id = {}".format(depart)
@@ -147,7 +154,6 @@ class Search():
         except:
             return "抱歉，操作失敗。[S]"
 
-
     ## 醫療機構保留條件
     def hosp_reserved(self, county, township, names, types, star):
         reserved = [county, township]
@@ -179,7 +185,7 @@ class Search():
         print(reserved)
         return reserved
 
-    # ## 科別保留條件
+    ## 科別保留條件
     def subj_reserved(self, depart, subjectives, county, township, types, names):
         reserved = [depart, county, township]
         for f in range(4):  # 共有4個醫療層級

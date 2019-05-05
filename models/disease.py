@@ -69,7 +69,6 @@ class Select():
 
     ## 取得醫療機構資訊
     def select_normal(self, indexes, sql_where, reserved):
-        print('select_normal')
         try:
             ## select醫療機構資訊'：名稱、分數＆星等、正向評論數、負向評論數、電話與地址並存入normal[]
             sqlstr = "SELECT h.abbreviation, cast(fr.star as float), fr.positive,  fr.negative, h.phone, h.address FROM merge_data m JOIN hospitals h ON m.hospital_id = h.id JOIN final_reviews fr ON h.id = fr.hospital_id  " + sql_where

@@ -41,13 +41,26 @@
       alert('{{alert}}');
     </script>
     {% endif %}
+
+    <script>
+        function hosp() {
+            myForm.action = "/hospResult";
+        }
+        function obj() {
+            myForm.action = "/hospObjResult";
+        }
+
+        function subj() {
+            myForm.action = "/hospSubjResult";
+        }
+    </script>
 </head>
 
 <body class="span">
 <!--回首頁浮動按鈕-->
 <a href="#top" class="back-to-top" style="z-index:101">回到頁首</a>
 
-<form name="myForm" action="/hospResult" method="post" runat="server" autocomplete="on">
+<form name="myForm" method="post" runat="server" autocomplete="on">
     <div class="container-fiuld">
         <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #658198;text-align: center">
             <a class="navbar-brand" href="#"><img src="https://pbs.twimg.com/media/DrvK7_5UcAARp62.png" class=""
@@ -179,7 +192,7 @@
                     <div style="text-align:left;display: inline-block;vertical-align: top;">
                         <a href="">
                             <button id="btnSearch" type="submit" class="btn-sm btnStart" style="padding:8px 15px;"
-                                    name="btnSearchHosp"><img src="static/search.png" style="width:17px;padding-right:5px;">
+                                    name="btnSearchHosp"><img src="static/search.png" style="width:17px;padding-right:5px;" onclick="hosp()">
                                 搜尋</button>
                         </a>
                     </div>
@@ -263,21 +276,19 @@
                                     <span class="commentPh"><br>
                                                 總評論數
                                         <!-- 總評論數手機版 -->
-                                                <span
-                                                        style="font-size:15px;font-weight: bold;color: #000000">&nbsp;{{ n[3] }}&nbsp;</span>
+                                                <span style="font-size:15px;font-weight: bold;color: #000000">&nbsp;{{ n[3] }}&nbsp;</span>
                                                 筆
                                             </span>
                                     <span class="comment">
                                                 總評論數
                                         <!-- 總評論數電腦版 -->
-                                                <span
-                                                        style="font-size:15px;font-weight: bold;color: #000000">&nbsp;{{ n[3] }}&nbsp;</span>
+                                                <span style="font-size:15px;font-weight: bold;color: #000000">&nbsp;{{ n[3] }}&nbsp;</span>
                                                 筆
                                             </span>
                                     <hr style="margin:5px 0px">
                                     <div style="margin:0px 0px 5px 0px;float: left;">
                                         <!-- google map -->
-                                        <a href="https://www.google.com.tw/maps/place/{{ n[5] }}" class="map"
+                                        <a href="https://www.google.com.tw/maps/place/{{ n[0] }}" class="map"
                                            target="_blank">
                                             <img  title="在Google Map開啟" style="vertical-align: sub;margin:15px 5px 0px"
                                                   src="static/address.png" height="20em">
@@ -292,27 +303,26 @@
                                         <!-- 電話 -->
                                         <span style="font-size:15px;color: #5a5a5a">{{ n[4] }}</span>
                                     </div>
+
                                     <!-- 主觀指標鈕 -->
                                     <div class="subOb">
                                         <div style="float:right;">
-                                            <button id="hospSubjResult" type="submit" class="btn-sm btnSubject"
-                                                    style="padding:5px 15px;" name="btnSubj" onclick="hospSubj()">
+                                            <button id="hospSubjResult" type="submit" class="btn-sm btnSubject" style="padding:5px 15px;" name="btnSubj{{ n[6] }}" onclick="subj()">
                                                 <!-- 粉色放大鏡 -->
-                                                <img src="static/subSearch.png"
-                                                     style="width:17px;padding-right:5px;">
-                                                主觀指標</button>
+                                                <img src="static/subSearch.png" style="width:17px;padding-right:5px;">
+                                                主觀指標
+                                            </button>
                                         </div>
                                         <br>
                                         <!-- 客觀指標鈕 -->
                                         <div style="float:right;">
-                                            <a href="hospObjResult">
-                                                <button id="" type="submit" class="btn-sm btnObject"
-                                                        style="padding:5px 15px;" name="btnObj" onclick="hospObj()">
+                                                <button id="hospObjResult" type="submit" class="btn-sm btnObject"
+                                                        style="padding:5px 15px;" name="btnObj{{ n[6] }}" onclick="obj()">
                                                     <!-- 藍色放大鏡 -->
                                                     <img src="static/obSearch.png"
                                                          style="width:17px;padding-right:5px;">
-                                                    客觀指標</button>
-                                            </a>
+                                                    客觀指標
+                                                </button>
                                         </div>
                                     </div>
                                 </div>

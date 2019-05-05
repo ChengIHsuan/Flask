@@ -8,8 +8,62 @@ class Hosp():
         db = sqlite3.connect('voyager.db')
         self.cursor = db.cursor()
 
-    def search_all(self, county, township, names, types, star):
-        print('search_all')
+    def search_obj(self, hospital_id, indexes):
+        normal = Search().search_hosp(hospital_id)
+
+        value_substr = ''
+        deno_substr = ''
+        level_substr = ''
+        for index in indexes:
+            value_substr += ('m.v_' + index + ', ')
+            deno_substr += ('m.d_' + index + ', ')
+            level_substr += ('m.l_' +index + ', ')
+        value_substr = value_substr[:-2]
+        deno_substr = deno_substr[:-2]
+        level_substr = level_substr[:-2]
+        l_value = self.cursor.execute("SELECT {} FROM merge_data m WHERE m.hospital_id = {}".format(value_substr, hospital_id)).fetchone()
+        l_deno = self.cursor.execute("SELECT {} FROM merge_data m WHERE m.hospital_id = {}".format(deno_substr, hospital_id)).fetchone()
+        l_level = self.cursor.execute("SELECT {} FROM merge_data m WHERE m.hospital_id = {}".format(level_substr, hospital_id)).fetchone()
+        print(l_value)
+        z_data = zip(l_value, l_deno, l_level)
+
+        columns = []
+        for i in indexes:
+            columns.append(self.cursor.execute("SELECT abbreviation, PorN, chi_name FROM column_name WHERE name = '{}' ".format(i)).fetchall()[0])
+        print(columns)
+
+        col_len = len(columns)
+        print(col_len)
+        return render_template('hospObjResult.html', scroll='indexes', normal=normal, z_data=z_data, columns=columns, col_len=col_len)
+
+
+    def search_subj(self, hospital_id, subjectives):
+        normal = Search().search_hosp(hospital_id)
+        substr = 'depart_id'
+        for subjective in subjectives:
+            substr += (', subj_' + subjective)
+        sqlstr = "SELECT {} FROM tmp_subj2 WHERE hospital_id = {}".format(substr, hospital_id)
+        subj_data = self.cursor.execute(sqlstr).fetchall()
+        del subj_data[-1]
+        print(subj_data)
+        depart = []
+        for i in subj_data:
+            print(i[0])
+            depart.append(self.cursor.execute("SELECT name FROM depart WHERE id = {}".format(i[0])).fetchone()[0])
+            print(depart)
+            print('=====')
+        z_data = zip(depart, subj_data)
+
+        columns = ['科別']
+        for s in subjectives:
+            columns.append(self.cursor.execute("SELECT abbreviation FROM column_name WHERE name = '{}' ".format('s'+s)).fetchone()[0])
+        print(columns)
+
+        col_len = len(columns)-1
+        print(col_len)
+        return render_template('hospSubjResult.html', scroll='results', normal=normal, z_data=z_data, columns=columns, col_len=col_len)
+
+    def search_hosp(self, county, township, names, types, star):
         try:
             reserved = Search().hosp_reserved(county, township, names, types, star)
             print(reserved)
@@ -50,7 +104,7 @@ class Select():
 
     def select_normal(self, sql_where, reserved):
         print('select_normal')
-        sqlstr = "SELECT h.abbreviation, h.type, cast(fr.star as float), fr.reviews, h.phone, h.address FROM hospitals h JOIN final_reviews fr ON h.id = fr.hospital_id  " + sql_where
+        sqlstr = "SELECT h.abbreviation, h.type, cast(fr.star as float), fr.reviews, h.phone, h.address, h.id FROM hospitals h JOIN final_reviews fr ON h.id = fr.hospital_id  " + sql_where
         normal = self.cursor.execute(sqlstr).fetchall()  ## normal = [ (名稱, GOOGLE星等, 正向評論數, 負向評論數, 電話, 地址), ......]
 
         if normal == []:
@@ -58,4 +112,5 @@ class Select():
             return render_template("search.html", alert=alert)
         else:
             return render_template("hospResult.html", normal=normal, reserved=reserved)
+
 
