@@ -9,7 +9,7 @@ class Hosp():
         self.cursor = db.cursor()
 
     def search_obj(self, hospital_id, indexes):
-        try:
+        # try:
             normal = Search().search_hosp(hospital_id)
 
             value_substr = ''
@@ -30,16 +30,16 @@ class Hosp():
 
             columns = []
             for i in indexes:
-                columns.append(self.cursor.execute("SELECT abbreviation, PorN, chi_name FROM column_name WHERE name = '{}' ".format(i)).fetchall()[0])
+                columns.append(self.cursor.execute("SELECT abbreviation, PorN, description FROM column_name WHERE name = '{}' ".format(i)).fetchall()[0])
             print(columns)
 
             col_len = len(columns)
             print(col_len)
             return render_template('hospObjResult.html', scroll='indexes', normal=normal, z_data=z_data, columns=columns, col_len=col_len)
-        except:
-            alert = "抱歉，找不到您要的資料訊息。"
-            normal = Search().search_hosp(hospital_id)
-            return render_template('hospObjResult.html', normal=normal, alert=alert)
+        # except:
+        #     alert = "抱歉，找不到您要的資料訊息。"
+        #     normal = Search().search_hosp(hospital_id)
+        #     return render_template('hospObjResult.html', normal=normal, alert=alert)
 
 
     def search_subj(self, hospital_id, subjectives):
