@@ -29,6 +29,7 @@
     <!--<link rel=stylesheet type="text/css" href="hos.css">-->
     <!--<script rel=stylesheet type="text/javascript" src="search.js"></script>-->
     <script type="text/javascript" src="{{url_for('static', filename='js/searchJS1.14.js')}}"></script>
+    <script type="text/javascript" src="{{url_for('static', filename='js/loading.js')}}"></script>
     <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
 
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
@@ -236,7 +237,7 @@
                                     <!--醫療層級-->
                                     <span style="font-size:15px;color: #5a5a5a">{{ n[1] }}</span>
                                     <!--星等-->
-                                    {{ n[2]}}
+                                    <span style="font-size:15px;color: #5a5a5a;background-color:rgba(255, 211, 229,0.5);;border-radius:5px;padding:2px 5px">{{ n[2]}}</span>
                                     {% if 0 <= n[2] < 0.5 %}
                                     <img style="vertical-align: sub;margin:0px 2px" src="static/0星.png" height="20em">
                                     {% endif %}
@@ -288,7 +289,7 @@
                                     <hr style="margin:5px 0px">
                                     <div style="margin:0px 0px 5px 0px;float: left;">
                                         <!-- google map -->
-                                        <a href="https://www.google.com.tw/maps/place/{{ n[0] }}" class="map"
+                                        <a href="https://www.google.com.tw/maps/place/{{ n[5] }}" class="map"
                                            target="_blank">
                                             <img  title="在Google Map開啟" style="vertical-align: sub;margin:15px 5px 0px"
                                                   src="static/address.png" height="20em">

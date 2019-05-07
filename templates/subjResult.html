@@ -27,6 +27,7 @@
             crossorigin="anonymous"></script>
 
     <script type="text/javascript" src="{{url_for('static', filename='js/searchJS1.14.js')}}"></script>
+    <script type="text/javascript" src="{{url_for('static', filename='js/loading.js')}}"></script>
     <link rel=stylesheet type="text/css" href="{{ url_for('static', filename='main1.5.css') }}">
     <!-- <link rel=stylesheet type="text/css" href="hos.css"> -->
     <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
@@ -343,14 +344,14 @@
 
         <!-- 表格 -->
         <div
-                style="background-color:rgba(184,206,217,0.5);margin:10px 2%;width:96%; word-break:break-all;overflow:scroll;">
+                style="background-color:rgba(184,206,217,0.5);margin:10px 2%;width:96%; word-break:break-all;">
             <!--{% for message in get_flashed_messages(with_categories=True) %}-->
 
             <!--<div class="alert alert-secondary" role="alert">-->
             <!--{{ message[1] }}-->
             <!--</div>-->
             <!--{% endfor %}-->
-            <div style="margin:0px auto;height:550px;" class="tableWidth">
+            <div style="margin:0px auto;" class="tableWidth">
 
                 <table class="table table-hover" style="border:2px rgba(101,129,152,0.8) solid;text-align:left;"
                        rules="all">
@@ -419,10 +420,21 @@
                     </tr>
 
                     <tr title={{ n[4] }}>
-                        <td>電話：{{ n[3] }}&nbsp;
-                            地址：<img src="{{ url_for('static', filename='地址圖.png')}}" height="20px"
-                                    alt="圖片替代文字" title={{ n[4] }}></td>
-                    </tr>
+                            <td>
+                                <!-- 電話 -->
+                                <img style="vertical-align: sub;" src="static/phone.png"
+                                     height="20em" title="" >&nbsp;
+                                <span style="font-size:15px;">{{ n[3] }}</span>&nbsp;
+                                <!-- google map -->
+                                <a href="https://www.google.com.tw/maps/place/{{ n[4] }}" class="map"
+                                   target="_blank">
+                                    <img  title="在地圖中開啟" style="vertical-align: sub;"
+                                          src="static/address.png" height="20em">&nbsp;
+                                    <span title="{{ n[4] }}"
+                                          style="font-size:15px;">在地圖中開啟</span>
+                                </a>
+                            </td>
+                        </tr>
                     <!-- {% endfor %} -->
                     </tbody>
                 </table>

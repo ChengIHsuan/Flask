@@ -33,6 +33,7 @@
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script type="text/javascript" src="{{url_for('static', filename='js/searchJS1.14.js')}}"></script>
+    <script type="text/javascript" src="{{url_for('static', filename='js/loading.js')}}"></script>
 
     {% if alert %}
     <script>
@@ -438,14 +439,14 @@
 
             <!-- 表格 -->
             <div
-                    style="background-color:rgba(184,206,217,0.5);margin:10px 2%;width:96%; word-break:break-all;overflow:scroll;">
+                    style="background-color:rgba(184,206,217,0.5);margin:10px 2%;width:96%; word-break:break-all;">
                 <!--{% for message in get_flashed_messages(with_categories=True) %}-->
 
                 <!--<div class="alert alert-secondary" role="alert">-->
                 <!--{{ message[1] }}-->
                 <!--</div>-->
                 <!--{% endfor %}-->
-                <div style="margin:0px auto;height:550px;" class="tableWidth">
+                <div style="margin:0px auto;" class="tableWidth">
 
                     <table class="table table-hover" style="border:2px rgba(101,129,152,0.8) solid;text-align:left;"
                            rules="all">
@@ -481,22 +482,22 @@
                                 <!-- {% endif %} -->
                                 <!-- {% if l[i+1] == 75 %} -->
                                 <img src="{{ url_for('static', filename='高指標.png')}}" height="50px">
-                                <div style="vertical-align:middle;text-align:center;">{{ v[i+1] }}%</div>
+                                <div style="">{{ v[i+1] }}%</div>
                                 <div style="">{{ d[i+1] }}</div>
                                 <!-- {% endif %} -->
                                 <!-- {% if l[i+1] == 50 %} -->
                                 <img src="{{ url_for('static', filename='中指標2.0.png')}}" height="50px">
-                                <div style="vertical-align:middle;text-align:center;">
+                                <div style="">
                                     {{ v[i+1] }}%<br>{{ d[i+1] }}</div>
                                 <!-- {% endif %} -->
                                 <!-- {% if l[i+1] == 0 %} -->
                                 <img src="{{ url_for('static', filename='低指標2.0.png')}}" height="50px">
-                                <div style="vertical-align:middle;text-align:center;">
+                                <div style="">
                                     {{ v[i+1] }}%<br>{{ d[i+1] }}</div>
                                 <!-- {% endif %} -->
                                 <!-- {% if l[i+1] == -1 %} -->
                                 <img src="{{ url_for('static', filename='無指標.png')}}" height="50px">
-                                <div style="vertical-align:middle;text-align:center;">此醫療機構無此指標值</div>
+                                <div style="">此醫療機構無此指標值</div>
                                 <!-- {% endif %} -->
                             </td>
                             <!-- {% endfor %} -->
@@ -544,9 +545,20 @@
                         </tr>
 
                         <tr title={{ n[5] }}>
-                            <td>電話：{{ n[4] }}&nbsp;
-                                地址：<img src="{{ url_for('static', filename='地址圖.png')}}" height="20px"
-                                        alt="圖片替代文字" title={{ n[5] }}></td>
+                            <td>
+                                <!-- 電話 -->
+                                <img style="vertical-align: sub;" src="static/phone.png"
+                                     height="20em" title="" >&nbsp;
+                                <span style="font-size:15px;">{{ n[4] }}</span>&nbsp;
+                                <!-- google map -->
+                                <a href="https://www.google.com.tw/maps/place/{{ n[5] }}" class="map"
+                                   target="_blank">
+                                    <img  title="在地圖中開啟" style="vertical-align: sub;"
+                                          src="static/address.png" height="20em">&nbsp;
+                                    <span title="{{ n[5] }}"
+                                          style="font-size:15px;">在地圖中開啟</span>
+                                </a>
+                            </td>
                         </tr>
                         <!-- {% endfor %} -->
                         </tbody>
