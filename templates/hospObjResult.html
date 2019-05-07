@@ -51,7 +51,7 @@
 <form name="myForm" action="/hospObjResult" method="post" runat="server" autocomplete="on">
     <div class="container-fiuld">
         <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #658198;text-align: center">
-            <a class="navbar-brand" href="#"><img src="https://pbs.twimg.com/media/DrvK7_5UcAARp62.png" class=""
+            <a class="navbar-brand" href="/"><img src="https://pbs.twimg.com/media/DrvK7_5UcAARp62.png" class=""
                                                   style="width:70px"></a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
                     aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -91,7 +91,7 @@
                     <!--醫療層級-->
                     <span style="font-size:15px;color: #5a5a5a">{{ normal[2] }}</span>
                     <!--星等-->
-                    {{ normal[3]}}
+                    <span style="font-size:15px;color: #5a5a5a;background-color:rgba(255, 211, 229,0.5);;border-radius:5px;padding:2px 5px">{{ normal[3]}}</span>
                     {% if 0 <= normal[3] < 0.5 %}
                     <img style="vertical-align: sub;margin:0px 2px" src="static/0星.png" height="20em">
                     {% endif %}
