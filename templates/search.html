@@ -188,9 +188,9 @@
 
                     <div id="diseaseS" class="tabs-panel" >
                         <div style="text-align:left;">
-                            <div class="col" style="margin:2px auto;color:  #da2222">
-                                <span class="searchItem">特殊疾病</span><span style="font-size:15px;">
-                                        *&nbsp;(必選)</span>
+                            <div class="col" style="margin:2px auto;">
+                                <span class="searchItem">特殊疾病</span><span style="font-size:15px;color:  #da2222">
+                                        *&nbsp;(必選1~5個)</span>
                                 <select style="margin:2% auto;" class="form-control form-control-sm inputS"
                                         id="disease" name="disease" onchange="indexSelect();">
                                     <option selected value="no">*選擇疾病(必選)</option>
@@ -453,7 +453,7 @@
                                 </select>
                                 <select class="form-control form-control-sm inputArea" id="diseaseTownship"
                                         name="diseaseTownship">
-                                    <option selected value="">鄉鎮市區</option>
+                                    <option selected value="0">鄉鎮市區</option>
                                 </select>
                             </div>
                             <div class="col" style="margin:2% auto;color: #000000">
@@ -534,7 +534,7 @@
                     <!-- 科別 -->
 
                     <div id="subjectS" class="tabs-panel" style="text-align:left">
-                        <div class="col" style="margin:2px auto;color: #000000">
+                        <div class="col" style="margin:2px auto;">
                             <span class="searchItem">科別</span><span style="font-size:15px;color: #da2222">
                                     *&nbsp;(必選)</span>
                             <select style="margin:2% auto;" class="form-control form-control-sm inputS" id="branch"
@@ -589,8 +589,8 @@
                         </div>
 
                         <div class="col" style="margin:2% auto;font-size: 15px;">
-                            <span class="searchItem">主觀指標*</span><span style="font-size:14px">&nbsp;
-                                    (必選)</span>
+                            <span class="searchItem">主觀指標</span><span style="font-size:15px;color:  #da2222">
+                                        *&nbsp;(必選)</span>
 
                             <div id="indexB" style="margin:2% auto">
                                 <input type="checkbox" value="1" id="is1" name="subjective"

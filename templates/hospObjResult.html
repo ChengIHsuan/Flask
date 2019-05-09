@@ -138,12 +138,19 @@
                         </span>
                     <hr style="margin:5px 0px">
                     <div style="margin:0px 0px 5px 0px;float: left;">
-                        <img style="vertical-align: sub;margin:15px 5px 0px" src="static/address.png" height="20em">
-                        <!-- 地址 -->
-                        <span style="font-size:15px;color: #5a5a5a;">{{ normal[5]}}</span>
+                        <!--google map-->
+                        <a href="https://www.google.com.tw/maps/place/{{ normal[5] }}" class="map"
+                           target="_blank">
+                            <!--地址-->
+                            <img  title="在Google Map開啟" style="vertical-align: sub;margin:15px 5px 0px"
+                                  src="static/address.png" height="20em">
+                            <span title="在Google Map開啟"
+                                  style="font-size:15px;">{{ normal[5] }}</span>
+                        </a>
+                        <!--電話-->
                         <div style="height:5px"></div>
-                        <img style="vertical-align: sub;margin:0px 5px" src="static/phone.png" height="20em">
-                        <!-- 電話 -->
+                        <img style="vertical-align: sub;margin:0px 5px" src="static/phone.png"
+                             height="20em">
                         <span style="font-size:15px;color: #5a5a5a">{{ normal[6] }}</span>
                     </div>
                     <!-- 主觀指標鈕 -->

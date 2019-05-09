@@ -70,9 +70,68 @@ class Select():
     ## 取得醫療機構資訊
     def select_normal(self, indexes, sql_where, reserved):
         try:
+            deno_substr = ""
+            for r in range(len(indexes)):
+                # 截取merge_data分母數字
+                deno = ("substr(d_" + indexes[r] + ", instr(d_" + indexes[r] + ", '：') + 1, length(d_" + indexes[
+                    r] + ") - instr(d_" + indexes[r] + ", '：') - 1)")
+                if indexes[r] == indexes[-1]:
+                    deno_substr += deno
+                else:
+                    deno_substr += (deno + ",")
+            # 把所選的指標的分母按星等排序
+            sqlstr = "SELECT h.id," + deno_substr + " FROM merge_data m JOIN hospitals h ON m.hospital_id = h.id JOIN final_reviews fr ON h.id = fr.hospital_id order by cast(fr.star as float) DESC"
+            deno_all = self.cursor.execute(sqlstr).fetchall()
+
+            # 把醫院id存成list之後比對用
+            hos_id = []
+            # 存該醫院是否大於30
+            boolean = []
+            for k in range(len(deno_all)):
+                i = 0
+                hos_id.append(deno_all[k][0])
+                for r in range(len(indexes)):
+                    # 把沒分母的改成0
+                    if deno_all[k][r + 1] == "（此指標無確切就醫人數":
+                        new_deno = 0
+                    else:
+                        # 把資料全部轉成整數
+                        new_deno = int(deno_all[k][r + 1])
+                    if new_deno < 30:
+                        i = i + 1
+                if i == len(indexes):
+                    boolean.append("None")
+                else:
+                    boolean.append("True")
+
+            # 合併醫院id跟true false
+            new_bool = []
+            for ab in zip(hos_id, boolean):
+                new_bool.append(ab)
+
+            # 存只有true的
+            True_only = []
+            # 存只有false的
+            False_only = []
+            for k in range(len(new_bool)):
+                if new_bool[k][1] == "True":
+                    True_only.append(new_bool[k])
+                else:
+                    False_only.append(new_bool[k])
+
+            # 合併成一個list
+            True_only.extend(False_only)
+
             ## select醫療機構資訊'：名稱、分數＆星等、正向評論數、負向評論數、電話與地址並存入normal[]
-            sqlstr = "SELECT h.abbreviation, cast(fr.star as float), fr.positive,  fr.negative, h.phone, h.address FROM merge_data m JOIN hospitals h ON m.hospital_id = h.id JOIN final_reviews fr ON h.id = fr.hospital_id  " + sql_where
-            normal = self.cursor.execute(sqlstr).fetchall()  #normal = [ (名稱1, GOOGLE星等1, 正向評論數1, 負向評論數1, 電話1, 地址1), ......]#
+            sqlstr = "SELECT  h.abbreviation, cast(fr.star as float), fr.positive,  fr.negative, h.phone, h.address , h.id FROM merge_data m JOIN hospitals h ON m.hospital_id = h.id JOIN final_reviews fr ON h.id = fr.hospital_id  " + sql_where + " order by cast(fr.star as float) DESC"
+            f = self.cursor.execute(sqlstr).fetchall()  ## normal = [ (名稱, GOOGLE星等, 正向評論數, 負向評論數, 電話, 地址), ......]
+            print(f)
+            # 把分母排好的順序跟醫療機構資訊對醫院id
+            normal = []
+            for k in range(len(True_only)):
+                for n in range(len(f)):
+                    if True_only[k][0] == f[n][6]:
+                        normal.append(f[n])
             ## 若未找到任何資料，出現錯誤訊息，若有則進入else
             if normal == []:
                 alert = "抱歉，找不到您要的資料訊息。"
@@ -90,18 +149,36 @@ class Select():
             deno_substr = 'm.hospital_id'
             level_substr = 'm.hospital_id'
             for r in range(len(indexes)):
-                value_substr += (', ' + 'm.v_' + indexes[r])
-                level_substr += (', ' + 'm.l_' + indexes[r])
-                deno_substr += (', ' + 'm.d_' + indexes[r])
+               value_substr += (', ' + 'm.v_' + indexes[r])
+               level_substr += (', ' + 'm.l_' + indexes[r])
+               deno_substr += (', ' + 'm.d_' + indexes[r])
             ## 取得data指標值
-            sqlstr = "SELECT " + value_substr + " FROM merge_data m JOIN hospitals h ON m.hospital_id = h.id JOIN final_reviews fr ON h.id = fr.hospital_id " + sql_where
-            l_value = self.cursor.execute(sqlstr).fetchall()  ## l_value = [(hospital_id, 指標1之指標值, 指標2之指標值, 指標3之指標值, ......), ......]
+            sqlstr = "SELECT " + value_substr + " FROM merge_data m JOIN hospitals h ON m.hospital_id = h.id JOIN final_reviews fr ON h.id = fr.hospital_id " + sql_where + " order by cast(fr.star as float) DESC"
+            g = self.cursor.execute(sqlstr).fetchall()  ## l_value = [(hospital_id, 指標1之指標值, 指標2之指標值, 指標3之指標值, ......), ......]
+            l_value = []
+            for k in range(len(normal)):
+                for n in range(len(g)):
+                    if normal[k][6] == g[n][0]:
+                        l_value.append(g[n])
+
             ## 取得data分母(就醫人數)
-            sqlstr = "SELECT " + deno_substr + " FROM merge_data m JOIN hospitals h ON m.hospital_id = h.id JOIN final_reviews fr ON h.id = fr.hospital_id " + sql_where
-            l_deno = self.cursor.execute(sqlstr).fetchall()
+            sqlstr = "SELECT " + deno_substr + " FROM merge_data m JOIN hospitals h ON m.hospital_id = h.id JOIN final_reviews fr ON h.id = fr.hospital_id " + sql_where + " order by cast(fr.star as float) DESC"
+            z = self.cursor.execute(sqlstr).fetchall()
+            l_deno = []
+            for k in range(len(normal)):
+                for n in range(len(z)):
+                    if normal[k][6] == z[n][0]:
+                        l_deno.append(z[n])
+
             ## 取得data指標值等級
-            sqlstr = "SELECT " + level_substr + " FROM merge_data m JOIN hospitals h ON m.hospital_id = h.id JOIN final_reviews fr ON h.id = fr.hospital_id " + sql_where
-            l_level = self.cursor.execute(sqlstr).fetchall()
+            sqlstr = "SELECT " + level_substr + " FROM merge_data m JOIN hospitals h ON m.hospital_id = h.id JOIN final_reviews fr ON h.id = fr.hospital_id " + sql_where + " order by cast(fr.star as float) DESC"
+            y = self.cursor.execute(sqlstr).fetchall()
+            l_level = []
+            for k in range(len(normal)):
+                for n in range(len(y)):
+                    if normal[k][6] == y[n][0]:
+                        l_level.append(y[n])
+
             ## 將醫療機構資訊、指標值、就醫人數、指標值等級包裝成zip
             z_data = zip(normal, l_value, l_deno, l_level)
             return Result().get_column_name(indexes, z_data, sql_where, reserved)

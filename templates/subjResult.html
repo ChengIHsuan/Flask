@@ -122,7 +122,8 @@
             <div class="resultAll">
                 <div class="resultInput">
                     <div class="col" style="margin:2px auto;color: #000000">
-                        <span class="searchItem">科別*</span><span style="font-size:14px">&nbsp; (必選)</span>
+                        <span class="searchItem">科別</span><span style="font-size:15px;color:  #da2222">
+                                        *&nbsp;(必選)</span>
                         <select style="margin:2px auto;" class="form-control form-control-sm inputS" id="branch"
                                 name="depart">
                             <option selected value="0">請選擇科別</option>
@@ -173,7 +174,8 @@
                         </select>
                     </div>
                     <div class="col" style="margin:2px auto;color: #000000">
-                        <span class="searchItem">主觀指標*</span><span style="font-size:14px">&nbsp; (必選)</span>
+                        <span class="searchItem">主觀指標</span><span style="font-size:15px;color:  #da2222">
+                                        *&nbsp;(必選)</span>
                         <div id="indexB" style="margin:2% auto">
                             <input type="checkbox" value="1" id="is1" name="subjective"
                                    onclick="onCheckBoxSub(this)" />
@@ -207,7 +209,7 @@
                     <div class="col" style="margin:2px auto;">
                         <h6>地區</h6>
                         <select class="form-control form-control-sm resultArea " id="county" name="departCounty"
-                                onChange="renew(this.selectedIndex);">
+                                onChange="departRenew(this.selectedIndex);">
                             <option selected value="0">選擇縣市</option>
                             <option value="1">基隆市</option>
                             <option value="2">臺北市</option>
