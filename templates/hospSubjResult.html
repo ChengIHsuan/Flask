@@ -84,7 +84,9 @@
                 <ul class="breadcrumb">
                     <li><a href="/">首頁</a></li>
                     <li><a href="search">找醫療機構</a></li>
+                    {% if normal %}
                     <li style="color:rgba(0, 0, 0, 0.5)">{{ normal[1] }}</li>
+                    {% endif %}
                 </ul>
                 <img style="float: left" src="https://picsum.photos/200/150/?image=2">
                 <div class="tableHosName">

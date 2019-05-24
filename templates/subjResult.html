@@ -94,7 +94,7 @@
         <script>
             $(document).ready(function() {
                 {% if reserved %}
-                    document.myForm.depart.options[{{reserved[0]}}].selected = true;
+                    document.myForm.depart.options[{{reserved[0]}}-1].selected = true;
                     document.myForm.county.options[{{reserved[1]}}].selected = true;
                     departRenew({{reserved[1]}})
                     document.myForm.departTownship.options[{{reserved[2]}}].selected = true;

@@ -21,6 +21,12 @@ def init():
 def shutdown_session(exception=None):
     db_session.remove()
 
+@app.route('/test')
+def test():
+    name = request.args.get('name')
+    a = request.args.get('a')
+    return 'hello ' + str(name) + str(a)
+
 @app.route('/', methods=['GET', 'POST'])
 def renderHome():
     return render_template('home.html')
@@ -32,9 +38,14 @@ def renderSearch():
 
 @app.route('/diseaseResult', methods=['GET'])
 def renderDisease():
+    print('get')
     return  render_template('diseaseResult.html')
 
 @app.route('/diseaseResult', methods=['POST'])
+# def tess():
+#     print('post')
+#     county = request.args.get('diseaseCounty')
+#     return county
 def panduanDisease():
     if request.method == 'POST':
         if 'btnSearchDisease' in request.form:
