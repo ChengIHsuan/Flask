@@ -5,6 +5,7 @@ from models.disease import Disease
 from models.subj import Subj
 from models.hospital import Hosp
 from models.search import Search
+from models.comp import Comp
 
 import sqlite3
 
@@ -38,14 +39,9 @@ def renderSearch():
 
 @app.route('/diseaseResult', methods=['GET'])
 def renderDisease():
-    print('get')
     return  render_template('diseaseResult.html')
 
 @app.route('/diseaseResult', methods=['POST'])
-# def tess():
-#     print('post')
-#     county = request.args.get('diseaseCounty')
-#     return county
 def panduanDisease():
     if request.method == 'POST':
         if 'btnSearchDisease' in request.form:
@@ -163,6 +159,31 @@ def panduanHospSubj():
             if ('btnSearch'+str(id)) in request.form:
                 subjectives = request.values.getlist('subjective')
                 return Hosp().search_subj(id, subjectives)
+
+@app.route('/hospComparison', methods=['GET'])
+def renderHospComp():
+    return render_template('hospComparison.html')
+
+@app.route('/hospComparison', methods=['POST'])
+def postHospComp():
+    if request.method == 'POST':
+        if 'btnHospComp' in request.form:
+            print('comp')
+            ## 地區
+            county = request.form.get('hospCounty')
+            township = request.form.get("hospTownship")
+            ## 醫療機構名稱
+            name1 = request.form.get('hospName1')
+            name2 = request.form.get('hospName2')
+            name3 = request.form.get('hospName3')
+            names = [name1, name2, name3]
+            ## 醫院層級
+            types = request.values.getlist('hospType')
+            ##Google星等
+            star = request.form.get("hospStar")
+            if star == None:
+                star = ''
+        return Comp().comp_hosp(county, township, names, types, star)
 
 ##啟動
 if __name__ == '__main__':

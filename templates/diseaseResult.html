@@ -25,7 +25,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
             integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
             crossorigin="anonymous"></script>
-     <link rel=stylesheet type="text/css" href="{{ url_for('static', filename='main1.5.css') }}">
+     <link rel=stylesheet type="text/css" href="{{ url_for('static', filename='main1.6.css') }}">
     <link rel=stylesheet type="text/css" href="hos.css">
     <script rel=stylesheet type="text/javascript" src="search.js"></script>
     <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
@@ -33,8 +33,8 @@
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <!-- <script type="text/javascript" src="{{url_for('static', filename='js/searchJS1.14.js')}}"></script> -->
-    <!-- <script type="text/javascript" src="{{url_for('static', filename='js/loading.js')}}"></script> -->
+     <script type="text/javascript" src="{{url_for('static', filename='js/searchJS1.14.js')}}"></script>
+     <script type="text/javascript" src="{{url_for('static', filename='js/loading.js')}}"></script>
 
     {% if alert %}
     <script>
@@ -83,23 +83,23 @@
             </div>
 
             <script>
-            // $(document).ready(function() {
-            //     {% if reserved %}
-            //         document.myForm.disease.options[{{reserved[0]}}].selected = true;
-            //         indexSelect()
-            //         document.myForm.diseaseCounty.options[{{reserved[1]}}].selected = true;
-            //         diseaseRenew({{reserved[1]}})
-            //         document.myForm.diseaseTownship.options[{{reserved[2]}}].selected = true;
-            //         document.myForm.name1.value = '{{reserved[3]}}'
-            //         document.myForm.name2.value = '{{reserved[4]}}'
-            //         document.myForm.name3.value = '{{reserved[5]}}'
-            //         document.myForm.t1.checked = {{reserved[6]}}
-            //         document.myForm.t2.checked = {{reserved[7]}}
-            //         document.myForm.t3.checked = {{reserved[8]}}
-            //         document.myForm.t4.checked = {{reserved[9]}}
-            //         document.myForm.star.options[{{reserved[10]}}].selected = true;
-            //     {% endif %}
-            // });
+            $(document).ready(function() {
+                {% if reserved %}
+                    document.myForm.disease.options[{{reserved[0]}}].selected = true;
+                    indexSelect()
+                    document.myForm.diseaseCounty.options[{{reserved[1]}}].selected = true;
+                    diseaseRenew({{reserved[1]}})
+                    document.myForm.diseaseTownship.options[{{reserved[2]}}].selected = true;
+                    document.myForm.name1.value = '{{reserved[3]}}'
+                    document.myForm.name2.value = '{{reserved[4]}}'
+                    document.myForm.name3.value = '{{reserved[5]}}'
+                    document.myForm.t1.checked = {{reserved[6]}}
+                    document.myForm.t2.checked = {{reserved[7]}}
+                    document.myForm.t3.checked = {{reserved[8]}}
+                    document.myForm.t4.checked = {{reserved[9]}}
+                    document.myForm.star.options[{{reserved[10]}}].selected = true;
+                {% endif %}
+            });
             </script>
 
             <div class="resultAll">

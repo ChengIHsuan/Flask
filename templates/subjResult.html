@@ -28,7 +28,7 @@
 
     <script type="text/javascript" src="{{url_for('static', filename='js/searchJS1.14.js')}}"></script>
     <script type="text/javascript" src="{{url_for('static', filename='js/loading.js')}}"></script>
-    <link rel=stylesheet type="text/css" href="{{ url_for('static', filename='main1.5.css') }}">
+    <link rel=stylesheet type="text/css" href="{{ url_for('static', filename='main1.6.css') }}">
     <!-- <link rel=stylesheet type="text/css" href="hos.css"> -->
     <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
 
@@ -373,7 +373,18 @@
                         <!-- {% for i in range(ck_len) %} -->
                         <td rowspan="4"
                             style="vertical-align:middle;text-align:center;font-size:14px;width:250px">
-                            <div style="vertical-align:middle;text-align:center;">{{ v[i+1] }}%</div>
+                            <div style="vertical-align:middle;text-align:center;">
+                                {% if v[i+1] == None%}
+                                    無資料
+                                {% else %}
+                                    {% if v[i+1] >= 70 %}
+                                        <img src="static/apple.png" height="50px">
+                                    {% else %}
+                                        <img src="static/badApple.png" height="50px">
+                                    {% endif %}
+                                <br>{{ v[i+1] }}%
+                                {% endif %}
+                            </div>
                         </td>
                         <!-- {% endfor %} -->
                     </tr>

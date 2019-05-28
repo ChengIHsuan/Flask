@@ -47,8 +47,8 @@ class Hosp():
             normal = Search().search_hosp(hospital_id)
             substr = 'depart_id'
             for subjective in subjectives:
-                substr += (', subj_' + subjective)
-            sqlstr = "SELECT {} FROM tmp_subj2 WHERE hospital_id = {}".format(substr, hospital_id)
+                substr += (', subj' + subjective)
+            sqlstr = "SELECT {} FROM dept_subj WHERE hospital_id = {}".format(substr, hospital_id)
             subj_data = self.cursor.execute(sqlstr).fetchall()
             del subj_data[-1]
             print(subj_data)

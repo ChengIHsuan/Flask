@@ -47,22 +47,22 @@ department[20] = ["鄉鎮市區不拘", "馬公市", "湖西鎮", "七美鄉", "
 department[21] = ["鄉鎮市區不拘", "金湖鎮", "金寧鎮", "金城鎮", "烈嶼鄉", "金沙鎮"];
 department[22] = ["鄉鎮市區不拘", "南竿鄉", "北竿鄉", "東引鄉", "莒光鄉"];
 //特疾地區
-function renew1(index) {
+function diseaseRenew(index) {
     for (var i = 0; i < department[index].length; i++)
-        document.myForm.township.options[i] = new Option(department[index][i], department[index][i]);	// 設定新選項
-    document.myForm.township.length = department[index].length;	// 刪除多餘的選項
+        document.myForm.diseaseTownship.options[i] = new Option(department[index][i],  i); 	// 設定新選項
+    document.myForm.diseaseTownship.length = department[index].length;	// 刪除多餘的選項
 }
 // 科別地區
-function renew2(index) {
+function departRenew(index) {
     for (var i = 0; i < department[index].length; i++)
-        document.myForm.township2.options[i] = new Option(department[index][i], department[index][i]);	// 設定新選項
-    document.myForm.township2.length = department[index].length;	// 刪除多餘的選項
+        document.myForm.departTownship.options[i] = new Option(department[index][i],  i);	// 設定新選項
+    document.myForm.departTownship.length = department[index].length;	// 刪除多餘的選項
 }
 // 醫療機構地區
-function renew3(index) {
+function hospRenew(index) {
     for (var i = 0; i < department[index].length; i++)
-        document.myForm.township3.options[i] = new Option(department[index][i], i);	// 設定新選項
-    document.myForm.township3.length = department[index].length;	// 刪除多餘的選項
+        document.myForm.hospTownship.options[i] = new Option(department[index][i],  i);	// 設定新選項
+    document.myForm.hospTownship.length = department[index].length;	// 刪除多餘的選項
 }
 
 //名稱自動完成

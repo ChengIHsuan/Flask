@@ -48,7 +48,7 @@ class Select():
     def select_normal(self, indexes, sql_where, reserved):
         # try:
             ## select醫療機構資訊'：名稱、分數＆星等、正向評論數、負向評論數、電話與地址並存入normal[]
-            sqlstr = "SELECT h.abbreviation, cast(fr.star as float), s.reviews, h.phone, h.address FROM  hospitals h  JOIN final_reviews fr ON h.id = fr.hospital_id  JOIN tmp_subj2 s ON h.id = s.hospital_id " + sql_where
+            sqlstr = "SELECT h.abbreviation, cast(fr.star as float), s.reviews, h.phone, h.address FROM  hospitals h  JOIN final_reviews fr ON h.id = fr.hospital_id  JOIN dept_subj s ON h.id = s.hospital_id " + sql_where
             normal = self.cursor.execute(sqlstr).fetchall()  ## normal = [ (名稱, GOOGLE星等, 正向評論數, 負向評論數, 電話, 地址), ......]
             print(normal)
             ## 若未找到任何資料，出現錯誤訊息，若有則進入else
@@ -66,9 +66,9 @@ class Select():
         # try:
             substr = 's.hospital_id'
             for r in range(len(indexes)):
-                substr += (', ' + 's.subj_' + indexes[r])
+                substr += (', ' + 's.subj' + indexes[r])
             ## 取得data指標值
-            sqlstr = "SELECT " + substr + " FROM tmp_subj2 s JOIN hospitals h ON s.hospital_id = h.id " + sql_where
+            sqlstr = "SELECT " + substr + " FROM dept_subj s JOIN hospitals h ON s.hospital_id = h.id " + sql_where
             value = self.cursor.execute(sqlstr).fetchall()  ## value = [(hospital_id, 指標1之指標值, 指標2之指標值, 指標3之指標值, ......), ......]
             ## 將醫療機構資訊、指標值、就醫人數、指標值等級包裝成zip
             z_data = zip(normal, value)
