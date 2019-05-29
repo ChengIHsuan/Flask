@@ -86,21 +86,21 @@
             </div>
         </nav>
         <script>
-            // $(document).ready(function() {
-            //     {% if reserved %}
-            //         document.myForm.county.options[{{reserved[0]}}].selected = true;
-            //         hospRenew({{reserved[0]}})
-            //         document.myForm.hospTownship.options[{{reserved[1]}}].selected = true;
-            //         document.myForm.name1.value = '{{reserved[2]}}'
-            //         document.myForm.name2.value = '{{reserved[3]}}'
-            //         document.myForm.name3.value = '{{reserved[4]}}'
-            //         document.myForm.t1.checked = {{reserved[5]}}
-            //         document.myForm.t2.checked = {{reserved[6]}}
-            //         document.myForm.t3.checked = {{reserved[7]}}
-            //         document.myForm.t4.checked = {{reserved[8]}}
-            //         document.myForm.star.options[{{reserved[9]}}].selected = true;
-            //     {% endif %}
-            // });
+            $(document).ready(function() {
+                 {% if reserved %}
+                     document.myForm.county.options[{{reserved[0]}}].selected = true;
+                     hospRenew({{reserved[0]}})
+                     document.myForm.hospTownship.options[{{reserved[1]}}].selected = true;
+                     document.myForm.name1.value = '{{reserved[2]}}'
+                     document.myForm.name2.value = '{{reserved[3]}}'
+                     document.myForm.name3.value = '{{reserved[4]}}'
+                     document.myForm.t1.checked = {{reserved[5]}}
+                     document.myForm.t2.checked = {{reserved[6]}}
+                     document.myForm.t3.checked = {{reserved[7]}}
+                     document.myForm.t4.checked = {{reserved[8]}}
+                     document.myForm.star.options[{{reserved[9]}}].selected = true;
+                 {% endif %}
+             });
             </script>
 
 

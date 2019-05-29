@@ -46,7 +46,7 @@ class Select():
 
     def select_normal(self, sql_where, reserved):
         ## select醫療機構資訊'：名稱、分數＆星等、正向評論數、負向評論數、電話與地址並存入normal[]
-        sqlstr = "SELECT  h.abbreviation, cast(fr.star as float), fr.positive,  fr.negative, h.phone, h.address , h.id FROM merge_data m JOIN hospitals h ON m.hospital_id = h.id JOIN final_reviews fr ON h.id = fr.hospital_id  " + sql_where + " order by cast(fr.star as float) DESC"
+        sqlstr = "SELECT  h.abbreviation, cast(fr.star as float), fr.positive,  fr.negative, h.phone, h.address , h.id FROM hosp_subj s JOIN hospitals h ON s.hospital_id = h.id JOIN final_reviews fr ON h.id = fr.hospital_id  " + sql_where + " order by cast(fr.star as float) DESC"
         normal = self.cursor.execute(sqlstr).fetchall()  ## normal = [ (名稱, GOOGLE星等, 正向評論數, 負向評論數, 電話, 地址), ......]
 
         ## 若未找到任何資料，出現錯誤訊息，若有則進入else
@@ -94,6 +94,7 @@ class Result():
     def table(self, z_data, z_col, reserved):
         # try:
             ## render至前端HTML，ck_len為指標的長度，columns為欄位名稱，z為醫院資訊和指標值的zip
+            print(reserved)
             return render_template('hospComparison.html', reserved=reserved, z_col=z_col, z_data=z_data)
         # except BaseException as e:
         #     print('table Exception' + e)
