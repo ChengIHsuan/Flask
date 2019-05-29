@@ -185,6 +185,10 @@ def postHospComp():
                 star = ''
         return Comp().comp_hosp(county, township, names, types, star)
 
+@app.route('/doctorResult', methods=['GET', 'POST'])
+def renderDocResult():
+    return render_template('doctorResult.html')
+
 ##啟動
 if __name__ == '__main__':
     app.jinja_env.auto_reloaded = True  ##jinja2 重新讀取template

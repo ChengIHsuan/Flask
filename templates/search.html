@@ -26,8 +26,8 @@
             integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
             crossorigin="anonymous"></script>
     <link rel=stylesheet type="text/css" href="{{ url_for('static', filename='main1.6.css') }}">
-    <!--<link rel=stylesheet type="text/css" href="hos.css">-->
-    <script rel=stylesheet type="text/javascript" src="search.js"></script>
+    <!-- <link rel=stylesheet type="text/css" href="hos.css"> -->
+    <!--<script rel=stylesheet type="text/javascript" src="search1.14.js"></script> -->
     <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
 
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
@@ -43,16 +43,14 @@
         function obj() {
             myForm.action = "/diseaseResult";
         }
-
         function subj() {
             myForm.action = "/subjResult";
         }
+        function doc() {
+            myForm.action = "/doctorResult";
+        }
     </script>
-    {% if alert %}
-    <script>
-        alert('{{alert}}');
-    </script>
-    {% endif %}
+
 </head>
 
 
@@ -94,6 +92,7 @@
                     <a href="#hosName" title="看特定醫院或診所的品質" class="tabs-menu tabs-menu-active">找醫療機構</a>
                     <a href="#diseaseS" title="比較醫院或診所的疾病治療品質" class="tabs-menu">找疾病</a>
                     <a href="#subjectS" class="tabs-menu">找科別</a>
+                    <a href="#doctor" class="tabs-menu">找醫師</a>
                 </div>
                 <div class="tabs-container">
                     <!--找醫療機構-->
@@ -186,7 +185,7 @@
                             </div>
                         </div>
                     </div>
-
+                    <!--找疾病-->
                     <div id="diseaseS" class="tabs-panel">
                         <div style="text-align:left;">
                             <div class="col" style="margin:2px auto;">
@@ -441,6 +440,7 @@
                                            onclick="onCheckBox(this)" />
                                     <label for="ckd5" class="ckIndex2"><span></span>測量血清鈣或磷</label>
                                 </div>
+
                             </div>
                             <div class="col" style="margin:2% auto;">
                                 <h6>地區</h6>
@@ -557,10 +557,10 @@
                         <div class="col" style="margin:2px auto;">
                             <span class="searchItem">科別</span><span style="font-size:15px;color: #da2222">
                                     *&nbsp;(必選)</span>
-                            <select style="margin:2% auto;" class="form-control form-control-sm inputS" id="branch"
-                                    name="depart">
-
-                                <option selected value="1">家醫科</option>
+                            <select style="margin:2% auto;" class="form-control form-control-sm inputS" id="depart"
+                                    name="depart" onchange="indexSelectSub();">
+                                <option selected value="no">請選擇科別</option>
+                                <option value="1">家醫科</option>
                                 <option value="2">內科</option>
                                 <option value="3">外科</option>
                                 <option value="4">小兒科</option>
@@ -611,8 +611,10 @@
                             <span class="searchItem">環境、醫師態度及溝通等資訊</span><span
                                 style="font-size:15px;color:  #da2222">
                                     *&nbsp;(必選)</span>
-
-                            <div id="indexB" style="margin:2% auto">
+                            <div id="noSub" style="margin:2% auto;font-size: 15px;display: block">
+                                *請選擇科別*
+                            </div>
+                            <div id="indexB" name="indexB" style="margin:2% auto;display: none;">
                                 <input type="checkbox" value="1" id="is1" name="subjective"
                                        onclick="onCheckBoxSub(this)" />
                                 <label for="is1" class="ckIndex2"><span></span>醫院評價及環境</label>
@@ -719,6 +721,80 @@
                                     $(".branchMore").slideToggle("fast");
                                 });
                             </script>
+                    </div>
+
+                    <!-- 找醫師 -->
+                    <div id="doctor" class="tabs-panel" style="text-align:left">
+                        <div class="col" style="margin:2px auto;">
+                            <span class="searchItem">醫師名稱</span><br>
+                            <input type="textbox" class="form-control form-control-sm inputDocName name" name=""
+                                   placeholder="醫師名稱">
+                        </div>
+                        <div class="col" style="margin:2% auto;">
+                            <span class="searchItem">科別</span>
+                            <select style="margin:2px auto;" class="form-control form-control-sm inputS" id="departDoc"
+                                    name="departDoc" onchange="">
+                                <option selected value="no">請選擇科別</option>
+                                <option value="1">家醫科</option>
+                                <option value="2">內科</option>
+                                <option value="3">外科</option>
+                                <option value="4">小兒科</option>
+                                <option value="5">婦產科</option>
+                                <option value="6">骨科</option>
+                                <option value="7">神經外科</option>
+                                <option value="8">泌尿科</option>
+                                <option value="9">耳鼻喉科</option>
+                                <option value="10">眼科</option>
+                                <option value="11">皮膚科</option>
+                                <option value="12">神經科</option>
+                                <option value="13">精神科</option>
+                                <option value="14">復健科</option>
+                                <option value="15">整形外科</option>
+                                <option value="16">急診醫學科</option>
+                                <option value="17">職業醫學科</option>
+                                <option value="18">牙科</option>
+                                <option value="19">復健牙科</option>
+                                <option value="20">牙髓病科</option>
+                                <option value="21">牙周病科</option>
+                                <option value="22">補綴牙科</option>
+                                <option value="23">齒顎矯正科</option>
+                                <option value="24">兒童牙科</option>
+                                <option value="25">口腔顎面外科</option>
+                                <option value="26">口腔診斷科</option>
+                                <option value="27">口腔病理科</option>
+                                <option value="28">中醫科</option>
+                                <option value="29">中醫內科</option>
+                                <option value="30">中醫外科</option>
+                                <option value="31">中醫眼科</option>
+                                <option value="32">中醫兒科</option>
+                                <option value="33">中醫婦科</option>
+                                <option value="34">中醫傷科</option>
+                                <option value="35">中醫針灸科</option>
+                                <option value="36">中醫痣科</option>
+                                <option value="37">中醫一般診療不分科</option>
+                                <option value="38">麻醉科</option>
+                                <option value="39">放射線科</option>
+                                <option value="40">病理科</option>
+                                <option value="41">核醫科</option>
+                                <option value="42">結核科</option>
+                                <option value="43">洗腎科</option>
+
+                            </select>
+                        </div>
+                        <div class="col" style="margin:2px auto;">
+                            <span class="searchItem">醫院名稱</span><br>
+                            <input type="textbox" class="form-control form-control-sm inputDocName name" name=""
+                                   placeholder="醫院名稱">
+                        </div>
+
+                        <div style="text-align:right;margin-top: 10px">
+                            <button type="submit" id="btnSearchDoc" class="btn-sm btnStart" style="padding:8px 15px;"
+                                    name="btnSearchDoc" title="搜尋" onclick="doc()">
+                                <img src="static/search.png" style="width:17px;padding-right:5px">搜尋
+                            </button>
+
+                        </div>
+
                     </div>
                 </div>
             </div>

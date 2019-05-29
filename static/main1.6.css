@@ -139,6 +139,20 @@ button:disabled:hover {
     background-color: rgba(0, 0, 0, 0.1);
 }
 
+/* 查詢醫師鈕 */
+.docSub{
+    cursor: pointer;
+    color: #202020;
+    background-color: rgba(0, 112, 192, 0);
+    border: 1px solid rgba(0, 0, 0, 0.6);
+    border-radius: 1%;
+    font-size: 13px;
+    padding: 4px 10px;
+}
+.docSub:hover{
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
 .cardInfo {
     margin: 2% 5% 5% 5%;
 }
@@ -306,6 +320,15 @@ a.tabs-menu.tabs-menu-active {
     margin: 1% 0%;
 }
 
+.inputDocName {
+    display: inline-block;
+    vertical-align: top;
+    width: 100%;
+    font-size: 14px;
+    border: 1px solid #1f1e1e48;
+    border-radius: 0%;
+    margin: 1% 0%;
+}
 /* 自動完成 */
 
 .ui-menu {
@@ -1097,6 +1120,12 @@ ul.breadcrumb li a:hover {
         width: 25%;
     }
 }
+@media (max-width: 491px) {
+    a.tabs-menu {
+        font-size: 15px;
+        padding: 8px 8px;
+    }
+}
 
 @media (max-width: 450px) {
     .resultType {
@@ -1127,7 +1156,7 @@ ul.breadcrumb li a:hover {
 
 @media (max-width: 325px) {
     a.tabs-menu {
-        font-size: 18px;
-        padding: 10px 10px;
+        font-size: 15px;
+        padding: 8px 4px;
     }
 }
