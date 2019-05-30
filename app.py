@@ -6,6 +6,7 @@ from models.subj import Subj
 from models.hospital import Hosp
 from models.search import Search
 from models.comp import Comp
+from models.doctor import Doc
 
 import sqlite3
 
@@ -22,12 +23,6 @@ def init():
 def shutdown_session(exception=None):
     db_session.remove()
 
-@app.route('/test')
-def test():
-    name = request.args.get('name')
-    a = request.args.get('a')
-    return 'hello ' + str(name) + str(a)
-
 @app.route('/', methods=['GET', 'POST'])
 def renderHome():
     return render_template('home.html')
@@ -37,11 +32,11 @@ def renderHome():
 def renderSearch():
     return render_template('search.html')
 
-@app.route('/diseaseResult', methods=['GET'])
-def renderDisease():
-    return  render_template('diseaseResult.html')
+# @app.route('/diseaseResult', methods=['GET'])
+# def renderDisease():
+#     return  render_template('diseaseResult.html')
 
-@app.route('/diseaseResult', methods=['POST'])
+@app.route('/diseaseResult', methods=['GET', 'POST'])
 def panduanDisease():
     if request.method == 'POST':
         if 'btnSearchDisease' in request.form:
@@ -186,8 +181,13 @@ def postHospComp():
         return Comp().comp_hosp(county, township, names, types, star)
 
 @app.route('/doctorResult', methods=['GET', 'POST'])
-def renderDocResult():
-    return render_template('doctorResult.html')
+def doctorResult():
+    if request.method == 'POST':
+        if 'btnSearchDoc' in request.form:
+            doctor = request.form.get('doctor')
+            depart = request.form.get('docDepart')
+            name = request.form.get('docName')
+        return Doc().search_doctor(doctor, depart, name)
 
 ##啟動
 if __name__ == '__main__':

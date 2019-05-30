@@ -94,17 +94,9 @@
         <script>
             $(document).ready(function() {
                 {% if reserved %}
-                    document.myForm.depart.options[{{reserved[0]}}-1].selected = true;
-                    document.myForm.county.options[{{reserved[1]}}].selected = true;
-                    departRenew({{reserved[1]}})
-                    document.myForm.departTownship.options[{{reserved[2]}}].selected = true;
-                    document.myForm.t1.checked = {{reserved[3]}}
-                    document.myForm.t2.checked = {{reserved[4]}}
-                    document.myForm.t3.checked = {{reserved[5]}}
-                    document.myForm.t4.checked = {{reserved[6]}}
-                    document.myForm.name1.value = '{{reserved[7]}}'
-                    document.myForm.name2.value = '{{reserved[8]}}'
-                    document.myForm.name3.value = '{{reserved[9]}}'
+                    document.myForm.doctor.value = '{{ reserved[0] }}';
+                    document.myForm.docDepart.value = '{{ reserved[1] }}';
+                    document.myForm.docName.value = '{{ reserved[2] }}';
                 {% endif %}
             });
         </script>
@@ -112,8 +104,8 @@
             <!-- 麵包屑 -->
                 <ul class="breadcrumb" style="padding:1% 15px;width: 80%;margin: auto;text-align: center">
                     <li><a href="/">首頁</a></li>
-                    <li><a href="search">找醫生</a></li>
-                    <li style="color:rgba(0, 0, 0, 0.5)">{{ reserved[10] }}</li>
+                    <li><a href="search">找醫師</a></li>
+                    <li style="color:rgba(0, 0, 0, 0.5)">醫師評價</li>
                 </ul>
             <div style="text-align:center;padding-top: 10px">
                 <h5 class="resultText">搜尋條件<span><img src="static/條件下.png" height="6px"
@@ -122,17 +114,18 @@
             <div class="resultAll">
                 <div class="resultInput">
                     <div class="col" style="margin:2px auto;color: #000000">
-                        <span class="searchItem">醫生姓名</span>
+                        <span class="searchItem">醫師姓名</span>
                         <div></div>
                         <input type="textbox" style="width:100%" class="form-control form-control-sm resultName name"
-                               name="departName1" id="docname" placeholder="醫生姓名">
+                               name="doctor" id="doctor" placeholder="醫師姓名">
                     </div>
 
                     <div class="col" style="margin:2px auto;color: #000000">
                         <span class="searchItem">科別</span>
-                        <select style="margin:2px auto;" class="form-control form-control-sm inputS" id="branch"
-                                name="depart">
-                            <option selected value="1">家醫科</option>
+                        <select style="margin:2px auto;" class="form-control form-control-sm inputS" id="docDepart"
+                                name="docDepart">
+                            <option selected value="0">請選擇科別</option>
+                            <option value="1">家醫科</option>
                             <option value="2">內科</option>
                             <option value="3">外科</option>
                             <option value="4">小兒科</option>
@@ -182,7 +175,7 @@
                         <span class="searchItem">醫院或診所名稱</span>
                         <div></div>
                         <input type="textbox" style="width:100%" class="form-control form-control-sm resultName name"
-                               name="departName1" id="name1" placeholder="醫院或診所名稱">
+                               name="docName" id="docName" placeholder="醫院或診所名稱">
                     </div>
 
                 </div>
@@ -193,8 +186,8 @@
 
                     <div style="text-align:left;display: inline-block;vertical-align: top;">
                         <a href="">
-                            <button id="btnSearch" name="btnSearchDepart" type="submit"
-                                    class="btn-sm btnStart" disabled style="padding:8px 15px;"><img
+                            <button id="btnSearch" name="btnSearchDoc" type="submit"
+                                    class="btn-sm btnStart" style="padding:8px 15px;"><img
                                     src="static/search.png" style="width:17px;padding-right:5px;">
                                 搜尋</button>
                         </a>
@@ -235,7 +228,7 @@
                 {% endif %} -->
 
             <div class="" style="margin:10px;text-align: center">
-                <h3>【{{reserved[10]}}】醫師評價</h3>
+                <h3>醫師評價</h3>
             </div>
             <!--<div style="display: inline-block;vertical-align: top;width: 96%;text-align: left">-->
             <!--&lt;!&ndash;排序選擇&ndash;&gt;-->
@@ -268,63 +261,48 @@
         <!-- 表格 -->
         <div
                 style="background-color:rgba(184,206,217,0.5);margin:10px 2%;width:96%; word-break:break-all;">
-            <!--{% for message in get_flashed_messages(with_categories=True) %}-->
-
-            <!--<div class="alert alert-secondary" role="alert">-->
-            <!--{{ message[1] }}-->
-            <!--</div>-->
-            <!--{% endfor %}-->
             <div style="margin:0px auto;" class="tableWidth">
 
                 <table class="table table-hover" style="border:2px rgba(101,129,152,0.8) solid;text-align:left;"
                        rules="all">
                     <thead style="text-align:center;margin:0px auto;" id="thead">
                     <tr>
-                        <!-- {% for column, full_name in z_col %} -->
-                        <th style="background-color:rgba(184,206,217,1); vertical-align: middle;"
-                            valign="center">醫師資料<img
-                                src="{{ url_for('static', filename='指標說明.png')}}" height="20px"
-                                title="醫師資料"></th>
-                        <!-- {% endfor %} -->
+                        {% for column in columns%}
+                        <th style="background-color:rgba(184,206,217,1); vertical-align: middle;" valign="center">{{ column }}</th>
+                        {% endfor %}
                     </tr>
                     </thead>
                     <tbody style="font-size:15px">
-                    <!-- {% for n, v in z_data %} -->
+                    {% for n, v in z_data%}
                     <tr>
-                        <td style="background-color:rgba(184,206,217,1);width:280px;font-size:17px;">
-                            doctorname</td>
-                        <!-- {% for i in range(ck_len) %} -->
-                        <td rowspan="4"
+                        <td style="background-color:rgba(184,206,217,1);width:280px;font-size:17px;">{{ n[0] }}</td>
+                        {% for i in range(col_len)%}
+                        <td rowspan="3"
                             style="vertical-align:middle;text-align:center;font-size:14px;width:250px">
                             <div style="vertical-align:middle;text-align:center;">
-                                {% if v[i+1] == None%}
-                                    無資料
+                               {% if v[i] == None%}
+                                無資料
                                 {% else %}
-                                    {% if v[i+1] >= 70 %}
-                                        <img src="static/apple.png" height="50px">
-                                    {% else %}
-                                        <img src="static/badApple.png" height="50px">
-                                    {% endif %}
-                                <br>{{ v[i+1] }}%
+                                {% if v[i] >= 30 %}
+                                <img src="static/apple.png" height="50px">
+                                {% else %}
+                                <img src="static/badApple.png" height="50px">
+                                {% endif %}
+                                <br>{{ v[i] }}%
                                 {% endif %}
                             </div>
                         </td>
-                        <!-- {% endfor %} -->
+                        {% endfor %}
+
                     </tr>
                     <tr>
-                         <td style="background-color:rgba(184,206,217,1);width:280px;font-size:17px;">
-                            {{ n[0] }}</td>
-                    </tr>
-                    <tr>
-                          <td style="background-color:rgba(184,206,217,1);width:280px;font-size:17px;">
-                            {{ reserved[10] }}
-                         </td>
+                        <td>{{ n[1] }}<br>{{ n[2] }}</td>
                     </tr>
 
                     <tr>
-                        <td>相關評論數：{{ n[2] }} </td>
+                        <td>相關評論數：{{ n[3] }} </td>
                     </tr>
-                    <!-- {% endfor %} -->
+                    {% endfor %}
                     </tbody>
                 </table>
             </div>

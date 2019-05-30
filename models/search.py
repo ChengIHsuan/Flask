@@ -15,8 +15,11 @@ class Search():
 
     ## 科別
     def search_depart(self, depart):
-        sql_where = "s.depart_id = {}".format(depart)
-        return sql_where
+        if depart != '0' :
+            sql_where = "s.depart_id = {}".format(depart)
+            return sql_where
+        else:
+            return ''
 
     # ## 主觀指標
     # def search_subjective(self, subjective):
@@ -148,6 +151,16 @@ class Search():
         except:
             return "抱歉，操作失敗。[S]"
 
+    def search_doctor(self, doctor):
+        try:
+            if doctor != '':
+                sql_where = "doctor = '%{}%' ".format(doctor)
+                return sql_where
+            else:
+                return ''
+        except:
+            return "抱歉，操作失敗。[C]"
+
     ## 醫療機構保留條件
     def hosp_reserved(self, county, township, names, types, star):
         ## reserved = [縣市, 鄉鎮市區, 名稱1, 名稱2, 名稱3, 醫學中心, 區域醫院, 地區醫院, 診所, 星等]
@@ -195,5 +208,10 @@ class Search():
             print(names)
         for name in names:
             reserved.append(name)
+        return reserved
+
+    def doc_reserved(self, doctor, depart, name):
+        ## reserved = [科別, 縣市, 鄉鎮市區, 醫學中心, 區域醫院, 地區醫院, 診所, 名稱1, 名稱2, 名稱3,]
+        reserved = [doctor, depart, name]
         return reserved
 
