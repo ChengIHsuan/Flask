@@ -46,7 +46,7 @@ class Select():
 
     def select_normal(self, sql_where, reserved):
         ## select醫療機構資訊'：名稱、分數＆星等、正向評論數、負向評論數、電話與地址並存入normal[]
-        sqlstr = "SELECT  h.abbreviation, cast(fr.star as float), fr.positive,  fr.negative, h.phone, h.address , h.id FROM hosp_subj s JOIN hospitals h ON s.hospital_id = h.id JOIN final_reviews fr ON h.id = fr.hospital_id  " + sql_where + " order by cast(fr.star as float) DESC"
+        sqlstr = "SELECT  h.abbreviation, cast(fr.star as float), fr.positive,  fr.negative, h.phone, h.address , h.id FROM hosp_subj s JOIN hospitals h ON s.hospital_id = h.id JOIN final_reviews fr ON h.id = fr.hospital_id  " + sql_where
         normal = self.cursor.execute(sqlstr).fetchall()  ## normal = [ (名稱, GOOGLE星等, 正向評論數, 負向評論數, 電話, 地址), ......]
 
         ## 若未找到任何資料，出現錯誤訊息，若有則進入else
@@ -59,7 +59,7 @@ class Select():
 
     def select_data(self, normal, sql_where, reserved):
         ## 取得data指標值
-        sqlstr = "SELECT s.reviews, s.subj1, s.subj2, s.subj3, s.subj4, s.subj5, s.subj6, s.subj7 FROM hosp_subj s JOIN hospitals h ON s.hospital_id = h.id JOIN final_reviews fr ON h.id = fr.hospital_id " + sql_where
+        sqlstr = "SELECT cast(s.reviews as float), s.subj1, s.subj2, s.subj3, s.subj4, s.subj5, s.subj6, s.subj7 FROM hosp_subj s JOIN hospitals h ON s.hospital_id = h.id JOIN final_reviews fr ON h.id = fr.hospital_id " + sql_where
         print(sqlstr)
         value = self.cursor.execute(sqlstr).fetchall()  ## value = [(hospital_id, 評論數, 指標1之指標值, 指標2之指標值, 指標3之指標值, ......), ......]
         ## 將醫療機構資訊、指標值、就醫人數、指標值等級包裝成zip

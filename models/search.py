@@ -154,7 +154,7 @@ class Search():
     def search_doctor(self, doctor):
         try:
             if doctor != '':
-                sql_where = "doctor = '%{}%' ".format(doctor)
+                sql_where = "s.doctor LIKE '%{}%' ".format(doctor)
                 return sql_where
             else:
                 return ''

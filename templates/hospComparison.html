@@ -51,7 +51,6 @@
         function obj() {
             myForm.action = "/hospObjResult";
         }
-
         function subj() {
             myForm.action = "/hospSubjResult";
         }
@@ -246,30 +245,12 @@
                         <!-- <thead style="text-align:center;margin:0px auto;" id="thead"> -->
                         <tbody style="font-size:15px" id="thead">
                         <tr style="text-align:center;vertical-align: middle;margin:0px auto;background-color:rgba(184,206,217,1);">
-                            <th>
-                                醫療機構名稱
+                            {% for col, des in z_col %}
+                            <th style="background-color:rgba(184,206,217,1); vertical-align: middle;" valign="center">
+                                {{ col }}
+                                <img src="{{ url_for('static', filename='指標說明.png')}}" height="20px" title="{{ des }}">
                             </th>
-                            <th>
-                                醫院評價及環境
-                            </th>
-                            <th>
-                                醫療人員溝通及態度
-                            </th>
-                            <th>
-                                醫療人員對病友的衛教及情緒安撫
-                            </th>
-                            <th>
-                                醫院等候時間及流程安排
-                            </th>
-                            <th>
-                                醫療人員專業
-                            </th>
-                            <th>
-                                醫師檢查，給藥及協助轉診
-                            </th>
-                            <th>
-                                不良事件發生
-                            </th>
+                            {% endfor %}
                         </tr>
 
                         <!-- </thead> -->
@@ -280,7 +261,11 @@
                             {% for i in range(7)%}
                             <td rowspan="4"
                                 style="vertical-align:middle;text-align:center;font-size:14px;width:250px">
-                                {% if v[i+1] == None%}
+
+                                {% if v[0] < 30 %}
+                                        資料不足
+                                {% else %}
+                                    {% if v[i+1] == None%}
                                     無資料
                                 {% else %}
                                     {% if v[i+1] >= 70 %}
@@ -288,9 +273,9 @@
                                     {% else %}
                                         <img src="static/badApple.png" height="50px">
                                     {% endif %}
-                                <br>{{ v[i+1] }}%
+                                    <br>{{ v[i+1] }}%
                                 {% endif %}
-
+{% endif %}
                             </td>
                             {% endfor %}
                         </tr>

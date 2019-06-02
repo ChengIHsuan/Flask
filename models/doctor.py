@@ -12,7 +12,9 @@ class Doc():
         reserved = Search().doc_reserved(doctor, depart, name)
         sql_where = ''
         depart_condition = Search().search_depart(depart)
-        name_condition = Search().search_name(list(name))
+        listName = []
+        listName.append(name)
+        name_condition = Search().search_name(listName)
         doctor_condition = Search().search_doctor(doctor)
         conditions = [depart_condition, name_condition, doctor_condition]
         print(conditions)
@@ -31,6 +33,7 @@ class Doc():
                     sql_where += condition
         if sql_where != '':
             sql_where = 'WHERE ' + sql_where
+        print(sql_where)
         return Select().select_normal(sql_where, reserved)
 
 class Select():

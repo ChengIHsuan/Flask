@@ -178,7 +178,23 @@ def postHospComp():
             star = request.form.get("hospStar")
             if star == None:
                 star = ''
-        return Comp().comp_hosp(county, township, names, types, star)
+            return Comp().comp_hosp(county, township, names, types, star)
+        elif 'btnSearchHosp' in request.form:
+            ## 地區
+            county = request.form.get('hospCounty')
+            township = request.form.get("hospTownship")
+            ## 醫療機構名稱
+            name1 = request.form.get('hospName1')
+            name2 = request.form.get('hospName2')
+            name3 = request.form.get('hospName3')
+            names = [name1, name2, name3]
+            ## 醫院層級
+            types = request.values.getlist('hospType')
+            ##Google星等
+            star = request.form.get("hospStar")
+            if star == None:
+                star = ''
+            return Hosp().search_hosp(county, township, names, types, star)
 
 @app.route('/doctorResult', methods=['GET', 'POST'])
 def doctorResult():
