@@ -17,7 +17,6 @@ class Doc():
         name_condition = Search().search_name(listName)
         doctor_condition = Search().search_doctor(doctor)
         conditions = [depart_condition, name_condition, doctor_condition]
-        print(conditions)
         ## 若沒有條件則移除
         while '' in conditions:
             conditions.remove('')
@@ -33,7 +32,6 @@ class Doc():
                     sql_where += condition
         if sql_where != '':
             sql_where = 'WHERE ' + sql_where
-        print(sql_where)
         return Select().select_normal(sql_where, reserved)
 
 class Select():
@@ -48,7 +46,6 @@ class Select():
 
         if normal == []:
             alert = "抱歉，找不到您要的資料訊息。"
-            print(alert)
             return render_template("search.html", alert=alert)
         else:
             return Select().select_data(normal, sql_where, reserved)

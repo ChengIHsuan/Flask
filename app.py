@@ -75,7 +75,6 @@ def renderSubj():
 @app.route('/subjResult', methods=['POST'])
 def panduanSubj():
     if request.method == 'POST':
-        print('hi')
         if 'btnSearchDepart' in request.form:
             ## 科別
             depart = request.form.get('depart')
@@ -163,7 +162,6 @@ def renderHospComp():
 def postHospComp():
     if request.method == 'POST':
         if 'btnHospComp' in request.form:
-            print('comp')
             ## 地區
             county = request.form.get('hospCounty')
             township = request.form.get("hospTownship")

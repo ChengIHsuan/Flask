@@ -25,16 +25,13 @@ class Hosp():
             l_value = self.cursor.execute("SELECT {} FROM merge_data m WHERE m.hospital_id = {}".format(value_substr, hospital_id)).fetchone()
             l_deno = self.cursor.execute("SELECT {} FROM merge_data m WHERE m.hospital_id = {}".format(deno_substr, hospital_id)).fetchone()
             l_level = self.cursor.execute("SELECT {} FROM merge_data m WHERE m.hospital_id = {}".format(level_substr, hospital_id)).fetchone()
-            print(l_value)
             z_data = zip(l_value, l_deno, l_level)
 
             columns = []
             for i in indexes:
                 columns.append(self.cursor.execute("SELECT abbreviation, PorN, description FROM column_name WHERE name = '{}' ".format(i)).fetchall()[0])
-            print(columns)
 
             col_len = len(columns)
-            print(col_len)
             return render_template('hospObjResult.html', scroll='indexes', normal=normal, z_data=z_data, columns=columns, col_len=col_len)
         # except:
         #     alert = "抱歉，找不到您要的資料訊息。"
@@ -51,7 +48,6 @@ class Hosp():
             sqlstr = "SELECT {} FROM dept_subj WHERE hospital_id = {}".format(substr, hospital_id)
             subj_data = self.cursor.execute(sqlstr).fetchall()
             del subj_data[-1]
-            print(subj_data)
             depart = []
             for i in subj_data:
                 depart.append(self.cursor.execute("SELECT name FROM depart WHERE id = {}".format(i[0])).fetchone()[0])
@@ -106,7 +102,6 @@ class Select():
         self.cursor = db.cursor()
 
     def select_normal(self, sql_where, reserved):
-        print('select_normal')
         sqlstr = "SELECT h.abbreviation, h.type, cast(fr.star as float), fr.reviews, h.phone, h.address, h.id FROM hospitals h JOIN final_reviews fr ON h.id = fr.hospital_id  " + sql_where
         normal = self.cursor.execute(sqlstr).fetchall()  ## normal = [ (名稱, GOOGLE星等, 正向評論數, 負向評論數, 電話, 地址), ......]
 

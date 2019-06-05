@@ -95,7 +95,6 @@ class Select():
                     if deno_all[k][r + 1] == "（此指標無確切就醫人數":
                         new_deno = 0
                     else:
-                        print(deno_all[k])
                         # 把資料全部轉成整數
                         new_deno = int(deno_all[k][r + 1])
                     if new_deno < 30:
@@ -224,7 +223,6 @@ class Result():
             sql_where = sql_where.replace(' ', '//')
             z_indexes = zip(indexes, sort_indexes)
             ## render至前端HTML，ck_len為指標的長度，columns為欄位名稱，z為醫院資訊和指標值的zip
-            print(reserved)
             return render_template('diseaseResult.html', reserved=reserved, ck_len=ck_len, columns=columns, z_data=z_data, sql_where=sql_where, tmp_indexes=tmp_indexes, z_indexes=z_indexes)
         # except BaseException as e:
         #     print('table Exception' + e)

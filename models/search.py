@@ -205,7 +205,6 @@ class Search():
         for type in types:
             i = (int(type) + 2)  #層級value為1~4，對應保留條件陣列中3~6位置#
             reserved[i] = 'true'
-            print(names)
         for name in names:
             reserved.append(name)
         return reserved

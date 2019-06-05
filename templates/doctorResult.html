@@ -28,13 +28,15 @@
 
     <script type="text/javascript" src="{{url_for('static', filename='js/searchJS1.15.js')}}"></script>
     <script type="text/javascript" src="{{url_for('static', filename='js/loading.js')}}"></script>
-    <link rel=stylesheet type="text/css" href="{{ url_for('static', filename='main1.6.css') }}">
-    <!-- <link rel=stylesheet type="text/css" href="hos.css"> -->
+    <link rel=stylesheet type="text/css" href="{{ url_for('static', filename='main1.7.css') }}">
+    <link rel=stylesheet type="text/css" href="hos.css">
+    <script rel=stylesheet type="text/javascript" src="searchJS1.15.js"></script>
     <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
 
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
 
     {% if alert %}
     <script>
@@ -230,37 +232,14 @@
             <div class="" style="margin:10px;text-align: center">
                 <h3>醫師評價</h3>
             </div>
-            <!--<div style="display: inline-block;vertical-align: top;width: 96%;text-align: left">-->
-            <!--&lt;!&ndash;排序選擇&ndash;&gt;-->
-            <!--<div class="sort">-->
-            <!--<div class="form-group col-md-10 sortBtn" style="vertical-align: bottom;">-->
-            <!--<select id="inputState" class="form-control " name="selected_index">-->
-            <!--&lt;!&ndash; {% for id, abbr in z_indexes %} &ndash;&gt;-->
-            <!--<option value={{id}}>{{ abbr }}</option>-->
-            <!--&lt;!&ndash; {% endfor %} &ndash;&gt;-->
-            <!--</select>-->
-            <!--</div>-->
-            <!--<div style="display: inline-block;vertical-align: bottom;">-->
-            <!--<input type="submit" name="reSort" class="btn span"-->
-            <!--style="background-color:rgb(101,129,152);color:white" value="排序">-->
-            <!--</div>-->
-            <!--</div>-->
 
-            <!-- <div class="sortImg">
-                <div class="percentSize">
-                    <img src="static/高指標.png" height="20px" title="高指標">&nbsp;百分等級大於75&nbsp;
-                    <img src="static/中指標2.0.png" height="20px" title="中指標">&nbsp;百分等級50~75&nbsp;
-                    <img src="static/低指標2.0.png" height="20px" title="低指標">&nbsp;百分等級小於50&nbsp;
-                    <img src="static/無指標.png" height="20px" title="無指標">&nbsp;無資料
-                </div>
-            </div> -->
         </div>
         <!--清除浮動 -->
         <div style="clear:both;"></div>
 
         <!-- 表格 -->
         <div
-                style="background-color:rgba(184,206,217,0.5);margin:10px 2%;width:96%; word-break:break-all;">
+                style="background-color:rgba(184,206,217,0.5);margin:10px 2%;width:96%; word-break:break-all;overflow: auto">
             <div style="margin:0px auto;" class="tableWidth">
 
                 <table class="table table-hover" style="border:2px rgba(101,129,152,0.8) solid;text-align:left;"
@@ -331,7 +310,7 @@
                         - 公衛系: 陳宗泰 副教授<br>
                         - 資工系: 徐嘉連 副教授<br>
                         - 應美系: 陳力豪 副教授<br>
-                        - 醫資學程: 程伊萱、林昱彤、蔡亞立、王嘉琳、胡瀚文 同學
+                        - 醫資學程: 程伊萱、林昱彤、蔡亞立、胡瀚文 同學
                     </h6>
                     <li style="font-weight:bold;">給予我們任何<a href="https://goo.gl/forms/0M3BmbWXczWYmD9X2"
                                                            target="_blank" style="color:	pink;"><u>意見</u></a></li>

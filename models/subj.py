@@ -11,14 +11,12 @@ class Subj():
     def search_subj(self, depart, subjectives, county, township, types, names):
         reserved = Search().subj_reserved(depart, county, township, types, names)
         reserved.append(self.cursor.execute("SELECT name FROM depart WHERE id = {}".format(depart)).fetchone()[0])
-        print(reserved)
         sql_where = ''
         depart_condition = Search().search_depart(depart)
         area_condition = Search().search_area(county, township)
         name_condition = Search().search_name(names)
         type_condition = Search().search_type(types)
         conditions = [depart_condition, area_condition, name_condition, type_condition]
-        print(conditions)
         ## 若沒有條件則移除
         while '' in conditions:
             conditions.remove('')
@@ -26,7 +24,6 @@ class Subj():
             if condition.find('抱歉') != -1:  # 若為錯誤訊息，以alert提示#
                 return render_template('search.html', alert=condition)
             else:
-                print('else')
                 condition = '(' + condition + ')'  # 若不為錯誤訊息則在條件句前後加上括號-->之後放在SQL中才不會出錯#
                 ## 將所有condition相接，若不為最後一個condition則加上'AND'
                 if condition != ('(' + conditions[-1] + ')'):
@@ -50,7 +47,6 @@ class Select():
             ## select醫療機構資訊'：名稱、分數＆星等、正向評論數、負向評論數、電話與地址並存入normal[]
             sqlstr = "SELECT h.abbreviation, cast(fr.star as float), s.reviews, h.phone, h.address FROM  hospitals h  JOIN final_reviews fr ON h.id = fr.hospital_id  JOIN dept_subj s ON h.id = s.hospital_id " + sql_where
             normal = self.cursor.execute(sqlstr).fetchall()  ## normal = [ (名稱, GOOGLE星等, 正向評論數, 負向評論數, 電話, 地址), ......]
-            print(normal)
             ## 若未找到任何資料，出現錯誤訊息，若有則進入else
             if normal == []:
                 alert = "抱歉，找不到您要的資料訊息。"

@@ -1,9 +1,17 @@
-.hidePhone{
+.hidePhone {
     display: none;
 }
-.showPhone{
+
+/* 醫院圖片 */
+
+.hosImg {
+    float: left;
+}
+
+.showPhone {
     display: block;
 }
+
 .textTitle {
     color: rgb(73, 73, 73);
     text-align: center;
@@ -126,30 +134,33 @@ button:disabled:hover {
 }
 
 /* 比較醫院鈕 */
-.compare{
+
+.compare {
     cursor: pointer;
     color: #5e5e5e;
     background-color: rgba(0, 112, 192, 0);
     border: 1px solid rgba(0, 0, 0, 0.6);
     border-radius: 1%;
     padding: 5px 30px;
-    
 }
-.compare:hover{
+
+.compare:hover {
     background-color: rgba(0, 0, 0, 0.1);
 }
 
 /* 查詢醫師鈕 */
-.docSub{
+
+.docSub {
     cursor: pointer;
     color: #202020;
     background-color: rgba(0, 112, 192, 0);
-    border: 1px solid rgba(0, 0, 0, 0.6);
+    border: 0.5px solid rgba(0, 0, 0, 0.6);
     border-radius: 1%;
     font-size: 13px;
     padding: 4px 10px;
 }
-.docSub:hover{
+
+.docSub:hover {
     background-color: rgba(0, 0, 0, 0.1);
 }
 
@@ -329,6 +340,7 @@ a.tabs-menu.tabs-menu-active {
     border-radius: 0%;
     margin: 1% 0%;
 }
+
 /* 自動完成 */
 
 .ui-menu {
@@ -742,7 +754,7 @@ ul.breadcrumb li a:hover {
 }
 
 .map:hover {
-    text-decoration:underline;
+    text-decoration: underline;
     color: #608097;
 }
 
@@ -1018,7 +1030,7 @@ ul.breadcrumb li a:hover {
     .tableHosName {
         width: 65%;
     }
-    .tableWidth{
+    .tableWidth {
         width: 900px;
     }
 }
@@ -1046,6 +1058,17 @@ ul.breadcrumb li a:hover {
     }
     .tableHosName {
         width: 95%;
+    }
+    .hosImg {
+        float: none;
+        display: block;
+        vertical-align: middle;
+        text-align: center;
+        margin: 0px auto;
+        padding-bottom: 5px;
+    }
+    .subOb {
+        float: left;
     }
 }
 
@@ -1120,6 +1143,7 @@ ul.breadcrumb li a:hover {
         width: 25%;
     }
 }
+
 @media (max-width: 491px) {
     a.tabs-menu {
         font-size: 15px;

@@ -54,13 +54,11 @@ class Select():
             alert = "抱歉，找不到您要的資料訊息。"
             return render_template("search.html", alert=alert)
         else:
-            print('酷喔')
             return Select().select_data(normal, sql_where, reserved)
 
     def select_data(self, normal, sql_where, reserved):
         ## 取得data指標值
         sqlstr = "SELECT cast(s.reviews as float), s.subj1, s.subj2, s.subj3, s.subj4, s.subj5, s.subj6, s.subj7 FROM hosp_subj s JOIN hospitals h ON s.hospital_id = h.id JOIN final_reviews fr ON h.id = fr.hospital_id " + sql_where
-        print(sqlstr)
         value = self.cursor.execute(sqlstr).fetchall()  ## value = [(hospital_id, 評論數, 指標1之指標值, 指標2之指標值, 指標3之指標值, ......), ......]
         ## 將醫療機構資訊、指標值、就醫人數、指標值等級包裝成zip
         z_data = zip(normal, value)
@@ -94,7 +92,6 @@ class Result():
     def table(self, z_data, z_col, reserved):
         # try:
             ## render至前端HTML，ck_len為指標的長度，columns為欄位名稱，z為醫院資訊和指標值的zip
-            print(reserved)
             return render_template('hospComparison.html', reserved=reserved, z_col=z_col, z_data=z_data)
         # except BaseException as e:
         #     print('table Exception' + e)
