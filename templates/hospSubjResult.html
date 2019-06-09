@@ -252,6 +252,7 @@
             </div>
             {% endif %}
             <!-- 表格 -->
+            {% if z_data %}
             <div style="background-color:rgba(184,206,217,0.5);margin:10px 2%;overflow: auto">
 
                 <div style="margin:0px auto;" class="tableWidth">
@@ -261,14 +262,14 @@
                         <thead style="text-align:center;margin:0px auto;" id="thead">
                         <tr>
                             {% for c in columns %}
-                            <th class="thead" valign="center">{{ c }}</th>
+                            <th class="thead" style="vertical-align: middle;" valign="center">{{ c }}</th>
                             {% endfor %}
                         </tr>
                         </thead>
                         <tbody style="font-size:17px;text-align:center;margin:0px auto;">
                         {% for d, v in z_data%}
                         <tr>
-                            <td>
+                            <td style="vertical-align:middle;text-align:center;">
                                 {{ d }}
                             </td>
                             {% for i in range(col_len) %}
@@ -291,6 +292,7 @@
                     </table>
                 </div>
             </div>
+            {% endif %}
         </div>
 
     </div>

@@ -308,8 +308,6 @@
                             <label for="p1" class="ckIndex2"><span></span>給予除菌藥物</label>
                             <input type="checkbox" value="33" id="p2" name="ckIndex" onclick="onCheckBox(this)" />
                             <label for="p2" class="ckIndex2"><span></span>給予抗發炎藥物</label>
-                            <input type="checkbox" value="49" id="p3" name="ckIndex" onclick="onCheckBox(this)" />
-                            <label for="p3" class="ckIndex2"><span></span>綜合分數</label>
                         </div>
                         <div id="blood" style="margin:2% auto;display: none">
                             <input type="checkbox" value="50" id="b11" name="ckIndex" onclick="onCheckBox(this)" />
@@ -430,16 +428,17 @@
             <div style="clear:both;"></div>
 
             <!-- 表格 -->
+
             <div style="background-color:rgba(184,206,217,0.5);margin:10px 5%;overflow: auto">
 
                 <div style="margin:0px auto;" class="tableWidth">
-
+{% if z_data %}
                     <table class="table" style="border:5px rgba(255, 255, 255, 0.8) solid;text-align:left; "
                            rules="all">
                         <thead style="text-align:center;margin:auto;" id="thead">
                         <tr>
                             {% for c in columns %}
-                            <th class="thead" valign="center">
+                            <th class="thead" style="vertical-align: middle;" valign="center">
                                 {% if c[1] == 'P' %}
                                 <img src="static/+1.1.png" height="20px" title="" style="vertical-align: sub;">
                                 {% endif %}
@@ -493,6 +492,7 @@
                     </table>
                 </div>
             </div>
+            {% endif %}
         </div>
         {% endif %}
         <!-- 結果分頁 -->
