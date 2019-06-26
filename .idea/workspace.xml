@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="705f953d-84d1-4402-8ec5-e3dd3d90490f" name="Default Changelist" comment="0627_href=&quot;search&quot;">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/comp.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/comp.py" afterDir="false" />
-    </list>
+    <list default="true" id="705f953d-84d1-4402-8ec5-e3dd3d90490f" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -30,8 +27,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/models/comp.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="190">
-              <caret line="21" column="24" selection-start-line="21" selection-start-column="24" selection-end-line="21" selection-end-column="24" />
+            <state relative-caret-position="304">
+              <caret line="21" column="23" lean-forward="true" selection-start-line="21" selection-start-column="23" selection-end-line="21" selection-end-column="23" />
             </state>
           </provider>
         </entry>
@@ -167,9 +164,9 @@
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="946" />
+    <option name="x" value="945" />
     <option name="width" value="980" />
-    <option name="height" value="1034" />
+    <option name="height" value="1035" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="1" id="Add" />
@@ -209,7 +206,7 @@
     <property name="SearchEverywhereHistoryKey" value="醫院特性&#9;null&#9;null" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="com.intellij.ide.scratch.LRUPopupBuilder$1/New Scratch File" value="CommandLine" />
-    <property name="last_opened_file_path" value="C:/Program Files/Git/cmd/git.exe" />
+    <property name="last_opened_file_path" value="$USER_HOME$/Desktop/test" />
     <property name="settings.editor.selected.configurable" value="settings.github" />
   </component>
   <component name="RecentsManager">
@@ -395,14 +392,7 @@
       <updated>1541491575459</updated>
       <workItem from="1561577851901" duration="2702000" />
       <workItem from="1561581830860" duration="503000" />
-      <workItem from="1561582545026" duration="65000" />
-    </task>
-    <task id="LOCAL-00060" summary="0330_revised(except reSort)">
-      <created>1553884697520</created>
-      <option name="number" value="00060" />
-      <option name="presentableId" value="LOCAL-00060" />
-      <option name="project" value="LOCAL" />
-      <updated>1553884697521</updated>
+      <workItem from="1561582545026" duration="337000" />
     </task>
     <task id="LOCAL-00061" summary="0330_revised(reSort)">
       <created>1553888795732</created>
@@ -740,11 +730,18 @@
       <option name="project" value="LOCAL" />
       <updated>1561582089375</updated>
     </task>
-    <option name="localTasksCounter" value="109" />
+    <task id="LOCAL-00109" summary="0627">
+      <created>1561582654412</created>
+      <option name="number" value="00109" />
+      <option name="presentableId" value="LOCAL-00109" />
+      <option name="project" value="LOCAL" />
+      <updated>1561582654412</updated>
+    </task>
+    <option name="localTasksCounter" value="110" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="3270000" />
+    <option name="totallyTimeSpent" value="3542000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -758,7 +755,7 @@
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.19168901" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.19168901" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info id="DB Browser" order="3" weight="0.32983023" />
@@ -769,7 +766,7 @@
       <window_info anchor="bottom" id="Inspection" order="4" weight="0.4" />
       <window_info anchor="bottom" id="Debug" order="5" weight="0.36944938" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.28596804" />
-      <window_info anchor="bottom" id="Version Control" order="7" visible="true" weight="0.4348442" />
+      <window_info active="true" anchor="bottom" id="Version Control" order="7" visible="true" weight="0.4348442" />
       <window_info anchor="bottom" id="DB Execution Console" order="8" />
       <window_info anchor="bottom" id="Terminal" order="9" weight="0.32577905" />
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.5012126" side_tool="true" weight="0.27175844" />
@@ -826,7 +823,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="0506_##" />
     <MESSAGE value="0506_db/column_name" />
     <MESSAGE value="0506_hospResult/hospRenew" />
     <MESSAGE value="0507_loading" />
@@ -851,7 +847,8 @@
     <MESSAGE value="0611_templates" />
     <MESSAGE value="0627_left buttons" />
     <MESSAGE value="0627_href=&quot;search&quot;" />
-    <option name="LAST_COMMIT_MESSAGE" value="0627_href=&quot;search&quot;" />
+    <MESSAGE value="0627" />
+    <option name="LAST_COMMIT_MESSAGE" value="0627" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/udemy$app.coverage" NAME="app Coverage Results" MODIFIED="1561579627687" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
@@ -1073,8 +1070,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/models/comp.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="190">
-          <caret line="21" column="24" selection-start-line="21" selection-start-column="24" selection-end-line="21" selection-end-column="24" />
+        <state relative-caret-position="304">
+          <caret line="21" column="23" lean-forward="true" selection-start-line="21" selection-start-column="23" selection-end-line="21" selection-end-column="23" />
         </state>
       </provider>
     </entry>
