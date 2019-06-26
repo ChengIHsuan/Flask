@@ -23,7 +23,6 @@ class Test():
         return cc
 
     def printTownship(self):
-        
         county = Test().printCounty()
         for c in county:
             sqlstr = "SELECT distinct township FROM hospitals WHERE county = '{}'".format(c)
