@@ -7,7 +7,6 @@ from models.hospital import Hosp
 from models.search import Search
 from models.comp import Comp
 from models.doctor import Doc
-
 import sqlite3
 
 app = Flask(__name__)
