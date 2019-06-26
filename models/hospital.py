@@ -38,7 +38,7 @@ class Hosp():
             normal = Search().search_hosp(hospital_id)
             return render_template('hospObjResult.html', normal=normal, alert=alert)
 
-
+    ##
     def search_subj(self, hospital_id, subjectives):
         try:
             normal = Search().search_hosp(hospital_id)
