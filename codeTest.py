@@ -4,6 +4,7 @@ from models.search import Search
 
 class Test():
 
+
     def __init__(self):
         db = sqlite3.connect('voyager.db')
         self.cursor = db.cursor()
