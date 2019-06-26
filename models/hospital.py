@@ -9,7 +9,7 @@ class Hosp():
         self.cursor = db.cursor()
 
     def search_obj(self, hospital_id, indexes):
-        # try:
+        try:
             normal = Search().search_hosp(hospital_id)
 
             value_substr = ''
@@ -33,10 +33,10 @@ class Hosp():
 
             col_len = len(columns)
             return render_template('hospObjResult.html', scroll='indexes', normal=normal, z_data=z_data, columns=columns, col_len=col_len)
-        # except:
-        #     alert = "抱歉，找不到您要的資料訊息。"
-        #     normal = Search().search_hosp(hospital_id)
-        #     return render_template('hospObjResult.html', normal=normal, alert=alert)
+        except:
+            alert = "抱歉，找不到您要的資料訊息。"
+            normal = Search().search_hosp(hospital_id)
+            return render_template('hospObjResult.html', normal=normal, alert=alert)
 
 
     def search_subj(self, hospital_id, subjectives):
@@ -102,13 +102,17 @@ class Select():
         self.cursor = db.cursor()
 
     def select_normal(self, sql_where, reserved):
-        sqlstr = "SELECT h.abbreviation, h.type, cast(fr.star as float), fr.reviews, h.phone, h.address, h.id FROM hospitals h JOIN final_reviews fr ON h.id = fr.hospital_id  " + sql_where
-        normal = self.cursor.execute(sqlstr).fetchall()  ## normal = [ (名稱, GOOGLE星等, 正向評論數, 負向評論數, 電話, 地址), ......]
+        try:
+            sqlstr = "SELECT h.abbreviation, h.type, cast(fr.star as float), fr.reviews, h.phone, h.address, h.id FROM hospitals h JOIN final_reviews fr ON h.id = fr.hospital_id  " + sql_where
+            normal = self.cursor.execute(sqlstr).fetchall()  ## normal = [ (名稱, GOOGLE星等, 正向評論數, 負向評論數, 電話, 地址), ......]
 
-        if normal == []:
-            alert = "抱歉，找不到您要的資料訊息。"
-            return render_template("search.html", alert=alert)
-        else:
-            return render_template("hospResult.html", normal=normal, reserved=reserved)
+            if normal == []:
+                alert = "抱歉，找不到您要的資料訊息。"
+                return render_template("search.html", alert=alert)
+            else:
+                return render_template("hospResult.html", normal=normal, reserved=reserved)
+        except BaseException as e:
+            print('selct_normal Exception' + e)
+            return  render_template('search.hml')
 
 

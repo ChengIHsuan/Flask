@@ -137,7 +137,6 @@ def panduanHospObj():
 
 @app.route('/hospSubjResult', methods=['GET'])
 def renderHospSubj():
-
     return render_template('hospSubjResult.html')
 
 @app.route('/hospSubjResult', methods=['POST'])

@@ -8,32 +8,24 @@ class Search():
 
     ## 醫療機構
     def search_hosp(self, hospital_id):
-        sqlstr = "SELECT h.id, h.abbreviation, h.type, cast(fr.star as float), fr.reviews, h.address, h.phone FROM hospitals h JOIN final_reviews fr ON h.id = fr.hospital_id WHERE h.id={}".format(
-            hospital_id)
-        normal = self.cursor.execute(sqlstr).fetchone()
-        return normal
+        try:
+            sqlstr = "SELECT h.id, h.abbreviation, h.type, cast(fr.star as float), fr.reviews, h.address, h.phone FROM hospitals h JOIN final_reviews fr ON h.id = fr.hospital_id WHERE h.id={}".format(
+                hospital_id)
+            normal = self.cursor.execute(sqlstr).fetchone()
+            return normal
+        except:
+            return "抱歉，操作失敗。[H]"
 
     ## 科別
     def search_depart(self, depart):
-        if depart != '0' :
-            sql_where = "s.depart_id = {}".format(depart)
-            return sql_where
-        else:
-            return ''
-
-    # ## 主觀指標
-    # def search_subjective(self, subjective):
-    #     getStr = {
-    #         '1': "統計數據",
-    #         '2': "醫病關係",
-    #         '3': "事後處理",
-    #         '4': "行政項目",
-    #         '5': "專業人員與器材",
-    #         '6': "檢查及藥物和轉診",
-    #         '7': "不良事件",
-    #         '8': "其他註解"
-    #     }
-    #     return getStr.get(subjective)
+        try:
+            if depart != '0' :
+                sql_where = "s.depart_id = {}".format(depart)
+                return sql_where
+            else:
+                return ''
+        except:
+            return "抱歉，操作失敗。[Dpt]"
 
     ## 地區搜尋
     def search_area(self, county, township):
@@ -159,58 +151,70 @@ class Search():
             else:
                 return ''
         except:
-            return "抱歉，操作失敗。[C]"
+            return "抱歉，操作失敗。[Doc]"
 
     ## 醫療機構保留條件
     def hosp_reserved(self, county, township, names, types, star):
-        ## reserved = [縣市, 鄉鎮市區, 名稱1, 名稱2, 名稱3, 醫學中心, 區域醫院, 地區醫院, 診所, 星等]
-        reserved = [county, township]
-        for name in names:
-            reserved.append(name)
-        ## 醫療層級預設皆為false，若使用者有勾選擇改為true
-        for f in range(4):  #共有4個醫療層級#
-            reserved.append('false')
-        for type in types:
-            i = (int(type) + 4)  #層級value為1~4，對應保留條件陣列中5~8位置#
-            reserved[i] = 'true'
-        while star == '':  #即使用者沒有選擇星等#
-            star = 0
-        reserved.append(star)
-        return reserved
+        try:
+            ## reserved = [縣市, 鄉鎮市區, 名稱1, 名稱2, 名稱3, 醫學中心, 區域醫院, 地區醫院, 診所, 星等]
+            reserved = [county, township]
+            for name in names:
+                reserved.append(name)
+            ## 醫療層級預設皆為false，若使用者有勾選擇改為true
+            for f in range(4):  #共有4個醫療層級#
+                reserved.append('false')
+            for type in types:
+                i = (int(type) + 4)  #層級value為1~4，對應保留條件陣列中5~8位置#
+                reserved[i] = 'true'
+            while star == '':  #即使用者沒有選擇星等#
+                star = 0
+            reserved.append(star)
+            return reserved
+        except:
+            return "抱歉，操作失敗。[HR]"
 
     ## 疾病保留條件
     def disease_reserved(self, disease, county, township, names, types, star):
-        ## reserved = [特殊疾病, 縣市, 鄉鎮市區, 名稱1, 名稱2, 名稱3, 醫學中心, 區域醫院, 地區醫院, 診所, 星等]
-        reserved = [disease, county, township]
-        for name in names:
-            reserved.append(name)
-        ## 醫療層級預設皆為false，若使用者有勾選擇改為true
-        for f in range(4):  #共有4個醫療層級#
-            reserved.append('false')
-        for type in types:
-            i = (int(type) + 5)  #層級value為1~4，對應保留條件陣列中6~9位置#
-            reserved[i] = 'true'
-        while star == '':  #即使用者沒有選擇星等#
-            star = 0
-        reserved.append(star)
-        return reserved
+        try:
+            ## reserved = [特殊疾病, 縣市, 鄉鎮市區, 名稱1, 名稱2, 名稱3, 醫學中心, 區域醫院, 地區醫院, 診所, 星等]
+            reserved = [disease, county, township]
+            for name in names:
+                reserved.append(name)
+            ## 醫療層級預設皆為false，若使用者有勾選擇改為true
+            for f in range(4):  #共有4個醫療層級#
+                reserved.append('false')
+            for type in types:
+                i = (int(type) + 5)  #層級value為1~4，對應保留條件陣列中6~9位置#
+                reserved[i] = 'true'
+            while star == '':  #即使用者沒有選擇星等#
+                star = 0
+            reserved.append(star)
+            return reserved
+        except:
+            return "抱歉，操作失敗。[DR]"
 
     ## 科別保留條件
     def subj_reserved(self, depart, county, township, types, names):
-        ## reserved = [科別, 縣市, 鄉鎮市區, 醫學中心, 區域醫院, 地區醫院, 診所, 名稱1, 名稱2, 名稱3,]
-        reserved = [depart, county, township]
-        ## 醫療層級預設皆為false，若使用者有勾選擇改為true
-        for f in range(4):  #共有4個醫療層級#
-            reserved.append('false')
-        for type in types:
-            i = (int(type) + 2)  #層級value為1~4，對應保留條件陣列中3~6位置#
-            reserved[i] = 'true'
-        for name in names:
-            reserved.append(name)
-        return reserved
+        try:
+            ## reserved = [科別, 縣市, 鄉鎮市區, 醫學中心, 區域醫院, 地區醫院, 診所, 名稱1, 名稱2, 名稱3,]
+            reserved = [depart, county, township]
+            ## 醫療層級預設皆為false，若使用者有勾選擇改為true
+            for f in range(4):  #共有4個醫療層級#
+                reserved.append('false')
+            for type in types:
+                i = (int(type) + 2)  #層級value為1~4，對應保留條件陣列中3~6位置#
+                reserved[i] = 'true'
+            for name in names:
+                reserved.append(name)
+            return reserved
+        except:
+            return "抱歉，操作失敗。[SR]"
 
     def doc_reserved(self, doctor, depart, name):
-        ## reserved = [科別, 縣市, 鄉鎮市區, 醫學中心, 區域醫院, 地區醫院, 診所, 名稱1, 名稱2, 名稱3,]
-        reserved = [doctor, depart, name]
-        return reserved
+        try:
+            ## reserved = [科別, 縣市, 鄉鎮市區, 醫學中心, 區域醫院, 地區醫院, 診所, 名稱1, 名稱2, 名稱3,]
+            reserved = [doctor, depart, name]
+            return reserved
+        except:
+            return "抱歉，操作失敗。[CR]"
 
