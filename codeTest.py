@@ -94,19 +94,36 @@ class Test():
         print(len(name))
 
 
-Test().printAutocomplete()
+# Test().printAutocomplete()
 
-    # def test(self, aa):
-    #     sqlstr = "SELECT v_12, v_13, v_14 FROM merge_data WHERE hospital_id <5"
-    #     sqlstr2 = "SELECT id, name FROM hospitals WHERE id<5"
-    #     a = self.cursor.execute(sqlstr).fetchall()
-    #     b = self.cursor.execute(sqlstr2).fetchall()
-    #     print(a)
-    #     print(b)
-    #     # print(sorted(a, reverse=True))  ## 遞減
-    #     # print(sorted(a))  ## 遞增
-    #     # print(sorted(a, key=lambda l : l[1]))  ## 按index1排序
-    #     z =zip(a, b)
-    #     print(sorted(z, key = lambda l: l[0][2], reverse=True))  ##按照zip中「0位置的陣列」中的「2位置的資料」遞增排序-->a[2]的資料
+    def test(self, aa):
+        sqlstr = "SELECT v_12, v_13, v_14 FROM merge_data WHERE hospital_id <5"
+        sqlstr2 = "SELECT id, name FROM hospitals WHERE id<5"
+        a = self.cursor.execute(sqlstr).fetchall()
+        b = self.cursor.execute(sqlstr2).fetchall()
+        c = [(4, '財團法人私立高雄醫學大學附設中和紀念醫院'), (1, '國泰醫療財團法人國泰綜合醫院'), (2, '長庚醫療財團法人林口長庚紀念醫院'), (3, '佛教慈濟醫療財團法人花蓮慈濟醫院')]
+        print(a)
+        print(b)
+        print(c)
+        # print(sorted(a, reverse=True))  ## 遞減
+        # print(sorted(a))  ## 遞增
+        # print(sorted(a, key=lambda l : l[1]))  ## 按index1排序
+        z =zip(a, b, c)
+        print(sorted(z, key = lambda l: l[2][0], reverse=True))  ##按照zip中「0位置的陣列」中的「2位置的資料」遞增排序-->a[2]的資料
 
-# Disease().test('aaaa')
+    def default(self, indexes, sql_where, reserved):
+        substr = ''
+        for index in indexes:
+            substr += 'fd.d_{},'.format(index)
+        substr = substr[:-1]  #刪除最後一個逗號#
+
+        sqlstr = ("SELECT MAX({}) FROM merge_data m LEFT JOIN hospitals h ON m.hospital_id = h.id LEFT JOIN final_reviews fr ON h.id = fr.hospital_id LEFT JOIN final_data fd ON h.id = fd.hospital_id ".format(substr)) + sql_where
+        all_deno = self.cursor.execute(sqlstr).fetchall()
+        print(sqlstr)
+        print(all_deno)
+
+        # hosp_id = []
+        # boolean = []
+        # for deno in all_deno:
+
+Test().default(['44', '13', '15'],"WHERE (h.area LIKE '%%')AND (h.type = '醫學中心') AND ((m.v_44 != -1) OR (m.v_13 != -1) OR (m.v_15 != -1))",'')

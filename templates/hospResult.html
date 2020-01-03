@@ -243,59 +243,59 @@
                            rules="all">
 
                         <tbody style="font-size:15px">
-                        <!-- {% for n in normal %} -->
+                        <!-- {% for info in hosp_info%} -->
                         <tr>
                             <td style="font-size:17px;border:5px rgba(255, 255, 255, 0.8) solid;">
                                 <!-- 醫院圖片 -->
                                 <img  class="hosImg" src="https://picsum.photos/200/150/?image=2">
                                 <div class="tableHosName">
-                                    <p style="font-size:23px;margin: 0px">{{ n[0] }}</p>
+                                    <p style="font-size:23px;margin: 0px">{{ info[0] }}</p>
                                     <!--醫療層級-->
-                                    <span style="font-size:15px;color: #5a5a5a">{{ n[1] }}</span>
+                                    <span style="font-size:15px;color: #5a5a5a">{{ info[1] }}</span>
                                     <!--星等-->
                                     <span
-                                            style="font-size:15px;color: #5a5a5a;background-color:rgba(255, 211, 229,0.5);;border-radius:5px;padding:2px 5px">{{ n[2]}}</span>
-                                    {% if 0 <= n[2] < 0.5 %}
+                                            style="font-size:15px;color: #5a5a5a;background-color:rgba(255, 211, 229,0.5);;border-radius:5px;padding:2px 5px">{{ info[2]}}</span>
+                                    {% if 0 <= info[2] < 0.5 %}
                                     <img style="vertical-align: sub;margin:0px 2px" src="static/0星.png"
                                          height="20em">
                                     {% endif %}
-                                    {% if 0.5 <= n[2] < 1 %}
+                                    {% if 0.5 <= info[2] < 1 %}
                                     <img style="vertical-align: sub;margin:0px 2px" src="static/0半星.png"
                                          height="20em">
                                     {% endif %}
-                                    {% if 1 <= n[2] < 1.5 %}
+                                    {% if 1 <= info[2] < 1.5 %}
                                     <img style="vertical-align: sub;margin:0px 2px" src="static/1星.png"
                                          height="20em">
                                     {% endif %}
-                                    {% if 1.5 <= n[2] < 2 %}
+                                    {% if 1.5 <= info[2] < 2 %}
                                     <img style="vertical-align: sub;margin:0px 2px" src="static/1半星.png"
                                          height="20em">
                                     {% endif %}
-                                    {% if 2 <= n[2] < 2.5 %}
+                                    {% if 2 <= info[2] < 2.5 %}
                                     <img style="vertical-align: sub;margin:0px 2px" src="static/2星.png"
                                          height="20em">
                                     {% endif %}
-                                    {% if 2.5 <= n[2] < 3 %}
+                                    {% if 2.5 <= info[2] < 3 %}
                                     <img style="vertical-align: sub;margin:0px 2px" src="static/2半星.png"
                                          height="20em">
                                     {% endif %}
-                                    {% if 3 <= n[2] < 3.5 %}
+                                    {% if 3 <= info[2] < 3.5 %}
                                     <img style="vertical-align: sub;margin:0px 2px" src="static/3星.png"
                                          height="20em">
                                     {% endif %}
-                                    {% if 3.5 <= n[2] < 4 %}
+                                    {% if 3.5 <= info[2] < 4 %}
                                     <img style="vertical-align: sub;margin:0px 2px" src="static/3半星.png"
                                          height="20em">
                                     {% endif %}
-                                    {% if 4 <= n[2] < 4.5 %}
+                                    {% if 4 <= info[2] < 4.5 %}
                                     <img style="vertical-align: sub;margin:0px 2px" src="static/4星.png"
                                          height="20em">
                                     {% endif %}
-                                    {% if 4.5 <= n[2] < 5 %}
+                                    {% if 4.5 <= info[2] < 5 %}
                                     <img style="vertical-align: sub;margin:0px 2px" src="static/4半星.png"
                                          height="20em">
                                     {% endif %}
-                                    {% if n[2] == 5 %}
+                                    {% if info[2] == 5 %}
                                     <img style="vertical-align: sub;margin:0px 2px" src="static/5星.png"
                                          height="20em">
                                     {% endif %}
@@ -306,20 +306,20 @@
                                                 總評論數
                                         <!-- 總評論數手機版 -->
                                                 <span
-                                                        style="font-size:15px;font-weight: bold;color: #000000">&nbsp;{{ n[3] }}&nbsp;</span>
+                                                        style="font-size:15px;font-weight: bold;color: #000000">&nbsp;{{ info[3] }}&nbsp;</span>
                                                 筆
                                             </span>
                                     <span class="comment">
                                                 總評論數
                                         <!-- 總評論數電腦版 -->
                                                 <span
-                                                        style="font-size:15px;font-weight: bold;color: #000000">&nbsp;{{ n[3] }}&nbsp;</span>
+                                                        style="font-size:15px;font-weight: bold;color: #000000">&nbsp;{{ info[3] }}&nbsp;</span>
                                                 筆
                                             </span>
                                     <hr style="margin:5px 0px">
                                     <div style="margin:0px 0px 5px 0px;float: left;">
                                         <!-- google map -->
-                                        <a href="https://www.google.com.tw/maps/place/{{ n[5] }}" class="map"
+                                        <a href="https://www.google.com.tw/maps/place/{{ info[5] }}" class="map"
                                            target="_blank">
                                             <img title="在Google Map開啟"
                                                  style="vertical-align: sub;margin:15px 5px 0px"
@@ -327,20 +327,20 @@
                                             <!-- 地址 -->
 
                                             <span title="在Google Map開啟"
-                                                  style="font-size:15px;">{{ n[5] }}</span>
+                                                  style="font-size:15px;">{{ info[5] }}</span>
                                         </a>
                                         <div style="height:5px"></div>
                                         <img style="vertical-align: sub;margin:0px 5px" src="static/phone.png"
                                              height="20em">
                                         <!-- 電話 -->
-                                        <span style="font-size:15px;color: #5a5a5a">{{ n[4] }}</span>
+                                        <span style="font-size:15px;color: #5a5a5a">{{ info[4] }}</span>
                                     </div>
 
                                     <!-- 主觀指標鈕 -->
                                     <div class="subOb">
                                         <div style="float:right;">
                                             <button id="hospSubjResult" type="submit" class="btn-sm btnSubject"
-                                                    style="padding:5px 15px;" name="btnSubj{{ n[6] }}"
+                                                    style="padding:5px 15px;" name="btnSubj{{ info[6] }}"
                                                     onclick="subj()">
                                                 <!-- 粉色放大鏡 -->
                                                 <img src="static/subSearch.png"
@@ -352,7 +352,7 @@
                                         <!-- 客觀指標鈕 -->
                                         <div style="float:right;">
                                             <button id="hospObjResult" type="submit" class="btn-sm btnObject"
-                                                    style="padding:5px 15px;" name="btnObj{{ n[6] }}"
+                                                    style="padding:5px 15px;" name="btnObj{{ info[6] }}"
                                                     onclick="obj()">
                                                 <!-- 藍色放大鏡 -->
                                                 <img src="static/obSearch.png"
